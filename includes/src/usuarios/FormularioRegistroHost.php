@@ -217,11 +217,12 @@ class FormularioRegistroHost extends Form
                 $usuario = Usuario::crea($email, $nombre, $apellido1, $apellido2, $birthday, $password, Usuario::HOST_ROLE);
                 $app = Aplicacion::getInstance();
                 $app->login($usuario);
+                $res = $app->resuelve('/index.php');
+
+                return $res;
                 
             }
         }
-        $res = $app->resuelve('/index.php');
-
-        return $res;
+        
     }
 }

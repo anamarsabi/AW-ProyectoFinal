@@ -38,7 +38,8 @@
 
 
 <script>
-
+//Busca una forma de pasarle una variable onload
+//JS coge datos de formularios. Puedes pasar datos por GET y recogerlos
 window.onload = function exampleFunction() {
     transicion("id_1");
 }

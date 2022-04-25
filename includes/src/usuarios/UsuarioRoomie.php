@@ -143,14 +143,14 @@ class UsuarioRoomie extends Usuario
         return $result;
     }
 
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
+    // public function getDescripcion()
+    // {
+    //     return $this->descripcion;
+    // }
 
-    public function getMascota()
-    {
-        return $this->mascota;
-    }
+    // public function getMascota()
+    // {
+    //     return $this->mascota;
+    // }
 
 }

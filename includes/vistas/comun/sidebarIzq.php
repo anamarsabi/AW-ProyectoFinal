@@ -12,6 +12,9 @@ if ($app->usuarioLogueado()){
         case "mis_pisos.php":
             $app->doinclude("vistas/comun/detalles_mis_pisos.php");
             break;
+        case "mis_habitaciones.php":
+            $app->doinclude("vistas/comun/detalles_mis_habitaciones.php");
+            break;
     }   
 }
 

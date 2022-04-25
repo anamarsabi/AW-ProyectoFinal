@@ -1,9 +1,6 @@
 <?php
 namespace es\ucm\fdi\aw;
 
-// use es\ucm\fdi\aw\Aplicacion;
-// use es\ucm\fdi\aw\Busqueda;
-// use es\ucm\fdi\aw\MagicProperties;
 use es\ucm\fdi\aw\usuarios\FormularioDetalles;
 use es\ucm\fdi\aw\usuarios\UsuarioRoomie;
 use es\ucm\fdi\aw\usuarios\Usuario;
@@ -143,9 +140,7 @@ class Piso
                     error_log("Error BD ({$conn->errno}): {$conn->error}");
                     return false;
                 }
-                
             }
-           
         }
         return $piso;
     }
@@ -527,8 +522,7 @@ class Piso
               
                 $result[] = new Habitacion($id, $id_piso, $tam_cama, $banio_privado, $precio, $gastos_incluidos, $descripcion, $fecha_disponibilidad);
                 */
-                $id_usuario = $fila['id_usuario'];
-                $id_piso = $fila['id_piso'];
+                $id_habitacion = $fila['id_habitacion'];
                 $tam_cama = $fila['cama_cm'];
                 $banio_privado = $fila['banio_propio']==1;
                 $precio  = $fila['precio'];
@@ -538,9 +532,18 @@ class Piso
                 $fecha_disponibilidad = strtotime($fila['disponibilidad'])<=0
                     ?$fila['disponibilidad']
                     :NULL;
-              
-                $result[] = new Habitacion($id_usuario, $id_piso, $tam_cama, $banio_privado, $precio, $gastos_incluidos, $descripcion, $fecha_disponibilidad);
 
+                $id_roomie = $fila['id_roomie'];
+                
+                $detalles = [
+                    'tam_cama'=>$tam_cama,
+                    'banio_privado'=>$banio_privado,
+                    'precio'=>$precio,
+                    'gastos_incluidos'=>$gastos_incluidos,
+                    'descripcion'=>$descripcion,
+                    'fecha_disponibilidad'=>$fecha_disponibilidad,
+                ];
+                $result[] = new Habitacion($id, $detalles, $id_roomie, $id_habitacion);
             }
             
             $rs->free();

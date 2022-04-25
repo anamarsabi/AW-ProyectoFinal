@@ -177,6 +177,7 @@ class FormularioEditDatosPiso extends Form{
         
         if (count($this->errores) === 0) {
             $app = Aplicacion::getInstance();
+            //Comenta por qué haces get y put 
             $id_piso = $app->getAtributoPeticion("id_piso");
             $app->putAtributoPeticion("id_piso", $id_piso);
 

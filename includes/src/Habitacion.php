@@ -1,80 +1,199 @@
 <?php
 namespace es\ucm\fdi\aw;
 
-use es\ucm\fdi\aw\Aplicacion;
-use es\ucm\fdi\aw\MagicProperties;
+// use es\ucm\fdi\aw\Aplicacion;
+// use es\ucm\fdi\aw\MagicProperties;
 
 class Habitacion
 {
     use MagicProperties;
 
-    private $id_usuario;
+    private $id_habitacion;
     private $id_piso;
-    private $tam_cama;
-    private $banio_privado;
-    private $precio;
-    private $gastos_incluidos;
-    private $descripcion;
-    private $fecha_disponibilidad;
+    private $id_roomie;
+    private $detalles;
+    // private $tam_cama;
+    // private $banio_privado;
+    // private $precio;
+    // private $gastos_incluidos;
+    // private $descripcion;
+    // private $fecha_disponibilidad;
 
-    public function __construct($id, $id_piso, $tam_cama, $banio_privado, $precio, 
-        $gastos_incluidos, $descripcion, $fecha_disponibilidad)
+    // public function __construct($id_host, $calle, $barrio, $ciudad, $detalles = array(), $id = null
+
+    public function __construct($id_piso, $detalles=array(), $id_roomie=null, $id = null)
     {
-        $this->id_usuario = $id;
+        $this->id_habitacion = $id;
         $this->id_piso = $id_piso;
-        $this->tam_cama = $tam_cama;
-        $this->banio_privado = $banio_privado;
-        $this->precio = $precio;
-        $this->gastos_incluidos = $gastos_incluidos;
-        $this->descripcion = $descripcion;
-        $this->fecha_disponibilidad = $fecha_disponibilidad;
+        $this->id_roomie = $id_roomie;
+        $this->detalles = $detalles;
+    }
+
+    public function aniadeDetalles($detalles){
         
+        $this->detalles['tam_cama'] = $detalles['tam_cama'];
+        $this->detalles['banio_privado'] = $detalles['banio_privado'];
+        $this->detalles['precio'] = $detalles['precio'];
+        $this->detalles['descripcion'] = $detalles['descripcion'];
+        $this->detalles['gastos_incluidos'] = $detalles['gastos_incluidos'];
+        $this->detalles['fecha_disponibilidad'] = $detalles['fecha_disponibilidad'];
     }
 
+    public static function crea($id_piso, $detalles){
+        $hab = new Habitacion($id_piso);
+        $hab->aniadeDetalles($detalles);
+        return $hab->guarda();
+    }
 
-    public function getId()
+    public function guarda()
     {
-        return $this->id_usuario;
+        if ($this->id_habitacion !== null) {
+            return self::actualiza($this);
+        }
+        return self::inserta($this);
     }
 
-    public function getIdPiso()
+    private static function inserta($hab)
     {
-        return $this->id_piso;
+        $result = false;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $aux = print_r($hab->detalles);
+        
+        $query = sprintf("INSERT INTO habitaciones (id_piso, cama_cm, banio_propio, precio, gastos_incluidos, descripcion, disponibilidad)  
+                        VALUES ('%d','%d', '%d', '%d', '%d', '%s', '%s')"
+            , $conn->real_escape_string($hab->id_piso)
+            , $conn->real_escape_string($hab->detalles['tam_cama'])
+            , $conn->real_escape_string($hab->detalles['banio_privado'])
+            , $conn->real_escape_string($hab->detalles['precio'])
+            , $conn->real_escape_string($hab->detalles['gastos_incluidos'])
+            , $conn->real_escape_string($hab->detalles['descripcion'])
+            , $conn->real_escape_string($hab->detalles['fecha_disponibilidad'])
+        );
+        if ( $conn->query($query) ) {
+            $hab->id_habitacion = $conn->insert_id;
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
     }
 
-    public function getTamCama()
+    private static function actualiza($hab)
     {
-        return $this->tam_cama;
+        $result = false;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query=sprintf("UPDATE habitaciones SET cama_cm = '%d', banio_propio='%d', precio='%d', gastos_incluidos='%d', descripcion='%s', disponibilidad='%s' WHERE id_habitacion=%d"
+            , $conn->real_escape_string($hab->cama_cm)
+            , $conn->real_escape_string($hab->banio_propio)
+            , $conn->real_escape_string($hab->precio)
+            , $conn->real_escape_string($hab->gastos_incluidos)
+            , $conn->real_escape_string($hab->descripcion)
+            , $conn->real_escape_string($hab->disponibilidad)
+            , $hab->id
+        );
+        if ( !$conn->query($query) ) {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        
+        return $result;
     }
 
-    public function tieneBanioPrivado()
-    {
-        return $this->banio_privado==true;
+    public static function habitacionPerteneceAHost($id_hab, $id_host){
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * 
+                        FROM pisos p JOIN habitaciones h ON p.id_piso=h.id_piso  WHERE p.id_host=%d AND h.id_habitacion=%d", $id_host, $id_hab);
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+           $result = true;
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
     }
 
-    public function getPrecio()
+    public static function buscaPorId($idHab)
     {
-        return $this->precio;
+        $app = Aplicacion::getInstance();
+        $conn = $app->getConexionBd();
+        $id_host = $app->idUsuario();
+
+        $query = sprintf("SELECT * FROM habitaciones WHERE id_habitacion=%d", $idHab);
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+            $fila = $rs->fetch_assoc();
+            if ($fila) {
+                $detalles = self::getDetallesHabitacion($fila);
+                $result = new Habitacion($fila['id_piso'], $detalles, null, $fila['id_habitacion']);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
     }
 
-    public function tieneGastosIncluidos()
-    {
-        return $this->gastos_incluidos==true;
+    private static function getDetallesHabitacion($fila){
+        $detalles = Array();
+        $detalles['tam_cama'] = $fila['cama_cm'];
+        $detalles['banio_privado'] = $fila['banio_propio'];
+        $detalles['precio'] = $fila['precio'];
+        $detalles['descripcion'] = $fila['descripcion'];
+        $detalles['gastos_incluidos'] = $fila['gastos_incluidos'];
+        $detalles['fecha_disponibilidad'] = $fila['disponibilidad'];
+    
+        return $detalles;
     }
 
-    public function getDescripcion()
-    {
-        return $this->descripcion;
+
+    public function getDetalles(){
+        return $this->detalles;
     }
 
-    public function getFechaDisponibilidadn()
+    public function getId_habitacion()
     {
-        return $this->fecha_disponibilidad;
+        return $this->id_habitacion;
     }
+
+    // public function getIdPiso()
+    // {
+    //     return $this->id_piso;
+    // }
+
+    // public function getTamCama()
+    // {
+    //     return $this->tam_cama;
+    // }
+
+    // public function tieneBanioPrivado()
+    // {
+    //     return $this->banio_privado==true;
+    // }
+
+    // public function getPrecio()
+    // {
+    //     return $this->precio;
+    // }
+
+    // public function tieneGastosIncluidos()
+    // {
+    //     return $this->gastos_incluidos==true;
+    // }
+
+    // public function getDescripcion()
+    // {
+    //     return $this->descripcion;
+    // }
+
+    // public function getFechaDisponibilidadn()
+    // {
+    //     return $this->fecha_disponibilidad;
+    // }
 
     public function estaOcupada()
     {
-        return $this->fecha_disponibilidad==null||$this->fecha_disponibilidad == "";
+        return !$this->id_roomie||$this->id_roomie == "";
     }
 
     // public function imprimirCorto()

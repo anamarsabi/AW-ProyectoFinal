@@ -268,10 +268,10 @@ class Aplicacion
     {
         $this->compruebaInstanciaInicializada();
         $_SESSION['login'] = true;
-        $_SESSION['nombre'] = $user->getNombre();
-        $_SESSION['correo'] = $user->getCorreo();
-        $_SESSION['idUsuario'] = $user->getId();
-        $_SESSION['roles'] = $user->getRoles();
+        $_SESSION['nombre'] = $user->nombre;
+        $_SESSION['correo'] = $user->correo;
+        $_SESSION['idUsuario'] = $user->id;
+        $_SESSION['roles'] = $user->roles;
     }
 
     public function logout()

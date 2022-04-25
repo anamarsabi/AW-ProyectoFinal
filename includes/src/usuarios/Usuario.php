@@ -301,15 +301,6 @@ class Usuario
         $this->password = self::hashPassword($nuevoPassword);
     }
 
-    public function printDatos()
-    {
-        //echo "Nombre --> " . $this->nombre;
-        print "apellido1 --> " . $this->apellido1; 
-        print("apellido2 --> " . $this->apellido2); 
-        print("birthday --> " . $this->birthday);
-        print_r("roles --> " . $this->roles);
-    }
-
 
     public function cambiaDatosPersonales($datos)
     {
