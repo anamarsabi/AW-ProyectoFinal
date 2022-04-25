@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-04-2022 a las 23:10:34
+-- Tiempo de generación: 25-04-2022 a las 23:03:03
 -- Versión del servidor: 10.4.24-MariaDB
--- Versión de PHP: 7.4.28
+-- Versión de PHP: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -122,9 +122,9 @@ INSERT INTO `detallespiso` (`id_piso`, `id_servicio`) VALUES
 --
 
 CREATE TABLE `habitaciones` (
-  `id_usuario` int(11) NOT NULL,
+  `id_habitacion` int(11) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
   `id_piso` int(11) DEFAULT NULL,
-  `correo_host` varchar(255) DEFAULT NULL,
   `cama_cm` int(3) NOT NULL,
   `banio_propio` tinyint(1) NOT NULL,
   `precio` int(11) NOT NULL,
@@ -137,14 +137,14 @@ CREATE TABLE `habitaciones` (
 -- Volcado de datos para la tabla `habitaciones`
 --
 
-INSERT INTO `habitaciones` (`id_usuario`, `id_piso`, `correo_host`, `cama_cm`, `banio_propio`, `precio`, `gastos_incluidos`, `descripcion`, `disponibilidad`) VALUES
-(1, 11, 'Carlaperez21@gmail.com', 85, 1, 450, 0, 'Habitación de 50 metros cuadrados, cuenta con una amplia ventana al exterior y con baño propio', '2022-04-21'),
-(15, 12, 'Rodriguez_Madrid@gmail.com', 90, 1, 550, 0, 'Habitación de 45 metros cuadrados, formada por un balcón, baño propio, una gran cama y un armario empotrado.', '2022-05-22'),
-(16, 1, 'esteff_valencia@gmail.com', 90, 1, 550, 1, 'Habitación de un gran tamaño que cuenta con un balcón que da a un patio interior, además de contar con un baño propio.', '2022-05-05'),
-(17, 1, 'esteff_valencia@gmail.com', 120, 0, 450, 1, 'Habitación muy luminosa, que cuenta con una gran ventana que da a un gran patio interior, no dispone de baño propio pero si que cuenta con una gran cama y un armario empotrado.', '2022-04-20'),
-(27, 13, 'bmar123@gmail.com', 90, 0, 350, 1, 'Habitación de 30m2, muy luminosa y bien aclimatada', '2022-04-19'),
-(29, 13, 'dibidi@gmail.com', 90, 1, 450, 1, 'Habitación de 50m2, muy luminosa y bien aclimatada, cuenta con baño propio.', '2022-04-20'),
-(30, 13, 'bmar123@gmail.com', 120, 1, 400, 1, 'Habitación muy luminosa, con baño propio.', '2022-05-05');
+INSERT INTO `habitaciones` (`id_habitacion`, `id_usuario`, `id_piso`, `cama_cm`, `banio_propio`, `precio`, `gastos_incluidos`, `descripcion`, `disponibilidad`) VALUES
+(1, 1, 11, 85, 1, 450, 0, 'Habitación de 50 metros cuadrados, cuenta con una amplia ventana al exterior y con baño propio', '2022-04-21'),
+(2, 15, 12, 90, 1, 550, 0, 'Habitación de 45 metros cuadrados, formada por un balcón, baño propio, una gran cama y un armario empotrado.', '2022-05-22'),
+(3, 16, 1, 90, 1, 550, 1, 'Habitación de un gran tamaño que cuenta con un balcón que da a un patio interior, además de contar con un baño propio.', '2022-05-05'),
+(4, 17, 1, 120, 0, 450, 1, 'Habitación muy luminosa, que cuenta con una gran ventana que da a un gran patio interior, no dispone de baño propio pero si que cuenta con una gran cama y un armario empotrado.', '2022-04-20'),
+(5, 27, 13, 90, 0, 350, 1, 'Habitación de 30m2, muy luminosa y bien aclimatada', '2022-04-19'),
+(6, 29, 13, 90, 1, 450, 1, 'Habitación de 50m2, muy luminosa y bien aclimatada, cuenta con baño propio.', '2022-04-20'),
+(7, 30, 13, 120, 1, 400, 1, 'Habitación muy luminosa, con baño propio.', '2022-05-05');
 
 -- --------------------------------------------------------
 
@@ -355,9 +355,9 @@ ALTER TABLE `detallespiso`
 -- Indices de la tabla `habitaciones`
 --
 ALTER TABLE `habitaciones`
-  ADD PRIMARY KEY (`id_usuario`),
-  ADD KEY `id_piso` (`id_piso`),
-  ADD KEY `correo` (`correo_host`);
+  ADD PRIMARY KEY (`id_habitacion`),
+  ADD UNIQUE KEY `id_usuario` (`id_usuario`) USING BTREE,
+  ADD KEY `id_piso` (`id_piso`);
 
 --
 -- Indices de la tabla `imagen`
@@ -422,7 +422,7 @@ ALTER TABLE `aficiones`
 -- AUTO_INCREMENT de la tabla `habitaciones`
 --
 ALTER TABLE `habitaciones`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_habitacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `pisos`
@@ -463,8 +463,7 @@ ALTER TABLE `detallespiso`
 -- Filtros para la tabla `habitaciones`
 --
 ALTER TABLE `habitaciones`
-  ADD CONSTRAINT `habitaciones_ibfk_1` FOREIGN KEY (`id_piso`) REFERENCES `pisos` (`id_piso`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `habitaciones_ibfk_2` FOREIGN KEY (`correo_host`) REFERENCES `usuarios` (`correo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `habitaciones_ibfk_1` FOREIGN KEY (`id_piso`) REFERENCES `pisos` (`id_piso`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `imagen`
