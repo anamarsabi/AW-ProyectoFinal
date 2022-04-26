@@ -12,14 +12,6 @@ class Habitacion
     private $id_piso;
     private $id_roomie;
     private $detalles;
-    // private $tam_cama;
-    // private $banio_privado;
-    // private $precio;
-    // private $gastos_incluidos;
-    // private $descripcion;
-    // private $fecha_disponibilidad;
-
-    // public function __construct($id_host, $calle, $barrio, $ciudad, $detalles = array(), $id = null
 
     public function __construct($id_piso, $detalles=array(), $id_roomie=null, $id = null)
     {
@@ -55,14 +47,16 @@ class Habitacion
 
     private static function inserta($hab)
     {
-        $result = false;
-        $conn = Aplicacion::getInstance()->getConexionBd();
+        $app = Aplicacion::getInstance();
+        $conn = $app->getConexionBd();
+        $correo = $app->correo();
 
         $aux = print_r($hab->detalles);
         
-        $query = sprintf("INSERT INTO habitaciones (id_piso, cama_cm, banio_propio, precio, gastos_incluidos, descripcion, disponibilidad)  
-                        VALUES ('%d','%d', '%d', '%d', '%d', '%s', '%s')"
+        $query = sprintf("INSERT INTO habitaciones (id_piso,correo_host, cama_cm, banio_propio, precio, gastos_incluidos, descripcion, disponibilidad)  
+                        VALUES ('%d','%s','%d', '%d', '%d', '%d', '%s', '%s')"
             , $conn->real_escape_string($hab->id_piso)
+            , $conn->real_escape_string($correo)
             , $conn->real_escape_string($hab->detalles['tam_cama'])
             , $conn->real_escape_string($hab->detalles['banio_privado'])
             , $conn->real_escape_string($hab->detalles['precio'])
@@ -72,6 +66,7 @@ class Habitacion
         );
         if ( $conn->query($query) ) {
             $hab->id_habitacion = $conn->insert_id;
+            $result = true;
         } else {
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }

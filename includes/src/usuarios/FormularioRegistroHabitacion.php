@@ -5,6 +5,7 @@ use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Form;
 use es\ucm\fdi\aw\Busqueda;
 use es\ucm\fdi\aw\Habitacion;
+use es\ucm\fdi\aw\Piso;
 
 class FormularioRegistroHabitacion extends Form
 {
@@ -21,6 +22,7 @@ class FormularioRegistroHabitacion extends Form
         $hoy = date("Y-m-d", time());
 
         $app = Aplicacion::getInstance();
+
         //Para que no se pierda este dato al recargar la página o al hacer submit
         $id_piso = $app->getAtributoPeticion("id_piso");
         $app->putAtributoPeticion("id_piso", $id_piso);
@@ -39,9 +41,9 @@ class FormularioRegistroHabitacion extends Form
         $html = <<<EOF
             $htmlErroresGlobales
 
-            <div class="formulario registro-piso">
+            <div class="formulario registro-habitacion">
 
-                <div class="flex-registro-piso">
+                <div class="flex-registro-habitacion">
                     <div class="flex-2col-item block">
                         <label class="mt-2">Tamaño de la cama (cm)<span class="text-danger">*</span></label>
                         <input type="number" name="cama_cm" placeholder="90 cm" required>
@@ -54,7 +56,7 @@ class FormularioRegistroHabitacion extends Form
                     </div>
                 </div>
                
-                <div class="flex-registro-piso">
+                <div class="flex-registro-habitacion">
                   
                     <div class="flex-2col-item block num">
                         <label class="mt-2">Disponibilidad<span class="text-danger">*</span></label>
@@ -136,9 +138,8 @@ class FormularioRegistroHabitacion extends Form
 
 
         if (count($this->errores) === 0) {
-            $app = Aplicacion::getInstance();
-            $id_piso = $app->getAtributoPeticion("id_piso");
-            $app->putAtributoPeticion("id_piso", $id_piso);
+
+            $id_piso = Piso::buscaIdPiso();
 
             if(!$id_piso){
                 $this->errores[] = "No se ha podido encontrar el usuario";

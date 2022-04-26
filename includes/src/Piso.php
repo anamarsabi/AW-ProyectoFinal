@@ -578,6 +578,26 @@ class Piso
         return $result;
     }
 
+    public static function buscaIdPiso()
+    {
+        $app = Aplicacion::getInstance();
+        $conn = $app->getConexionBd();
+        $id_host = $app->idUsuario();
+
+        $query = sprintf("SELECT * FROM pisos WHERE id_host=%d", $id_host);
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+            $fila = $rs->fetch_assoc();
+            if ($fila) {
+                $result = $fila['id_piso'];
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
 
     public function cambiaDatos($calle, $barrio, $ciudad, $detalles)
     {
