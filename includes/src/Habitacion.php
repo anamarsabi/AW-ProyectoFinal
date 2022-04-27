@@ -23,10 +23,12 @@ class Habitacion
 
     public function aniadeDetalles($detalles){
         
+        
         $this->detalles['tam_cama'] = $detalles['tam_cama'];
         $this->detalles['banio_privado'] = $detalles['banio_privado'];
         $this->detalles['precio'] = $detalles['precio'];
         $this->detalles['descripcion'] = $detalles['descripcion'];
+        $this->detalles['imagenes'] = $detalles['imagenes'];
         $this->detalles['gastos_incluidos'] = $detalles['gastos_incluidos'];
         $this->detalles['fecha_disponibilidad'] = $detalles['fecha_disponibilidad'];
     }
@@ -53,10 +55,10 @@ class Habitacion
 
         $aux = print_r($hab->detalles);
         
-        $query = sprintf("INSERT INTO habitaciones (id_piso,correo_host, cama_cm, banio_propio, precio, gastos_incluidos, descripcion, disponibilidad)  
-                        VALUES ('%d','%s','%d', '%d', '%d', '%d', '%s', '%s')"
+        $query = sprintf("INSERT INTO habitaciones (id_piso imagenes,cama_cm, banio_propio, precio, gastos_incluidos, descripcion, disponibilidad)  
+                        VALUES ('%d','%s' ,'%s','%d', '%d', '%d', '%d', '%s', '%s')"
             , $conn->real_escape_string($hab->id_piso)
-            , $conn->real_escape_string($correo)
+            , $conn->real_escape_string($hab->detalles['imagenes'])
             , $conn->real_escape_string($hab->detalles['tam_cama'])
             , $conn->real_escape_string($hab->detalles['banio_privado'])
             , $conn->real_escape_string($hab->detalles['precio'])
@@ -77,7 +79,8 @@ class Habitacion
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query=sprintf("UPDATE habitaciones SET cama_cm = '%d', banio_propio='%d', precio='%d', gastos_incluidos='%d', descripcion='%s', disponibilidad='%s' WHERE id_habitacion=%d"
+        $query=sprintf("UPDATE habitaciones SET imagenes='%s', cama_cm = '%d', banio_propio='%d', precio='%d', gastos_incluidos='%d', descripcion='%s', disponibilidad='%s' WHERE id_habitacion=%d"
+            ,$conn->real_escape_string($hab->imagenes)
             , $conn->real_escape_string($hab->cama_cm)
             , $conn->real_escape_string($hab->banio_propio)
             , $conn->real_escape_string($hab->precio)
@@ -131,6 +134,7 @@ class Habitacion
 
     private static function getDetallesHabitacion($fila){
         $detalles = Array();
+        $detalles['imagenes'] = $fila['imagenes'];
         $detalles['tam_cama'] = $fila['cama_cm'];
         $detalles['banio_privado'] = $fila['banio_propio'];
         $detalles['precio'] = $fila['precio'];

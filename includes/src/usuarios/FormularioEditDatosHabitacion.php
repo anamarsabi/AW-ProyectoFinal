@@ -16,7 +16,7 @@ class FormularioEditDatosHabitacion extends Form{
     {
         // Se generan los mensajes de error si existen.
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['cama_cm', 'precio', 'descripcion', 'disponibilidad'], $this->errores, 'span', array('class' => 'error text-danger'));
+        $erroresCampos = self::generaErroresCampos(['imagenes','cama_cm', 'precio', 'descripcion', 'disponibilidad'], $this->errores, 'span', array('class' => 'error text-danger'));
      
         $app = Aplicacion::getInstance();
         //Para que no se pierda este dato al recargar la página o al hacer submit
@@ -80,6 +80,14 @@ class FormularioEditDatosHabitacion extends Form{
                             
                         </div>
                             
+                    </div>
+
+                    <div class="flex-registro-piso">
+                        <div class="flex-2col-item block">
+                         <label class="mt-2">Imagen: <span class="text-danger">*</span></label> 
+                        <input placeholder="imagenes" name="imagenes" size="30" type="file" required multiple> 
+                             {$erroresCampos['imagenes']}
+                         </div>
                     </div>
                         
                     <h2 class='mt-2'>Características</h2>
@@ -154,6 +162,7 @@ class FormularioEditDatosHabitacion extends Form{
             }
         }
         
+        $imagenes = trim($datos['imagenes'] ?? '');
         
         if (count($this->errores) === 0) {
             $app = Aplicacion::getInstance();
@@ -167,9 +176,9 @@ class FormularioEditDatosHabitacion extends Form{
                 $this->errores[] = "Piso no ha sido encontrado usando su id";
             } else {
                 $detalles = [
+                    'imagenes'=>$imagenes,
                     'mascota'=>$permite_mascota,
                     'servicios'=>$servicios,
-                    'fotos'=>null,
                     'descripcion'=>$descripcion,
                     'precio_max'=>0,
                     'precio_min'=>0,

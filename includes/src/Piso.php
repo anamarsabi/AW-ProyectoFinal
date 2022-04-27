@@ -33,7 +33,7 @@ class Piso
         
         $this->detalles['mascota'] = $detalles['mascota'];
         $this->detalles['servicios'] = $detalles['servicios'];
-        $this->detalles['fotos'] = $detalles['fotos'];
+        $this->detalles['imagen_fachada'] = $detalles['imagen_fachada'];
         $this->detalles['descripcion'] = $detalles['descripcion'];
         $this->detalles['precio_max'] = $detalles['precio_max'];
         $this->detalles['precio_min'] = $detalles['precio_min'];
@@ -43,7 +43,9 @@ class Piso
         $this->detalles['plazas_ocupadas'] = $detalles['plazas_ocupadas'];
     }
 
-    public static function crea($id_host, $calle, $barrio, $ciudad, $detalles){
+    public static function crea($id_host, $calle, $barrio, $ciudad,$detalles){
+        
+
         $piso = new Piso($id_host, $calle, $barrio, $ciudad);
         $piso->aniadeDetalles($detalles);
         return $piso->guarda();
@@ -62,12 +64,13 @@ class Piso
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
         
-        $query = sprintf("INSERT INTO pisos (id_host, calle, barrio, ciudad, num_banios, permite_mascota, descripcion_piso, precio_max, precio_min)  
-                        VALUES ('%s','%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d')"
+        $query = sprintf("INSERT INTO pisos (id_host, calle, barrio, ciudad, imagen_fachada, num_banios, permite_mascota, descripcion_piso, precio_max, precio_min)  
+                        VALUES ('%s','%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d')"
             , $conn->real_escape_string($piso->id_host)
             , $conn->real_escape_string($piso->calle)
             , $conn->real_escape_string($piso->barrio)
             , $conn->real_escape_string($piso->ciudad)
+            , $conn->real_escape_string($piso->detalles['imagen_fachada'])
             , $conn->real_escape_string($piso->detalles['num_banios'])
             , $conn->real_escape_string($piso->detalles['mascota'])
             , $conn->real_escape_string($piso->detalles['descripcion'])
@@ -87,10 +90,11 @@ class Piso
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query=sprintf("UPDATE pisos P SET calle = '%s', barrio='%s', ciudad='%s', permite_mascota='%d', descripcion_piso='%s', num_banios='%d' WHERE P.id_piso=%d"
+        $query=sprintf("UPDATE pisos P SET calle = '%s', barrio='%s', ciudad='%s', imagen_fachada='%s', permite_mascota='%d', descripcion_piso='%s', num_banios='%d' WHERE P.id_piso=%d"
             , $conn->real_escape_string($piso->calle)
             , $conn->real_escape_string($piso->barrio)
             , $conn->real_escape_string($piso->ciudad)
+            , $conn->real_escape_string($piso->imagen_fachada)
             , $conn->real_escape_string($piso->permiteMascota())
             , $conn->real_escape_string($piso->descripcion)
             , $conn->real_escape_string($piso->num_banios)
@@ -240,6 +244,8 @@ class Piso
     {
         return $this->ciudad;
     }
+
+    
 
     public function getDetalles()
     {
@@ -468,7 +474,7 @@ class Piso
         $detalles['precio_max'] = $fila['precio_max']??"";
         $detalles['precio_min'] = $fila['precio_min']??"";
         $detalles['plazas_libres'] = $fila['plazas_libres']??"";
-        $detalles['fotos'] = $fila['fotos']??"";
+        $detalles['imagen_fachada'] = $fila['imagen_fachada']??"";
         $detalles['num_banios'] = $fila['num_banios']??0;
         
         
