@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-04-2022 a las 23:03:03
+-- Tiempo de generación: 27-04-2022 a las 10:33:04
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 7.4.29
 
@@ -123,13 +123,14 @@ INSERT INTO `detallespiso` (`id_piso`, `id_servicio`) VALUES
 
 CREATE TABLE `habitaciones` (
   `id_habitacion` int(11) NOT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
+  `id_roomie` int(11) DEFAULT NULL,
   `id_piso` int(11) DEFAULT NULL,
+  `imagenes` varchar(255) NOT NULL,
   `cama_cm` int(3) NOT NULL,
   `banio_propio` tinyint(1) NOT NULL,
   `precio` int(11) NOT NULL,
   `gastos_incluidos` tinyint(1) DEFAULT NULL,
-  `descripcion` varchar(1024) DEFAULT NULL,
+  `descripcion` varchar(2048) DEFAULT NULL,
   `disponibilidad` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -137,25 +138,36 @@ CREATE TABLE `habitaciones` (
 -- Volcado de datos para la tabla `habitaciones`
 --
 
-INSERT INTO `habitaciones` (`id_habitacion`, `id_usuario`, `id_piso`, `cama_cm`, `banio_propio`, `precio`, `gastos_incluidos`, `descripcion`, `disponibilidad`) VALUES
-(1, 1, 11, 85, 1, 450, 0, 'Habitación de 50 metros cuadrados, cuenta con una amplia ventana al exterior y con baño propio', '2022-04-21'),
-(2, 15, 12, 90, 1, 550, 0, 'Habitación de 45 metros cuadrados, formada por un balcón, baño propio, una gran cama y un armario empotrado.', '2022-05-22'),
-(3, 16, 1, 90, 1, 550, 1, 'Habitación de un gran tamaño que cuenta con un balcón que da a un patio interior, además de contar con un baño propio.', '2022-05-05'),
-(4, 17, 1, 120, 0, 450, 1, 'Habitación muy luminosa, que cuenta con una gran ventana que da a un gran patio interior, no dispone de baño propio pero si que cuenta con una gran cama y un armario empotrado.', '2022-04-20'),
-(5, 27, 13, 90, 0, 350, 1, 'Habitación de 30m2, muy luminosa y bien aclimatada', '2022-04-19'),
-(6, 29, 13, 90, 1, 450, 1, 'Habitación de 50m2, muy luminosa y bien aclimatada, cuenta con baño propio.', '2022-04-20'),
-(7, 30, 13, 120, 1, 400, 1, 'Habitación muy luminosa, con baño propio.', '2022-05-05');
+INSERT INTO `habitaciones` (`id_habitacion`, `id_roomie`, `id_piso`, `imagenes`, `cama_cm`, `banio_propio`, `precio`, `gastos_incluidos`, `descripcion`, `disponibilidad`) VALUES
+(1, 1, 11, '', 85, 1, 450, 0, 'Habitación de 50 metros cuadrados, cuenta con una amplia ventana al exterior y con baño propio', '2022-04-21'),
+(2, 15, 12, '', 90, 1, 550, 0, 'Habitación de 45 metros cuadrados, formada por un balcón, baño propio, una gran cama y un armario empotrado.', '2022-05-22'),
+(3, 16, 1, '', 90, 1, 550, 1, 'Habitación de un gran tamaño que cuenta con un balcón que da a un patio interior, además de contar con un baño propio.', '2022-05-05'),
+(4, 17, 1, '', 120, 0, 450, 1, 'Habitación muy luminosa, que cuenta con una gran ventana que da a un gran patio interior, no dispone de baño propio pero si que cuenta con una gran cama y un armario empotrado.', '2022-04-20'),
+(5, 27, 13, '', 90, 0, 350, 1, 'Habitación de 30m2, muy luminosa y bien aclimatada', '2022-04-19'),
+(6, 29, 13, '', 90, 1, 450, 1, 'Habitación de 50m2, muy luminosa y bien aclimatada, cuenta con baño propio.', '2022-04-20'),
+(7, 30, 13, '', 120, 1, 400, 1, 'Habitación muy luminosa, con baño propio.', '2022-05-05');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `imagen`
+-- Estructura de tabla para la tabla `imagenes`
 --
 
-CREATE TABLE `imagen` (
-  `ruta` varchar(255) NOT NULL,
-  `id_piso` int(11) NOT NULL,
-  `id_habitacion` int(11) NOT NULL
+CREATE TABLE `imagenes` (
+  `id_imagen` int(11) NOT NULL,
+  `nombre` varchar(2048) DEFAULT NULL,
+  `imagen` longblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `imagenhabitacion`
+--
+
+CREATE TABLE `imagenhabitacion` (
+  `id_habitacion` int(11) NOT NULL,
+  `id_imagen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -170,12 +182,11 @@ CREATE TABLE `pisos` (
   `calle` varchar(255) NOT NULL,
   `barrio` varchar(255) NOT NULL,
   `ciudad` varchar(255) NOT NULL,
+  `imagen_fachada` varchar(255) DEFAULT NULL,
   `permite_mascota` tinyint(1) DEFAULT NULL,
-  `fotos` varchar(255) DEFAULT NULL,
   `descripcion_piso` varchar(1024) DEFAULT NULL,
   `precio_max` int(11) DEFAULT NULL,
   `precio_min` int(11) DEFAULT NULL,
-  `plazas_libres` int(11) DEFAULT NULL,
   `num_banios` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -183,19 +194,20 @@ CREATE TABLE `pisos` (
 -- Volcado de datos para la tabla `pisos`
 --
 
-INSERT INTO `pisos` (`id_piso`, `id_host`, `calle`, `barrio`, `ciudad`, `permite_mascota`, `fotos`, `descripcion_piso`, `precio_max`, `precio_min`, `plazas_libres`, `num_banios`) VALUES
-(1, 2, 'Calle pajaros N 15', 'Chamberi', 'Madrid', 1, NULL, 'Piso totalmente reformado situado en la 3 planta del edificio, que cuenta con un total de 2 habitaciones, de la cual 1 tiene baño propio pero la otra no. Cuenta con un salón formado por dos grandes balcones que dan a un patio interior y una grán cocina/comedor.', 550, 450, 2, 3),
-(11, 6, 'Calle lucero n 13', 'Moncloa', 'Madrid', 0, NULL, 'Piso reformado hace 10 años, cuenta con 1 habitación, 1 salón, 2 baños, 1 cocina. El piso es un bajo que cuenta con una gran iluminación que viene de un patio interior de la comunidad.', 450, 450, 1, 2),
-(12, 5, 'Calle Alonso Martinez N 15', 'Principe Pio', 'Valencia', 1, NULL, 'Piso situado en la calle de Alonso Martinez, es un piso situado en una 4 planta, formado por 1 habitación, 1 salon/comedor, ! cocina y 2 baños, de los cuales 1 pertenece a la habitación.', 550, 550, 1, 2),
-(13, 30, 'Ciudad de Barcelona n 145', 'Pacifico', 'Madrid', 1, NULL, 'Este piso de 150m2, cuenta con amplias zonas comunes y adem&aacute;s de lo ya especificado, la finca cuenta con piscina y pista de padel.', 0, 0, NULL, 2),
-(14, 30, 'Plaza catalu&ntilde;a n 12', 'Gracia', 'Barcelona', 1, NULL, 'Este piso esta situado en una c&eacute;ntrica de Barcelona, fue reformado hace 3 a&ntilde;os.', 0, 0, NULL, 1),
-(15, 30, 'Plaza Espa&ntilde;a n 4', 'Parque Gwell', 'Barcelona', 1, NULL, 'Piso con 3 habitaciones en zona cercana al Parque Gwell. Muy bien comunicado con buses y trenes.', 0, 0, NULL, 3),
-(16, 27, 'Hacienda de Pavones n 145', 'Vicalvaro', 'Madrid', 1, NULL, 'Piso en zona muy cercana al centro, muy bien conectado mediante metro y autobus.', 0, 0, NULL, 2),
-(17, 27, 'Cochabamba n 2', 'Colombia', 'Madrid', 1, NULL, 'El piso se encuentra en una lujosa zona, muy tranquila y muy bien conectado con el centro.', 0, 0, NULL, 1),
-(18, 27, 'Evergreenterrace n 365', 'Las palomas', 'Valencia', 1, NULL, 'Este piso fue reformado hace 3 a&ntilde;os, esta en primera l&iacute;nea de playa y muy bien conectado con el centro.', 0, 0, NULL, 2),
-(19, 28, 'Fernandez Shaw n 12', 'Pacifico', 'Madrid', 1, NULL, 'Este piso cuenta con amplias zonas comunes y una amplia finca', 0, 0, NULL, 2),
-(20, 28, 'General Casado n 14', 'Moncloa', 'Madrid', 1, NULL, 'Este piso fue reformado hace 2 a&ntilde;os por lo tanto cuenta con los &uacute;ltimos dise&ntilde;os.', 0, 0, NULL, 2),
-(21, 28, 'Menendez Pelayo n 1', 'Pacifico', 'Madrid', 1, NULL, 'Este piso esta a 5 minutos de atocha de andando, cuenta con ascensor y unas buenas instalaciones.', 0, 0, NULL, 3);
+INSERT INTO `pisos` (`id_piso`, `id_host`, `calle`, `barrio`, `ciudad`, `imagen_fachada`, `permite_mascota`, `descripcion_piso`, `precio_max`, `precio_min`, `num_banios`) VALUES
+(1, 2, 'Calle pajaros N 15', 'Chamberi', 'Madrid', NULL, 1, 'Piso totalmente reformado situado en la 3 planta del edificio, que cuenta con un total de 2 habitaciones, de la cual 1 tiene baño propio pero la otra no. Cuenta con un salón formado por dos grandes balcones que dan a un patio interior y una grán cocina/comedor.', 550, 450, 3),
+(11, 6, 'Calle lucero n 13', 'Moncloa', 'Madrid', NULL, 0, 'Piso reformado hace 10 años, cuenta con 1 habitación, 1 salón, 2 baños, 1 cocina. El piso es un bajo que cuenta con una gran iluminación que viene de un patio interior de la comunidad.', 450, 450, 2),
+(12, 5, 'Calle Alonso Martinez N 15', 'Principe Pio', 'Valencia', NULL, 1, 'Piso situado en la calle de Alonso Martinez, es un piso situado en una 4 planta, formado por 1 habitación, 1 salon/comedor, ! cocina y 2 baños, de los cuales 1 pertenece a la habitación.', 550, 550, 2),
+(13, 30, 'Ciudad de Barcelona n 145', 'Pacifico', 'Madrid', NULL, 1, 'Este piso de 150m2, cuenta con amplias zonas comunes y adem&aacute;s de lo ya especificado, la finca cuenta con piscina y pista de padel.', 0, 0, 2),
+(14, 30, 'Plaza catalu&ntilde;a n 12', 'Gracia', 'Barcelona', NULL, 1, 'Este piso esta situado en una c&eacute;ntrica de Barcelona, fue reformado hace 3 a&ntilde;os.', 0, 0, 1),
+(15, 30, 'Plaza Espa&ntilde;a n 4', 'Parque Gwell', 'Barcelona', NULL, 1, 'Piso con 3 habitaciones en zona cercana al Parque Gwell. Muy bien comunicado con buses y trenes.', 0, 0, 3),
+(16, 27, 'Hacienda de Pavones n 145', 'Vicalvaro', 'Madrid', NULL, 1, 'Piso en zona muy cercana al centro, muy bien conectado mediante metro y autobus.', 0, 0, 2),
+(17, 27, 'Cochabamba n 2', 'Colombia', 'Madrid', NULL, 1, 'El piso se encuentra en una lujosa zona, muy tranquila y muy bien conectado con el centro.', 0, 0, 1),
+(18, 27, 'Evergreenterrace n 365', 'Las palomas', 'Valencia', NULL, 1, 'Este piso fue reformado hace 3 a&ntilde;os, esta en primera l&iacute;nea de playa y muy bien conectado con el centro.', 0, 0, 2),
+(19, 28, 'Fernandez Shaw n 12', 'Pacifico', 'Madrid', NULL, 1, 'Este piso cuenta con amplias zonas comunes y una amplia finca', 0, 0, 2),
+(20, 28, 'General Casado n 14', 'Moncloa', 'Madrid', NULL, 1, 'Este piso fue reformado hace 2 a&ntilde;os por lo tanto cuenta con los &uacute;ltimos dise&ntilde;os.', 0, 0, 2),
+(21, 28, 'Menendez Pelayo n 1', 'Pacifico', 'Madrid', NULL, 1, 'Este piso esta a 5 minutos de atocha de andando, cuenta con ascensor y unas buenas instalaciones.', 0, 0, 3),
+(31, 30, 'redes', 'madrid', 'madrid', '261494_1.jpg', 1, '', 0, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -356,16 +368,22 @@ ALTER TABLE `detallespiso`
 --
 ALTER TABLE `habitaciones`
   ADD PRIMARY KEY (`id_habitacion`),
-  ADD UNIQUE KEY `id_usuario` (`id_usuario`) USING BTREE,
+  ADD UNIQUE KEY `id_usuario` (`id_roomie`) USING BTREE,
+  ADD UNIQUE KEY `id_roomie` (`id_roomie`),
   ADD KEY `id_piso` (`id_piso`);
 
 --
--- Indices de la tabla `imagen`
+-- Indices de la tabla `imagenes`
 --
-ALTER TABLE `imagen`
-  ADD PRIMARY KEY (`ruta`),
-  ADD KEY `id_piso` (`id_piso`,`id_habitacion`),
-  ADD KEY `id_habitacion` (`id_habitacion`);
+ALTER TABLE `imagenes`
+  ADD PRIMARY KEY (`id_imagen`);
+
+--
+-- Indices de la tabla `imagenhabitacion`
+--
+ALTER TABLE `imagenhabitacion`
+  ADD PRIMARY KEY (`id_habitacion`,`id_imagen`),
+  ADD KEY `id_imagen` (`id_imagen`);
 
 --
 -- Indices de la tabla `pisos`
@@ -425,10 +443,16 @@ ALTER TABLE `habitaciones`
   MODIFY `id_habitacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT de la tabla `imagenes`
+--
+ALTER TABLE `imagenes`
+  MODIFY `id_imagen` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `pisos`
 --
 ALTER TABLE `pisos`
-  MODIFY `id_piso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_piso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `rolesusuario`
@@ -466,11 +490,11 @@ ALTER TABLE `habitaciones`
   ADD CONSTRAINT `habitaciones_ibfk_1` FOREIGN KEY (`id_piso`) REFERENCES `pisos` (`id_piso`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `imagen`
+-- Filtros para la tabla `imagenhabitacion`
 --
-ALTER TABLE `imagen`
-  ADD CONSTRAINT `imagen_ibfk_1` FOREIGN KEY (`id_habitacion`) REFERENCES `habitaciones` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `imagen_ibfk_2` FOREIGN KEY (`id_piso`) REFERENCES `pisos` (`id_piso`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `imagenhabitacion`
+  ADD CONSTRAINT `imagenhabitacion_ibfk_2` FOREIGN KEY (`id_imagen`) REFERENCES `imagenes` (`id_imagen`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `imagenhabitacion_ibfk_3` FOREIGN KEY (`id_habitacion`) REFERENCES `habitaciones` (`id_habitacion`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `pisos`
