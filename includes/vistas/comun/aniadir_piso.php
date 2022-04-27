@@ -9,6 +9,8 @@
                         <input class="input_ancho" type="text" placeholder="Barrio" name="barrio">
                         <input class="input_ancho" type="text" placeholder="Ciudad" name="ciudad" required>
             
+                        <input id="input_ancho" name="imagenes" size="30" type="file" placeholder="imagenes" required> 
+
                         <h5>Permite mascota?</h5>
                         <label>
                             <input class="input_ancho" type="radio" value="si" name="mascota">

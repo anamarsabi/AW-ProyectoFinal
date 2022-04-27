@@ -15,7 +15,7 @@ class FormularioEditDatosPiso extends Form{
     {
         // Se generan los mensajes de error si existen.
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['calle', 'barrio', 'ciudad', 'num_banios', 'descripcion'], $this->errores, 'span', array('class' => 'error text-danger'));
+        $erroresCampos = self::generaErroresCampos(['imagen_fachada','calle', 'barrio', 'ciudad', 'num_banios', 'descripcion'], $this->errores, 'span', array('class' => 'error text-danger'));
         
         $app = Aplicacion::getInstance();
         $id_piso = $app->getAtributoPeticion("id_piso");
@@ -97,6 +97,14 @@ class FormularioEditDatosPiso extends Form{
                         
                     </div>
                 </div>
+
+                <div class="flex-registro-piso">
+                <div class="flex-2col-item block">
+                <label class="mt-2">Imagen:</label> 
+                <input placeholder="imagenes" name="imagen_fachada" size="30" type="file" required> 
+                    {$erroresCampos['imagen_fachada']}
+                </div>
+            </div>
                     
                 <h2 class='mt-2'>¿Permite mascota?</h2>
                 <div class="flex">
@@ -174,6 +182,7 @@ class FormularioEditDatosPiso extends Form{
             }
         }
         
+        $imagen_fachada = $datos['imagen_fachada'] ?? 0;
         
         if (count($this->errores) === 0) {
             $app = Aplicacion::getInstance();
@@ -189,7 +198,7 @@ class FormularioEditDatosPiso extends Form{
                 $detalles = [
                     'mascota'=>$permite_mascota,
                     'servicios'=>$servicios,
-                    'fotos'=>null,
+                    'imagen_fachada'=>$imagen_fachada,
                     'descripcion'=>$descripcion,
                     'precio_max'=>0,
                     'precio_min'=>0,

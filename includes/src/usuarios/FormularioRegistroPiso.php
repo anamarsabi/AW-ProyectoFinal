@@ -16,7 +16,7 @@ class FormularioRegistroPiso extends Form
     {
         // Se generan los mensajes de error si existen.
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['calle', 'barrio', 'ciudad', 'num_banios', 'descripcion'], $this->errores, 'span', array('class' => 'error text-danger'));
+        $erroresCampos = self::generaErroresCampos(['imagen_fachada','calle', 'barrio', 'ciudad', 'num_banios', 'descripcion'], $this->errores, 'span', array('class' => 'error text-danger'));
 
         $listaServicios = Busqueda::getServicios();
 
@@ -76,6 +76,15 @@ class FormularioRegistroPiso extends Form
                         <input class="num" type="number" name="num_banios" min="0" max="100" placeholder="Baños" required>
                         {$erroresCampos['num_banios']}
                         
+                    </div>
+                </div>
+
+                
+                <div class="flex-registro-piso">
+                    <div class="flex-2col-item block">
+                    <label class="mt-2">Imagen:</label> 
+                    <input placeholder="imagenes" name="imagen_fachada" size="30" type="file" required> 
+                        {$erroresCampos['imagen_fachada']}
                     </div>
                 </div>
                     
@@ -157,8 +166,11 @@ class FormularioRegistroPiso extends Form
             }
 
         }
+
+        $imagen = $_FILES['imagen_fachada']['name'];
         
         
+
         if (count($this->errores) === 0) {
             $app = Aplicacion::getInstance();
             $id_host = $app->idUsuario();
@@ -169,7 +181,7 @@ class FormularioRegistroPiso extends Form
             else{
                 $detalles = ['mascota'=>$permite_mascota,
                 'servicios'=>$servicios,
-                'fotos'=>null,
+                'imagen_fachada'=>$imagen,
                 'descripcion'=>$descripcion,
                 'precio_max'=>0,
                 'precio_min'=>0,
@@ -178,6 +190,7 @@ class FormularioRegistroPiso extends Form
                 'num_banios'=>$num_banios];
 
                 $piso = Piso::crea($id_host, $calle, $barrio, $ciudad, $detalles);
+                
                 
             }
         }

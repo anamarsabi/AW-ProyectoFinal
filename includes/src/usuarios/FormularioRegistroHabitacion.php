@@ -17,7 +17,7 @@ class FormularioRegistroHabitacion extends Form
     {
         // Se generan los mensajes de error si existen.
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['cama_cm', 'precio', 'descripcion', 'disponibilidad'], $this->errores, 'span', array('class' => 'error text-danger'));
+        $erroresCampos = self::generaErroresCampos(['imagenes','cama_cm', 'precio', 'descripcion', 'disponibilidad'], $this->errores, 'span', array('class' => 'error text-danger'));
      
         $hoy = date("Y-m-d", time());
 
@@ -67,6 +67,14 @@ class FormularioRegistroHabitacion extends Form
                         
                     </div>
                         
+                </div>
+
+                <div class="flex-registro-habitacion">
+                    <div class="flex-2col-item block">
+                    <label class="mt-2">Imagen: <span class="text-danger">*</span></label> 
+                    <input placeholder="imagenes" name="imagenes" size="30" type="file" required> 
+                         {$erroresCampos['imagenes']}
+                    </div>
                 </div>
                     
                 <h2 class='mt-2'>Características</h2>
@@ -136,6 +144,8 @@ class FormularioRegistroHabitacion extends Form
         $gastos_incluidos = isset($datos["gastos_incluidos"]);
         $banio_propio = isset($datos["banio_propio"]);
 
+        $imagenes = trim($datos['imagenes'] ?? '');
+        
 
         if (count($this->errores) === 0) {
 
@@ -146,6 +156,7 @@ class FormularioRegistroHabitacion extends Form
             }
             else{
                 $detalles = [
+                    'imagenes'=>$imagenes,
                     'tam_cama'=>$cama_cm,
                     'banio_privado'=>$banio_propio,
                     'precio'=>$precio,

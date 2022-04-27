@@ -10,6 +10,8 @@
                     
                         <label for="precio">Precio</label><br>
                         <input type="int" placeholder="Precio" name="precio" required><br><br>
+
+                        <input id="input_ancho" name="imagenes" size="30" type="file" placeholder="imagenes" required> 
                     
                         <label for="banio"> Baño
                         <input type="checkbox" name="banio" value='banio'></label><br>
