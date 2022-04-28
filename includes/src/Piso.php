@@ -326,6 +326,10 @@ class Piso
         }
         else{
             //$html_roomies .= "<ul>";
+            $html_roomies .=<<<EOF
+                <h3>Conoce tus roomies: </h3>
+                <div class="flex">
+                EOF;
             foreach($this->id_roomies as $id)
             {
                 $user = Usuario::buscaPorId($id);
@@ -338,8 +342,7 @@ class Piso
                     $tiene_mascota .= "Tengo una mascota";
                 }
                 $html_roomies .= <<<EOF
-                    <h3>Conoce tus roomies: </h3>
-                    <div class="centrado card">
+                    <div class="card">
                         <div class="card-header">
                             {$user->getNombre()}
                         </div>
@@ -356,6 +359,7 @@ class Piso
                     </div>
                 EOF;
             }
+            $html_roomies .= "</div>";
             //$html_roomies .= "</ul>";
         }
 
@@ -407,7 +411,68 @@ class Piso
             </div>   
         EOF;
 
+        //Parte habitaciones disponibles del piso
+        $html_habitaciones = "";
+        $html_habitaciones .=<<<EOF
+            <h3> Habitaciones disponibles: </h3>
+            <div class="flex">
+        EOF;
+        $habitaciones=self::getHabitacionesPorIdPiso($this->id);
+        $i = 1;
+        foreach($habitaciones as $hab)
+        {
+            if(!$hab->estaOcupada())
+            {
+                $hab_detalles=$hab->getDetalles();
+                $tiene_baño="";
+                if ($hab_detalles['banio_privado']===1){
+                    $tiene_baño .="<p>Con baño privado.</p>";
+                }
+                else{
+                    $tiene_baño .="<p>Le corresponde un baño compartido.</p>";
+                }
+
+                $gastos="";
+                if ($hab_detalles['gastos_incluidos']===1){
+                    $gastos .="<p>Los gastos de los servicios del piso están incluídos en el precio total.</p>";
+                }
+                else{
+                    $gastos .="<p>Gastos no incluidos.</p>";
+                }
+                $html_habitaciones .=<<<EOF
+                <div class="card">
+                    <div class="card-header">
+                        Habitación {$i}
+                    </div>
+                    <div class="card-body"> 
+                        <ul class="inline-block clear-style clear-pm">
+                            <li>
+                                <p>Cama {$hab_detalles['tam_cama']} cm </p>
+                            </li>
+                            <li>
+                                <p>{$hab_detalles['descripcion']}</p>
+                                {$tiene_baño}
+                            </li>
+                            <li>
+                                <p>Disponible a partir de {$hab_detalles['fecha_disponibilidad']}</p>
+                            </li>
+                            <li>
+                                <h4>{$hab_detalles['precio']}€/mes</h4>
+                                <h6>{$gastos}<h6>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                EOF;
+                $i = $i+1;
+            }
+        }
+        $html_habitaciones .= "</div>";
+        
+
         $ruta_contacto = $app->resuelve('contacto.php');
+
+
         // HTML de todos los detalles del piso
         $detalles = <<<EOF
             <div class="centrado card">
@@ -433,6 +498,7 @@ class Piso
                         </li>
                     </ul>
                     $html_servicios
+                    $html_habitaciones
                     $html_roomies
                 </div>
             </div>

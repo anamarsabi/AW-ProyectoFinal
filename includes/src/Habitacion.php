@@ -49,14 +49,14 @@ class Habitacion
     {
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
-        $correo = $app->correo();
+        #$correo = $app->correo();
 
         $aux = print_r($hab->detalles);
         
-        $query = sprintf("INSERT INTO habitaciones (id_piso,correo_host, cama_cm, banio_propio, precio, gastos_incluidos, descripcion, disponibilidad)  
+        $query = sprintf("INSERT INTO habitaciones (id_piso,id_roomie, cama_cm, banio_propio, precio, gastos_incluidos, descripcion, disponibilidad)  
                         VALUES ('%d','%s','%d', '%d', '%d', '%d', '%s', '%s')"
             , $conn->real_escape_string($hab->id_piso)
-            , $conn->real_escape_string($correo)
+            , null
             , $conn->real_escape_string($hab->detalles['tam_cama'])
             , $conn->real_escape_string($hab->detalles['banio_privado'])
             , $conn->real_escape_string($hab->detalles['precio'])
