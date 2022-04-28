@@ -192,7 +192,7 @@ class Piso
         $sql = "SELECT *
                 FROM usuarios
                 INNER JOIN roomies ON usuarios.id_usuario = roomies.id_usuario
-                INNER JOIN habitaciones ON roomies.id_usuario = habitaciones.id_usuario
+                INNER JOIN habitaciones ON roomies.id_usuario = habitaciones.id_roomie
                 WHERE habitaciones.id_piso ='$id_piso'
                 ORDER BY usuarios.id_usuario";
 
@@ -390,21 +390,21 @@ class Piso
         foreach($servicios as $s)
         {
             $block .=<<<EOF
-                <div class="card">
-                    <div class="card-body">
-                        <p>{$s}</p>
-                    </div>
+                <div class="label-servicios mx-1e">
+                    <p>{$s}</p>
                 </div>
             EOF;
         }
         $html_servicios = "";
+        $html_servicios .= <<<EOF
+            <div class="flex-container-servicios wrap">
+        EOF;
         $html_servicios .=<<<EOF
-            <div class="card">
-                <div class="card-body">
-                    <p>{$this->getNum_banios()} baños </p>
-                </div>
+            $block
+            <div class="label-servicios mx-1e">
+                <p>{$this->getNum_banios()} baños </p>
             </div>
-            $block 
+            </div>   
         EOF;
 
         $ruta_contacto = $app->resuelve('contacto.php');

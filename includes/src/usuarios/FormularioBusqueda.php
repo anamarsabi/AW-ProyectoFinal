@@ -82,8 +82,8 @@ class FormularioBusqueda extends Form
             $resultados = array();  #Array de pisos resultado, inicializado vacio.
             while ($row = $result->fetch_assoc()) 
             {
-                $detalles = array('mascota' => $row['permite_mascota'], 'descripcion' => $row['descripcion_piso'], 'fotos' => $row['fotos'],
-                                    'precio_max' => $row['precio_max'], 'precio_min' => $row['precio_min'], 'plazas_libres' => $row['plazas_libres'], 'num_baños' => $row['num_banios']);
+                $detalles = array('mascota' => $row['permite_mascota'], 'descripcion' => $row['descripcion_piso'], 'fotos' => $row['imagen_fachada'],
+                                    'precio_max' => $row['precio_max'], 'precio_min' => $row['precio_min'], 'num_baños' => $row['num_banios']);
                 
                 # Almacenamos en un objeto de la clase piso
                 $piso = new \es\ucm\fdi\aw\Piso($row['id_host'], $row['calle'], $row['barrio'], $row['ciudad'], $detalles, $row['id_piso']);

@@ -17,7 +17,7 @@ define('RAIZ_APP', __DIR__);
  * Modifica la ruta dependiendo de la estructura del proyecto --> define('RUTA_APP', '/AW-Practica3');
  */
 
-define('RUTA_APP', '/AW-Practica3');
+define('RUTA_APP', '/AW-ProyectoFinal');
 define('RUTA_IMGS', RUTA_APP.'img/');
 define('RUTA_CSS', RUTA_APP.'css/');
 define('RUTA_JS', RUTA_APP.'js/');
