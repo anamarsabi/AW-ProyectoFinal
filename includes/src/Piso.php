@@ -39,8 +39,6 @@ class Piso
         $this->detalles['precio_min'] = $detalles['precio_min'];
         $this->detalles['num_banios'] = $detalles['num_banios'];
 
-        $this->detalles['plazas_libres'] = $detalles['plazas_libres'];
-        $this->detalles['plazas_ocupadas'] = $detalles['plazas_ocupadas'];
     }
 
     public static function crea($id_host, $calle, $barrio, $ciudad, $detalles){
@@ -265,16 +263,6 @@ class Piso
         return $this->detalles['precio_min'];
     }
 
-    public function getPlazas_libres()
-    {
-        return $this->detalles['plazas_libres'];
-    }
-
-    public function getPlazas_ocupadas()
-    {
-        return $this->detalles['plazas_ocupadas'];
-    }
-
     public function getNum_banios()
     {
         return $this->detalles['num_banios'];
@@ -368,15 +356,20 @@ class Piso
         $ruta_color = $app->resuelve('/img/door_color.svg'); 
         $ruta = $app->resuelve('/img/door.svg'); 
 
-        $num_ocupadas = $this->getPlazas_ocupadas();
+        
+        $plazasLibOcup = self::numHabOcupadasyLibresDelPiso(self::getId());
+
+        $num_ocupadas = $plazasLibOcup['ocupadas'];
+
+        $num_libres = $plazasLibOcup['libres'];
 
         $iconos_habitaciones = "<div>";
         
         for($i=0;$i<$num_ocupadas;$i++){
             $iconos_habitaciones .= '<img src="'.$ruta_color.'" alt="Hab. Ocupada '.$i.'" width="50" height="50">';
         }
-
-        $num_libres = $this->getPlazas_libres();
+        
+        
 
         for($i=0;$i<$num_libres;$i++){
             $iconos_habitaciones .= '<img src="'.$ruta.'" alt="Hab. Libre '.$i.'" width="50" height="50">';

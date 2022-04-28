@@ -69,9 +69,10 @@ class FormularioFiltro extends Form
                 unset($resultado[$aux]);
             } elseif (($datos['barrio']!="") && ($piso->getBarrio() != $datos['barrio'])){
                 unset($resultado[$aux]);
-            } elseif (($datos['plazas']!="") {
-                $habs = numHabOcupadasyLibresDelPiso($piso->getId());
-                if($piso->getPlazas_libres() <= $habs['libres'])){
+            } elseif ($datos['plazas'] != "") {
+                $id = $piso->getId();
+                $habs = numHabOcupadasyLibresDelPiso($id);
+                if($piso->getPlazas_libres() <= $habs['libres']){
                     unset($resultado[$aux]);
                 }                
             }
