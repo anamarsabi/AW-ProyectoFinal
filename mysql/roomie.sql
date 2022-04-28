@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-04-2022 a las 13:00:44
--- Versión del servidor: 10.4.24-MariaDB
--- Versión de PHP: 7.4.29
+-- Tiempo de generación: 28-04-2022 a las 22:33:35
+-- Versión del servidor: 10.4.22-MariaDB
+-- Versión de PHP: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -130,9 +130,10 @@ CREATE TABLE `habitaciones` (
 --
 
 INSERT INTO `habitaciones` (`id_habitacion`, `id_roomie`, `id_piso`, `imagenes`, `cama_cm`, `banio_propio`, `precio`, `gastos_incluidos`, `descripcion`, `disponibilidad`) VALUES
-(5, 27, 13, '', 90, 0, 350, 1, 'Habitación de 30m2, muy luminosa y bien aclimatada', '2022-04-19'),
-(6, 29, 13, '', 90, 1, 450, 1, 'Habitación de 50m2, muy luminosa y bien aclimatada, cuenta con baño propio.', '2022-04-20'),
-(7, 30, 13, '', 120, 1, 400, 1, 'Habitación muy luminosa, con baño propio.', '2022-05-05');
+(5, 23, 13, '', 90, 0, 350, 1, 'Habitación de 30m2, muy luminosa y bien aclimatada', '2022-04-19'),
+(6, 24, 13, '', 90, 1, 450, 1, 'Habitación de 50m2, muy luminosa y bien aclimatada, cuenta con baño propio.', '2022-04-20'),
+(7, 25, 13, '', 120, 1, 400, 1, 'Habitación muy luminosa, con baño propio.', '2022-05-05'),
+(8, 0, 16, '', 90, 1, 550, 1, 'Esta habitacion est&aacute; orientada al este, con lo que dispone de gran cantidad de luz natural. Adem&aacute;s cuenta con un ba&ntilde;o privado con plato de ducha. Dispone de armario, escritorio, silla de oficina, cama y ropa de cama.', '2022-04-30');
 
 -- --------------------------------------------------------
 
@@ -145,6 +146,28 @@ CREATE TABLE `imagenes` (
   `nombre` varchar(2048) DEFAULT NULL,
   `imagen` longblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `imagenes_prueba`
+--
+
+CREATE TABLE `imagenes_prueba` (
+  `id` int(11) NOT NULL,
+  `ruta` varchar(20) NOT NULL,
+  `nombre` varchar(20) NOT NULL,
+  `mimeType` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `imagenes_prueba`
+--
+
+INSERT INTO `imagenes_prueba` (`id`, `ruta`, `nombre`, `mimeType`) VALUES
+(6, '6.jpg', 'piso-compartido-deco', 'image/jpeg'),
+(7, '7.jpg', 'piso-compartido-hoga', 'image/jpeg'),
+(8, '8.jpg', 'piso-3.jpg', 'image/jpeg');
 
 -- --------------------------------------------------------
 
@@ -341,6 +364,12 @@ ALTER TABLE `imagenes`
   ADD PRIMARY KEY (`id_imagen`);
 
 --
+-- Indices de la tabla `imagenes_prueba`
+--
+ALTER TABLE `imagenes_prueba`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `imagenhabitacion`
 --
 ALTER TABLE `imagenhabitacion`
@@ -402,13 +431,19 @@ ALTER TABLE `aficiones`
 -- AUTO_INCREMENT de la tabla `habitaciones`
 --
 ALTER TABLE `habitaciones`
-  MODIFY `id_habitacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_habitacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `imagenes`
 --
 ALTER TABLE `imagenes`
   MODIFY `id_imagen` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `imagenes_prueba`
+--
+ALTER TABLE `imagenes_prueba`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `pisos`
