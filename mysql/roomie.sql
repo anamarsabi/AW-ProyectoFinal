@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-04-2022 a las 10:33:04
+-- Tiempo de generación: 28-04-2022 a las 13:00:44
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 7.4.29
 
@@ -62,15 +62,6 @@ CREATE TABLE `detallespiso` (
 --
 
 INSERT INTO `detallespiso` (`id_piso`, `id_servicio`) VALUES
-(1, 2),
-(1, 3),
-(1, 5),
-(11, 3),
-(11, 5),
-(11, 6),
-(11, 7),
-(12, 1),
-(12, 2),
 (13, 1),
 (13, 2),
 (13, 3),
@@ -139,10 +130,6 @@ CREATE TABLE `habitaciones` (
 --
 
 INSERT INTO `habitaciones` (`id_habitacion`, `id_roomie`, `id_piso`, `imagenes`, `cama_cm`, `banio_propio`, `precio`, `gastos_incluidos`, `descripcion`, `disponibilidad`) VALUES
-(1, 1, 11, '', 85, 1, 450, 0, 'Habitación de 50 metros cuadrados, cuenta con una amplia ventana al exterior y con baño propio', '2022-04-21'),
-(2, 15, 12, '', 90, 1, 550, 0, 'Habitación de 45 metros cuadrados, formada por un balcón, baño propio, una gran cama y un armario empotrado.', '2022-05-22'),
-(3, 16, 1, '', 90, 1, 550, 1, 'Habitación de un gran tamaño que cuenta con un balcón que da a un patio interior, además de contar con un baño propio.', '2022-05-05'),
-(4, 17, 1, '', 120, 0, 450, 1, 'Habitación muy luminosa, que cuenta con una gran ventana que da a un gran patio interior, no dispone de baño propio pero si que cuenta con una gran cama y un armario empotrado.', '2022-04-20'),
 (5, 27, 13, '', 90, 0, 350, 1, 'Habitación de 30m2, muy luminosa y bien aclimatada', '2022-04-19'),
 (6, 29, 13, '', 90, 1, 450, 1, 'Habitación de 50m2, muy luminosa y bien aclimatada, cuenta con baño propio.', '2022-04-20'),
 (7, 30, 13, '', 120, 1, 400, 1, 'Habitación muy luminosa, con baño propio.', '2022-05-05');
@@ -195,9 +182,6 @@ CREATE TABLE `pisos` (
 --
 
 INSERT INTO `pisos` (`id_piso`, `id_host`, `calle`, `barrio`, `ciudad`, `imagen_fachada`, `permite_mascota`, `descripcion_piso`, `precio_max`, `precio_min`, `num_banios`) VALUES
-(1, 2, 'Calle pajaros N 15', 'Chamberi', 'Madrid', NULL, 1, 'Piso totalmente reformado situado en la 3 planta del edificio, que cuenta con un total de 2 habitaciones, de la cual 1 tiene baño propio pero la otra no. Cuenta con un salón formado por dos grandes balcones que dan a un patio interior y una grán cocina/comedor.', 550, 450, 3),
-(11, 6, 'Calle lucero n 13', 'Moncloa', 'Madrid', NULL, 0, 'Piso reformado hace 10 años, cuenta con 1 habitación, 1 salón, 2 baños, 1 cocina. El piso es un bajo que cuenta con una gran iluminación que viene de un patio interior de la comunidad.', 450, 450, 2),
-(12, 5, 'Calle Alonso Martinez N 15', 'Principe Pio', 'Valencia', NULL, 1, 'Piso situado en la calle de Alonso Martinez, es un piso situado en una 4 planta, formado por 1 habitación, 1 salon/comedor, ! cocina y 2 baños, de los cuales 1 pertenece a la habitación.', 550, 550, 2),
 (13, 30, 'Ciudad de Barcelona n 145', 'Pacifico', 'Madrid', NULL, 1, 'Este piso de 150m2, cuenta con amplias zonas comunes y adem&aacute;s de lo ya especificado, la finca cuenta con piscina y pista de padel.', 0, 0, 2),
 (14, 30, 'Plaza catalu&ntilde;a n 12', 'Gracia', 'Barcelona', NULL, 1, 'Este piso esta situado en una c&eacute;ntrica de Barcelona, fue reformado hace 3 a&ntilde;os.', 0, 0, 1),
 (15, 30, 'Plaza Espa&ntilde;a n 4', 'Parque Gwell', 'Barcelona', NULL, 1, 'Piso con 3 habitaciones en zona cercana al Parque Gwell. Muy bien comunicado con buses y trenes.', 0, 0, 3),
@@ -206,8 +190,7 @@ INSERT INTO `pisos` (`id_piso`, `id_host`, `calle`, `barrio`, `ciudad`, `imagen_
 (18, 27, 'Evergreenterrace n 365', 'Las palomas', 'Valencia', NULL, 1, 'Este piso fue reformado hace 3 a&ntilde;os, esta en primera l&iacute;nea de playa y muy bien conectado con el centro.', 0, 0, 2),
 (19, 28, 'Fernandez Shaw n 12', 'Pacifico', 'Madrid', NULL, 1, 'Este piso cuenta con amplias zonas comunes y una amplia finca', 0, 0, 2),
 (20, 28, 'General Casado n 14', 'Moncloa', 'Madrid', NULL, 1, 'Este piso fue reformado hace 2 a&ntilde;os por lo tanto cuenta con los &uacute;ltimos dise&ntilde;os.', 0, 0, 2),
-(21, 28, 'Menendez Pelayo n 1', 'Pacifico', 'Madrid', NULL, 1, 'Este piso esta a 5 minutos de atocha de andando, cuenta con ascensor y unas buenas instalaciones.', 0, 0, 3),
-(31, 30, 'redes', 'madrid', 'madrid', '261494_1.jpg', 1, '', 0, 0, 2);
+(21, 28, 'Menendez Pelayo n 1', 'Pacifico', 'Madrid', NULL, 1, 'Este piso esta a 5 minutos de atocha de andando, cuenta con ascensor y unas buenas instalaciones.', 0, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -225,12 +208,6 @@ CREATE TABLE `rolesusuario` (
 --
 
 INSERT INTO `rolesusuario` (`id_usuario`, `rol`) VALUES
-(2, 0),
-(5, 0),
-(6, 0),
-(1, 1),
-(3, 1),
-(4, 1),
 (23, 1),
 (24, 1),
 (25, 1),
@@ -255,9 +232,6 @@ CREATE TABLE `roomies` (
 --
 
 INSERT INTO `roomies` (`id_usuario`, `tiene_mascota`, `descripcion`) VALUES
-(1, 0, 'Hola, mi nombre es Pedro, soy de Madrid y actualmente me encuentro estudiando la carrera de ingeniería del Software en la facultad de Informática de la UCM, no soy muy fan de las mascotas, por ello no tengo ninguna, mis dos principales aficiones son la naturaleza y pasar grán parte de mi tiempo libre al aire libre, ya sea en el campo, dando un paseo o en algún parque.'),
-(3, 1, 'Hola, mi nombre es David, soy de Valencia, pero actualmente me encuentro estudiando en la periodismo en la universidad Complutense de Madrid. Desde pequeño siempre me han gustado los animales, por lo que cuento con 2 mascotas, siendo estas dos perros. Mi principal afición es la lectura. Soy un chico al que le gusta tener la habitación y el piso colocado, por lo que soy una persona bastante ordenada'),
-(4, 0, 'Hola, mi nombre es Pepa, estoy trabajando de dependienta en una cafetería y también soy estudiante de medicina. Soy una persona bastante sociable y ordenada, no me gustan los animales, por lo que no cuento con ninguna mascota.'),
 (23, 1, 'Soy una persona agradable, que se dedica a la música y amo los animales'),
 (24, 0, 'Soy una persona deportista a la que le encanta la lectura'),
 (25, 0, 'Soy un apasionado de las series y las películas, además de una persona tranquila.');
@@ -278,12 +252,6 @@ CREATE TABLE `roomie_aficiones` (
 --
 
 INSERT INTO `roomie_aficiones` (`id_aficion`, `id_usuario`) VALUES
-(1, 2),
-(2, 2),
-(4, 1),
-(5, 1),
-(6, 4),
-(1, 3),
 (8, 23),
 (4, 24),
 (6, 25);
@@ -304,13 +272,13 @@ CREATE TABLE `servicios` (
 --
 
 INSERT INTO `servicios` (`id_servicio`, `nombre`) VALUES
-(1, 'basura'),
-(2, 'aire acondicionado'),
+(1, 'Basura'),
+(2, 'Aire Acondicionado'),
 (3, 'Conserje'),
 (4, 'Luz'),
 (5, 'Agua'),
 (6, 'Gas'),
-(7, 'calefacion');
+(7, 'Calefacción');
 
 -- --------------------------------------------------------
 
@@ -333,12 +301,6 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `correo`, `nombre`, `apellido1`, `apellido2`, `contrasenia`, `fecha_nacimiento`) VALUES
-(1, 'Pedro_garcia@gmail.com', 'Pedro', 'Garcia', 'Sanz', 'PedroSanz1', '1986-04-02'),
-(2, 'Carlaperez21@gmail.com', 'Carla', 'Perez', 'Roman', 'RomanPerez21', '1965-09-21'),
-(3, 'DavidGutierrez@gmail.com', 'David', 'Sanz', 'Gutierrez', 'GutierrezDavid', '1995-09-23'),
-(4, 'PepaEncinas@gmail.com', 'Pepa', 'Sanz', 'Encinas', 'Encinas-sanz21', '1965-06-23'),
-(5, 'Rodriguez_Madrid@gmail.com', 'Carlos', 'Rodriguez', NULL, 'informaticoRodriguez', '1986-04-02'),
-(6, 'esteff_valencia@gmail.com', 'Estefania', 'Roman', NULL, 'valencianaEsteff', '1966-04-05'),
 (23, 'julim123@gmail.com', 'Julian', 'Mu&ntilde;oz', '', '$2y$10$ha9nUWnhH7iMdqzJXZ1K6ezBjjiRaFXfIWoKZYmdhjyiiU6Iai1.m', '2002-02-06'),
 (24, 'juanjimenez@gmail.com', 'Juan', 'Jimenez', 'Lopez', '$2y$10$sqNvNjejG4Q4xv43tuOAaet7snAokzPah8s57HPq0PGIsiNhlaacu', '2000-02-25'),
 (25, 'dibidi@gmail.com', 'David', 'Herrero', 'Montiel', '$2y$10$Gl7866AXfR65AxcDfyUH4uGuhLNO818ZsJblMu2h3M2/TCW/FG7b.', '2005-07-14'),
@@ -452,7 +414,7 @@ ALTER TABLE `imagenes`
 -- AUTO_INCREMENT de la tabla `pisos`
 --
 ALTER TABLE `pisos`
-  MODIFY `id_piso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_piso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT de la tabla `rolesusuario`
