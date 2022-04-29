@@ -7,12 +7,14 @@ use es\ucm\fdi\aw\Imagen;
 
 class FormularioUpload extends Form
 {
+    private $id_piso;
 
     const EXTENSIONES_PERMITIDAS = array('gif', 'jpg', 'jpe', 'jpeg', 'png', 'webp', 'avif');
 
-    public function __construct()
+    public function __construct($id)
     {
-        parent::__construct('subir', ['enctype' => 'multipart/form-data', 'urlRedireccion' => 'ejemplo_imagen.php']);
+        $this->id_piso = $id;
+        parent::__construct('subir'.$this->id_piso, ['enctype' => 'multipart/form-data', 'urlRedireccion' => 'addFotos_piso.php']);
     }
 
     protected function generaCamposFormulario($datos)
@@ -20,6 +22,12 @@ class FormularioUpload extends Form
         // Se generan los mensajes de error si existen.
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
         $erroresCampos = self::generaErroresCampos(['archivo'], $this->errores, 'span', array('class' => 'error'));
+
+        $app = Aplicacion::getInstance();
+        $id_piso = $app->getAtributoPeticion("id_piso");
+        $app->putAtributoPeticion("id_piso", $id_piso);
+
+        $id_form = 'subir'.$id_piso;
 
         $html = <<<EOS
         $htmlErroresGlobales
@@ -36,6 +44,10 @@ class FormularioUpload extends Form
     protected function procesaFormulario($datos)
     {
         $this->errores = [];
+        $app = Aplicacion::getInstance();
+        //Comenta por qué haces get y put 
+        $id_piso = $app->getAtributoPeticion("id_piso");
+        $app->putAtributoPeticion("id_piso", $id_piso);
 
         // Verificamos que la subida ha sido correcta
         $ok = $_FILES['archivo']['error'] == UPLOAD_ERR_OK && count($_FILES) == 1;
@@ -75,7 +87,7 @@ class FormularioUpload extends Form
 
         $tmp_name = $_FILES['archivo']['tmp_name'];
 
-        $imagen = Imagen::crea($nombre, $mimeType, '');
+        $imagen = Imagen::crea($nombre, $mimeType, '', $id_piso);
         $imagen->guarda();
         $fichero = "{$imagen->id}.{$extension}";
         $imagen->setRuta($fichero);

@@ -3,9 +3,9 @@ namespace es\ucm\fdi\aw;
 
 class Imagen
 {
-    public static function crea($nombre, $mimeType, $ruta)
+    public static function crea($nombre, $mimeType, $ruta, $id_piso)
     {
-        $imagen = new Imagen($ruta, $nombre, $mimeType);
+        $imagen = new Imagen($ruta, $nombre, $mimeType, $id_piso);
         return $imagen;
     }
 
@@ -24,7 +24,7 @@ class Imagen
         $rs = $conn->query($query);
         if ($rs) {
             while ($fila = $rs->fetch_assoc()) {
-                $result[] = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila['id']);
+                $result[] = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila['id'], $fila['id_piso']);
             }
             $rs->free();
         } else {
@@ -44,7 +44,27 @@ class Imagen
         $rs = $conn->query($query);
         if ($rs) {
             while ($fila = $rs->fetch_assoc()) {
-                $result = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila['id']);
+                $result = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila['id'], $fila['id_piso']);
+            }
+            $rs->free();
+        } else {
+            error_log($conn->error);
+        }
+
+        return $result;
+    }
+
+    public static function buscaPorId_piso($id_piso)
+    {
+        $result = [];
+
+        $app = Aplicacion::getInstance();
+        $conn = $app->getConexionBd();
+        $query = sprintf('SELECT * FROM imagenes_prueba WHERE id_piso = %d', intval($id_piso));
+        $rs = $conn->query($query);
+        if ($rs) {
+            while ($fila = $rs->fetch_assoc()) {
+                $result[] = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila['id'], $fila['id_piso']);
             }
             $rs->free();
         } else {
@@ -61,10 +81,11 @@ class Imagen
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
         $query = sprintf(
-            "INSERT INTO imagenes_prueba (ruta, nombre, mimeType) VALUES ('%s', '%s', '%s')",
+            "INSERT INTO imagenes_prueba (ruta, nombre, mimeType, id_piso) VALUES ('%s', '%s', '%s', %s)",
             $conn->real_escape_string($imagen->ruta),
             $conn->real_escape_string($imagen->nombre),
             $conn->real_escape_string($imagen->mimeType),
+            $imagen->id_piso
         );
 
         $result = $conn->query($query);
@@ -85,10 +106,11 @@ class Imagen
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
         $query = sprintf(
-            "UPDATE imagenes_prueba SET ruta = '%s', nombre = '%s', mimeType = '%s' WHERE id = %d",
+            "UPDATE imagenes_prueba SET ruta = '%s', nombre = '%s', mimeType = '%s', id_piso = %s WHERE id = %d",
             $conn->real_escape_string($imagen->ruta),
             $conn->real_escape_string($imagen->nombre),
             $conn->real_escape_string($imagen->mimeType),
+            $conn->real_escape_string($imagen->id_piso),
             $imagen->id
         );
         $result = $conn->query($query);
@@ -132,11 +154,14 @@ class Imagen
 
     private $mimeType;
 
-    private function __construct($ruta, $nombre, $mimeType,  $id = NULL)
+    private $id_piso;
+
+    private function __construct($ruta, $nombre, $mimeType, $id_piso, $id = NULL)
     {
         $this->ruta = $ruta;
         $this->nombre = $nombre;
         $this->mimeType = $mimeType;
+        $this->id_piso = $id_piso;
         $this->id = intval($id);
     }
 
@@ -168,6 +193,16 @@ class Imagen
     public function getMimeType()
     {
         return $this->mimeType;
+    }
+
+    public function getId_piso()
+    {
+        return $this->id_piso;
+    }
+
+    public function setId_piso($nuevoId_piso)
+    {
+        $this->id_piso = $nuevoId_piso;
     }
 
     public function guarda()
