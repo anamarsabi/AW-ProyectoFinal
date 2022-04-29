@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-04-2022 a las 22:33:35
+-- Tiempo de generación: 29-04-2022 a las 22:14:57
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -157,17 +157,21 @@ CREATE TABLE `imagenes_prueba` (
   `id` int(11) NOT NULL,
   `ruta` varchar(20) NOT NULL,
   `nombre` varchar(20) NOT NULL,
-  `mimeType` varchar(30) NOT NULL
+  `mimeType` varchar(30) NOT NULL,
+  `id_piso` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `imagenes_prueba`
 --
 
-INSERT INTO `imagenes_prueba` (`id`, `ruta`, `nombre`, `mimeType`) VALUES
-(6, '6.jpg', 'piso-compartido-deco', 'image/jpeg'),
-(7, '7.jpg', 'piso-compartido-hoga', 'image/jpeg'),
-(8, '8.jpg', 'piso-3.jpg', 'image/jpeg');
+INSERT INTO `imagenes_prueba` (`id`, `ruta`, `nombre`, `mimeType`, `id_piso`) VALUES
+(9, '9.jpg', 'piso-3.jpg', 'image/jpeg', 16),
+(10, '10.jpg', 'piso-compartido-deco', 'image/jpeg', 16),
+(11, '11.jpg', 'piso-compartido-hoga', 'image/jpeg', 16),
+(14, '14.jpg', 'habitacion.jpg', 'image/jpeg', 16),
+(15, '15.jpg', 'habitacion2.jpg', 'image/jpeg', 16),
+(16, '16.jpg', 'baño.jpg', 'image/jpeg', 17);
 
 -- --------------------------------------------------------
 
@@ -443,7 +447,7 @@ ALTER TABLE `imagenes`
 -- AUTO_INCREMENT de la tabla `imagenes_prueba`
 --
 ALTER TABLE `imagenes_prueba`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `pisos`
