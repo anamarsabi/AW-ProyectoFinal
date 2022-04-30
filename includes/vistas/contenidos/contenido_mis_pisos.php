@@ -3,6 +3,7 @@
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\usuarios\Usuario;
 use es\ucm\fdi\aw\Piso;
+use es\ucm\fdi\aw\Imagen;
 
 
 $app= Aplicacion::getInstance();
@@ -19,6 +20,7 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
             $boton_editar_detalles =  new \es\ucm\fdi\aw\usuarios\FormularioBotonEditDetallesPiso($p->id);
             $boton_eliminar = new \es\ucm\fdi\aw\usuarios\FormularioBotonDeletePiso($p->id);
             $boton_ver_habitaciones = new \es\ucm\fdi\aw\usuarios\FormularioBotonVerHabitaciones($p->id);
+            $boton_add_fotos = new \es\ucm\fdi\aw\usuarios\FormularioBotonAddFotos($p->id);
 
             $num_ocupadas = $p->getPlazas_ocupadas();
 
@@ -44,7 +46,8 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
                 ?"<div class='precio'>{$p->getPrecio_min()} - {$p->getPrecio_max()} €/mes</div>"
                 : "";
             
-        
+            $html_img = Imagen::getPortada($p->id);
+
             $contenido.= <<<EOS
                 <div class="centrado card">
                     <div class="card-header">
@@ -53,7 +56,8 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
                     <div class="card-body">
                     
                         <div class="grid-container">
-                            <img class="h-100 w-10e fpiso" src="img/logo.png" alt="Imagen"></img>
+                            {$html_img}
+                            
 
                             $iconos_habitaciones
                             $rango_precios
@@ -66,6 +70,7 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
                                 {$boton_editar_detalles->gestiona()}
                                 {$boton_eliminar->gestiona()}
                                 {$boton_ver_habitaciones->gestiona()}
+                                {$boton_add_fotos->gestiona()}
                             </div>
                         </div>
 
