@@ -493,9 +493,6 @@ class Piso
                         <li>
                             <h4>Habitaciones desde {$this->detalles['precio_min']} € - {$this->detalles['precio_max']} € al mes</h4>
                             <p>{$this->detalles['descripcion']}</p>
-                            
-                        </li>
-                        <li>
                             $iconos_habitaciones
                         </li>
                     </ul>

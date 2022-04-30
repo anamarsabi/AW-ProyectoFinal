@@ -82,13 +82,13 @@ class Imagen
         $html_imagenes ="";
         $html_imagenes .=<<<EOF
             <h2>Imagenes Piso: {$total} </h2>
-            
+
         EOF;
         foreach($result as $imagen)
         {
             $html_imagenes .=<<<EOF
                 <div class="polaroid">
-                    <img src="almacenPublico/$imagen->ruta">
+                    <img class="h-100 w-100" src="almacenPublico/$imagen->ruta">
                     <div class="container-texto">
                         <p>{$imagen->nombre}</p>
                     </div>
@@ -97,6 +97,26 @@ class Imagen
         }
         #$html_imagenes .= "</div>";
         return $html_imagenes;
+    }
+
+    public static function getPortada($id_piso)
+    {
+        $html_portada ="";
+        $result = self::buscaPorId_piso($id_piso);
+        if (count($result)===0)
+        {
+            $html_portada .=<<<EOF
+                <img class="h-100 w-10e fpiso" src="img/logo.png" alt="Imagen">
+            EOF;
+        }
+        else
+        {
+            $imagen = $result[0];
+            $html_portada .=<<<EOF
+                <img class="h-100 w-10e" src="almacenPublico/$imagen->ruta">
+            EOF;
+        }
+        return $html_portada;
     }
 
     private static function inserta($imagen)

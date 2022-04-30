@@ -3,6 +3,7 @@
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\usuarios\Usuario;
 use es\ucm\fdi\aw\Piso;
+use es\ucm\fdi\aw\Imagen;
 
 
 $app= Aplicacion::getInstance();
@@ -45,7 +46,8 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
                 ?"<div class='precio'>{$p->getPrecio_min()} - {$p->getPrecio_max()} €/mes</div>"
                 : "";
             
-        
+            $html_img = Imagen::getPortada($p->id);
+
             $contenido.= <<<EOS
                 <div class="centrado card">
                     <div class="card-header">
@@ -54,7 +56,8 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
                     <div class="card-body">
                     
                         <div class="grid-container">
-                            <img class="h-100 w-10e fpiso" src="img/logo.png" alt="Imagen"></img>
+                            {$html_img}
+                            
 
                             $iconos_habitaciones
                             $rango_precios
