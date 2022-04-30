@@ -11,6 +11,14 @@ body {
   /* padding-bottom: 140px; */
 }
 
+/* Agrupar las catacterísticas de padding y margen en uno para que sea más fácil cambiar sus
+propiedades y que sea responsive */
+.contenedor-principal{
+    padding-left: 20%;
+    padding-right: 20%;
+    padding-top: 5em;
+}
+
 .diplay-flex{
     display: flex;
 }
@@ -578,7 +586,7 @@ ul li.desplegable_item:after {
 
 
 /* w-45 px-10-20 mx-8-0 inline default-input */
-div.registro-piso input{
+div.registro input{
     width: 80%;
     padding: 10px 20px;
     margin: 20px 0;
@@ -590,7 +598,7 @@ div.registro-piso input{
     font-size: 1em;
 }
 
-#btn-registro-piso{
+#btn-registro{
     width: 20%;
     /* min-width: 70px; */
     float: right;
@@ -609,7 +617,7 @@ div.registro-piso input{
     display: flex;
 }
 
-.flex-registro-piso{
+.flex-registro{
     display: flex;
     flex-direction: row;
 }
@@ -627,7 +635,7 @@ div.registro-piso input{
     min-width: 100px;
 }
 
-div.registro-piso div input.num{
+div.registro div input.num{
     display: block;
     width: 20%;
     min-width: 100px;
@@ -861,6 +869,7 @@ h3.access-denied{
 
 .more{
     grid-area: 1 / 5;
+    justify-self: end;
 }
 
 .fpiso{
@@ -868,7 +877,8 @@ h3.access-denied{
 }
 
 .rooms{
-    grid-area: 1 / 2 / 1 / 4;
+    grid-area: 1 / 2 / 1 / 5;
+    display: inline-flex;
 }
 
 .gap{
@@ -876,8 +886,14 @@ h3.access-denied{
 }
 
 .btns{
-    grid-area: 3 / 4 / 3 / 5;
+    grid-area: 3 / 4 / 3 / 6;
     justify-content: end;
+    display: inline-flex;
+    
+}
+
+.btns > *{
+    margin: 3px;
 }
 
 .precio{
@@ -915,7 +931,7 @@ h3.access-denied{
 
 
 @media screen and (max-width: 800px) {
-    div.registro-piso input{
+    div.registro input{
         width: 100%;
         
         margin: 20px 0;
@@ -925,19 +941,28 @@ h3.access-denied{
         box-sizing: border-box;
     }
 
-    .flex-registro-piso{
+    .flex-registro{
         display: flex;
         flex-direction: column;
     }
-
 
     .flex-2col-item{
         width: 100%;
     }
 
-    #btn-registro-piso{
+    #btn-registro{
         width: 100%;
         min-width: 30px;
+    }
+
+    .card{
+        width: 90%;
+    }
+
+    .contenedor-principal{
+        padding-left: 5%;
+        padding-right: 5%;
+        padding-top: 2em;
     }
 
    

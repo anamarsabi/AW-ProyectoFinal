@@ -54,9 +54,9 @@ class FormularioEditDatosHabitacion extends Form{
             $html = <<<EOF
                 $htmlErroresGlobales
 
-                <div class="formulario registro-piso">
+                <div class="formulario registro">
 
-                    <div class="flex-registro-piso">
+                    <div class="flex-registro">
                         <div class="flex-2col-item block">
                             <label class="mt-2">Tamaño de la cama (cm)<span class="text-danger">*</span></label>
                             <input type="number" value="$tam_cama" name="cama_cm" placeholder="90 cm" required>
@@ -69,7 +69,7 @@ class FormularioEditDatosHabitacion extends Form{
                         </div>
                     </div>
                 
-                    <div class="flex-registro-piso">
+                    <div class="flex-registro">
                     
                         <div class="flex-2col-item block num">
                             <label class="mt-2">Disponibilidad<span class="text-danger">*</span></label>

@@ -14,8 +14,9 @@ class Piso
     private $calle;
     private $barrio;
     private $ciudad;
-    private $detalles;
     private $id_roomies; // Array de id de usuarios que son roomies del piso
+                        //¿Para qué lo necesitamos?
+    private $detalles;
     
 
     public function __construct($id_host, $calle, $barrio, $ciudad, $detalles = array(), $id = null)
@@ -38,6 +39,9 @@ class Piso
         $this->detalles['precio_max'] = $detalles['precio_max'];
         $this->detalles['precio_min'] = $detalles['precio_min'];
         $this->detalles['num_banios'] = $detalles['num_banios'];
+
+        $this->detalles['plazas_libres'] = $detalles['plazas_libres'];
+        $this->detalles['plazas_ocupadas'] = $detalles['plazas_ocupadas'];
 
     }
 
@@ -166,7 +170,6 @@ class Piso
     }
 
 
-
     public static function pisoPerteneceAHost($id_piso, $id_host){
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT * FROM pisos WHERE id_host=%d AND id_piso=%d", $id_host, $id_piso);
@@ -179,7 +182,6 @@ class Piso
         }
         return $result;
     }
-
 
     
     public function encuentraRoomies()
@@ -272,6 +274,18 @@ class Piso
     {
         return $this->detalles['descripcion'];
     }
+
+    public function getPlazas_libres()
+    {
+        return $this->detalles['plazas_libres'];
+    }
+
+    public function getPlazas_ocupadas()
+    {
+        return $this->detalles['plazas_ocupadas'];
+    }
+
+
 
     /*
     public function setRoomies($users)
@@ -524,25 +538,46 @@ class Piso
         $detalles["servicios"] = self::getServiciosPorIdPiso($fila['id_piso']);
         $detalles['mascota'] = $fila['permite_mascota']??"";
         $detalles['descripcion'] = $fila['descripcion_piso']??"";
-        $detalles['precio_max'] = $fila['precio_max']??"";
-        $detalles['precio_min'] = $fila['precio_min']??"";
+
         $detalles['plazas_libres'] = $fila['plazas_libres']??"";
         $detalles['fotos'] = $fila['fotos']??"";
         $detalles['num_banios'] = $fila['num_banios']??0;
-        
         
         $res = self::numHabOcupadasyLibresDelPiso($fila['id_piso']);
 
         $detalles['plazas_ocupadas'] = $res['ocupadas']??0;
         $detalles['plazas_libres'] = $res['libres']??0;
 
+        $rango = self::precioMaxyMinDelPiso($fila['id_piso']);
+
+        $detalles['precio_max'] = $rango['max']??0;
+        $detalles['precio_min'] = $rango['min']??0;
+
         return $detalles;
 
     }
 
+    public static function precioMaxyMinDelPiso($id){
+        $habitaciones = self::getHabitacionesPorIdPiso($id);
+        $res=Array();
+        foreach($habitaciones as $hab){
+            $res[] = $hab->precio;
+        }
+
+        if(!empty($res)){
+            $min = min($res);
+            $max = max($res);
+            $result = ["min"=>$min, "max"=>$max];
+        }
+        else{
+            $result = false;
+        }
+        
+        return $result;
+    }
 
      //Devuelve un diccionario con la cantidad de habitaciones ocupadas y libres
-    private static function numHabOcupadasyLibresDelPiso($id){
+    public static function numHabOcupadasyLibresDelPiso($id){
         $habitaciones = self::getHabitacionesPorIdPiso($id);
         $ocupadas = 0;
         $libres = 0;

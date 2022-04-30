@@ -20,16 +20,15 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
             $boton_eliminar = new \es\ucm\fdi\aw\usuarios\FormularioBotonDeletePiso($p->id);
             $boton_ver_habitaciones = new \es\ucm\fdi\aw\usuarios\FormularioBotonVerHabitaciones($p->id);
 
-            $num_ocupadas = $p->getPlazas_ocupadas();
+            $dict_status_habitacion = Piso::numHabOcupadasyLibresDelPiso($p->id);
+            $num_ocupadas = $dict_status_habitacion['ocupadas'];
+            $num_libres = $dict_status_habitacion['libres'];
 
             $iconos_habitaciones = "<div class='rooms'>";
-            
             for($i=0;$i<$num_ocupadas;$i++){
                 $iconos_habitaciones .= '<img src="'.$ruta_color.'" alt="Hab. Ocupada '.$i.'" width="50" height="50">';
             }
 
-            $num_libres = $p->getPlazas_libres();
-        
             for($i=0;$i<$num_libres;$i++){
                 $iconos_habitaciones .= '<img src="'.$ruta.'" alt="Hab. Libre '.$i.'" width="50" height="50">';
             }

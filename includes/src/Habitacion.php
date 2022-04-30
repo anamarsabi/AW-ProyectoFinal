@@ -53,10 +53,9 @@ class Habitacion
 
         $aux = print_r($hab->detalles);
         
-        $query = sprintf("INSERT INTO habitaciones (id_piso,id_roomie, cama_cm, banio_propio, precio, gastos_incluidos, descripcion, disponibilidad)  
-                        VALUES ('%d','%s','%d', '%d', '%d', '%d', '%s', '%s')"
+        $query = sprintf("INSERT INTO habitaciones (id_piso, cama_cm, banio_propio, precio, gastos_incluidos, descripcion, disponibilidad)  
+                        VALUES ('%d','%d', '%d', '%d', '%d', '%s', '%s')"
             , $conn->real_escape_string($hab->id_piso)
-            , null
             , $conn->real_escape_string($hab->detalles['tam_cama'])
             , $conn->real_escape_string($hab->detalles['banio_privado'])
             , $conn->real_escape_string($hab->detalles['precio'])
@@ -166,10 +165,10 @@ class Habitacion
     //     return $this->banio_privado==true;
     // }
 
-    // public function getPrecio()
-    // {
-    //     return $this->precio;
-    // }
+    public function getPrecio()
+    {
+        return $this->detalles['precio'];
+    }
 
     // public function tieneGastosIncluidos()
     // {
@@ -188,7 +187,7 @@ class Habitacion
 
     public function estaOcupada()
     {
-        return !$this->id_roomie||$this->id_roomie == "";
+        return $this->id_roomie;
     }
 
     // public function imprimirCorto()

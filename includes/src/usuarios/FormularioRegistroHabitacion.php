@@ -41,9 +41,9 @@ class FormularioRegistroHabitacion extends Form
         $html = <<<EOF
             $htmlErroresGlobales
 
-            <div class="formulario registro-habitacion">
+            <div class="formulario registro">
 
-                <div class="flex-registro-habitacion">
+                <div class="flex-registro">
                     <div class="flex-2col-item block">
                         <label class="mt-2">Tamaño de la cama (cm)<span class="text-danger">*</span></label>
                         <input type="number" name="cama_cm" placeholder="90 cm" required>
@@ -56,7 +56,7 @@ class FormularioRegistroHabitacion extends Form
                     </div>
                 </div>
                
-                <div class="flex-registro-habitacion">
+                <div class="flex-registro">
                   
                     <div class="flex-2col-item block num">
                         <label class="mt-2">Disponibilidad<span class="text-danger">*</span></label>
@@ -97,6 +97,11 @@ class FormularioRegistroHabitacion extends Form
     protected function procesaFormulario($datos){
 
         $this->errores = [];
+
+        $app = Aplicacion::getInstance();
+        //Para que no se pierda este dato al recargar la página o al hacer submit
+        $id_piso = $app->getAtributoPeticion("id_piso");
+        $app->putAtributoPeticion("id_piso", $id_piso);
 
         $cama_cm = trim($datos['cama_cm'] ?? 0);
         $cama_cm = filter_var($cama_cm, FILTER_SANITIZE_FULL_SPECIAL_CHARS);

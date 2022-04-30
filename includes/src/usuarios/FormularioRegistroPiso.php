@@ -49,9 +49,9 @@ class FormularioRegistroPiso extends Form
         $html = <<<EOF
             $htmlErroresGlobales
 
-            <div class="formulario registro-piso">
+            <div class="formulario registro">
 
-                <div class="flex-registro-piso">
+                <div class="flex-registro">
                     <div class="flex-2col-item block">
                         <label class="mt-2">Calle<span class="text-danger">*</span></label>
                         <input type="text" name="calle" placeholder="Calle" required>
@@ -64,7 +64,7 @@ class FormularioRegistroPiso extends Form
                     </div>
                 </div>
                
-                <div class="flex-registro-piso">
+                <div class="flex-registro">
                     <div class="flex-2col-item block">
                         <label class="mt-2">Ciudad<span class="text-danger">*</span></label>
                         <input type="text" name="ciudad" placeholder="Ciudad" required>
@@ -102,7 +102,7 @@ class FormularioRegistroPiso extends Form
             </div>
 
            
-            <input id="btn-registro-piso" class="button" type="submit" value="Guardar">
+            <input id="btn-registro" class="button" type="submit" value="Guardar">
             
             
         EOF;

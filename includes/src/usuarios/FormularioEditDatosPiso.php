@@ -69,9 +69,9 @@ class FormularioEditDatosPiso extends Form{
         $html = <<<EOF
             $htmlErroresGlobales
 
-            <div class="formulario registro-piso">
+            <div class="formulario registro">
 
-                <div class="flex-registro-piso">
+                <div class="flex-registro">
                     <div class="flex-2col-item block">
                         <label class="mt-2">Calle<span class="text-danger">*</span></label>
                         <input type="text" value="$calle" name="calle" placeholder="Calle" required>
@@ -84,7 +84,7 @@ class FormularioEditDatosPiso extends Form{
                     </div>
                 </div>
             
-                <div class="flex-registro-piso">
+                <div class="flex-registro">
                     <div class="flex-2col-item block">
                         <label class="mt-2">Ciudad<span class="text-danger">*</span></label>
                         <input type="text" value="$ciudad" name="ciudad" placeholder="Ciudad" required>
@@ -119,7 +119,7 @@ class FormularioEditDatosPiso extends Form{
                     </div>
                 </div>
                 <div>
-                    <input id="btn-registro-piso"  type="submit" value="Guardar">
+                    <input id="btn-registro"  type="submit" value="Guardar">
                 </div>
             </div>
             
