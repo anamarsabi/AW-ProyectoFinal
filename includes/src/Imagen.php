@@ -19,7 +19,7 @@ class Imagen
         $result = [];
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
-        $query = 'SELECT * FROM imagenes_prueba';
+        $query = 'SELECT * FROM imagenes_pisos';
         
         $rs = $conn->query($query);
         if ($rs) {
@@ -40,7 +40,7 @@ class Imagen
 
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
-        $query = sprintf('SELECT * FROM imagenes_prueba WHERE id = %d', intval($idImagen));
+        $query = sprintf('SELECT * FROM imagenes_pisos WHERE id = %d', intval($idImagen));
         $rs = $conn->query($query);
         if ($rs) {
             while ($fila = $rs->fetch_assoc()) {
@@ -60,7 +60,7 @@ class Imagen
 
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
-        $query = sprintf('SELECT * FROM imagenes_prueba WHERE id_piso = %d', intval($id_piso));
+        $query = sprintf('SELECT * FROM imagenes_pisos WHERE id_piso = %d', intval($id_piso));
         $rs = $conn->query($query);
         if ($rs) {
             while ($fila = $rs->fetch_assoc()) {
@@ -126,7 +126,7 @@ class Imagen
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
         $query = sprintf(
-            "INSERT INTO imagenes_prueba (ruta, nombre, mimeType, id_piso) VALUES ('%s', '%s', '%s', %s)",
+            "INSERT INTO imagenes_pisos (ruta, nombre, mimeType, id_piso) VALUES ('%s', '%s', '%s', %s)",
             $conn->real_escape_string($imagen->ruta),
             $conn->real_escape_string($imagen->nombre),
             $conn->real_escape_string($imagen->mimeType),
@@ -151,7 +151,7 @@ class Imagen
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
         $query = sprintf(
-            "UPDATE imagenes_prueba SET ruta = '%s', nombre = '%s', mimeType = '%s', id_piso = %s WHERE id = %d",
+            "UPDATE imagenes_pisos SET ruta = '%s', nombre = '%s', mimeType = '%s', id_piso = %s WHERE id = %d",
             $conn->real_escape_string($imagen->ruta),
             $conn->real_escape_string($imagen->nombre),
             $conn->real_escape_string($imagen->mimeType),
@@ -178,7 +178,7 @@ class Imagen
         $result = false;
 
         $conn = BD::getInstance()->getConexionBd();
-        $query = sprintf("DELETE FROM imagenes_prueba WHERE id = %d", intval($idImagen));
+        $query = sprintf("DELETE FROM imagenes_pisos WHERE id = %d", intval($idImagen));
         $result = $conn->query($query);
         if (!$result) {
             error_log($conn->error);
