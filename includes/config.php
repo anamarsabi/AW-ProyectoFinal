@@ -21,7 +21,7 @@ define('RUTA_APP', '/AW-ProyectoFinal');
 define('RUTA_IMGS', RUTA_APP.'img/');
 define('RUTA_CSS', RUTA_APP.'css/');
 define('RUTA_JS', RUTA_APP.'js/');
-
+define('RUTA_ALMACEN_PUBLICO', implode(DIRECTORY_SEPARATOR, [dirname(__DIR__), 'almacenPublico']));
 /**
  * Configuración del soporte de UTF-8, localización (idioma y país) y zona horaria
  */

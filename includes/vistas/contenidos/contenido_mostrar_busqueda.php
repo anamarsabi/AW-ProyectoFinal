@@ -3,6 +3,7 @@
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Pisos;
 use es\ucm\fdi\aw\Busqueda;
+use es\ucm\fdi\aw\Imagen;
 
 
 
@@ -78,7 +79,8 @@ else
 
         $iconos_habitaciones .= "</div>";
         */
-        
+        $html_img = Imagen::getPortada($p->id);
+
         $contenido.= <<<EOS
             <div class="centrado card">
                 <div class="card-header">
@@ -87,7 +89,7 @@ else
                 <div class="card-body">
                     <ul class="inline-block clear-style clear-pm">
                         <li>
-                            <img class="h-100 w-10e" src="img/logo.png" alt="Imagen">
+                            {$html_img}
                         </li>
                         <li>
                             <p> Habitaciones desde {$p->getPrecio_min()} hasta {$p->getPrecio_max()} €/mes</p>

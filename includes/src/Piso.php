@@ -317,6 +317,10 @@ class Piso
 
     
     public function imprimirDetalles(){
+        //Fotos del piso
+        $html_imagenes_piso = Imagen::printImagenes_idPiso($this->id);
+
+
         // Parte roomies del piso
         self::encuentraRoomies();
         $html_roomies = "";
@@ -491,16 +495,11 @@ class Piso
                     <form action="$ruta_contacto">
                         <input class="button align-r" type="submit" value="Contactar">  
                     </form>
+                    <div>$html_imagenes_piso</div>
                     <ul class="inline-block clear-style clear-pm">
-                        <li>
-                            <img class="h-100 w-10e" src="img/logo.png" alt="Imagen">
-                        </li>
                         <li>
                             <h4>Habitaciones desde {$this->detalles['precio_min']} € - {$this->detalles['precio_max']} € al mes</h4>
                             <p>{$this->detalles['descripcion']}</p>
-                            
-                        </li>
-                        <li>
                             $iconos_habitaciones
                         </li>
                     </ul>
