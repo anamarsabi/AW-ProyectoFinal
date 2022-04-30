@@ -74,6 +74,31 @@ class Imagen
         return $result;
     }
 
+    public static function printImagenes_idPiso($id_piso)
+    {
+        /* https://www.w3schools.com/css/css3_images.asp */
+        $result = self::buscaPorId_piso($id_piso);
+        $total = count($result);
+        $html_imagenes ="";
+        $html_imagenes .=<<<EOF
+            <h2>Imagenes Piso: {$total} </h2>
+            
+        EOF;
+        foreach($result as $imagen)
+        {
+            $html_imagenes .=<<<EOF
+                <div class="polaroid">
+                    <img src="almacenPublico/$imagen->ruta">
+                    <div class="container-texto">
+                        <p>{$imagen->nombre}</p>
+                    </div>
+                </div>
+            EOF;
+        }
+        #$html_imagenes .= "</div>";
+        return $html_imagenes;
+    }
+
     private static function inserta($imagen)
     {
         $result = false;

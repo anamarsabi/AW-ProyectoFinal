@@ -8,6 +8,9 @@ $id_host = $app->idUsuario();
 
 $id_piso = $app->getAtributoPeticion("id_piso");
 
+$html_imagenes_piso = Imagen::printImagenes_idPiso($id_piso);
+
+/*
 $imagenesPiso = Imagen::buscaPorId_piso($id_piso);
 
 $html_imagenes_piso = "<h2>Imagenes Piso </h2>";
@@ -16,7 +19,7 @@ foreach($imagenesPiso as $imagen):
         <div><img src="almacenPublico/$imagen->ruta"></div>
     EOF;
 endforeach;
-
+*/
 
 if(es\ucm\fdi\aw\Piso::pisoPerteneceAHost($id_host, $id_piso)){
     $formUpload = new es\ucm\fdi\aw\usuarios\FormularioUpload($id_piso);
