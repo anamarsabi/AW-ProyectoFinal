@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-04-2022 a las 13:00:44
+-- Tiempo de generación: 30-04-2022 a las 20:28:40
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 7.4.29
 
@@ -45,6 +45,19 @@ INSERT INTO `aficiones` (`id_aficion`, `nombre`) VALUES
 (6, 'Historia'),
 (7, 'Fiesta'),
 (8, 'Animales');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `chat`
+--
+
+CREATE TABLE `chat` (
+  `id_chat` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_host` int(11) NOT NULL,
+  `mensaje` varchar(2048) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -116,7 +129,6 @@ CREATE TABLE `habitaciones` (
   `id_habitacion` int(11) NOT NULL,
   `id_roomie` int(11) DEFAULT NULL,
   `id_piso` int(11) DEFAULT NULL,
-  `imagenes` varchar(255) NOT NULL,
   `cama_cm` int(3) NOT NULL,
   `banio_propio` tinyint(1) NOT NULL,
   `precio` int(11) NOT NULL,
@@ -129,33 +141,39 @@ CREATE TABLE `habitaciones` (
 -- Volcado de datos para la tabla `habitaciones`
 --
 
-INSERT INTO `habitaciones` (`id_habitacion`, `id_roomie`, `id_piso`, `imagenes`, `cama_cm`, `banio_propio`, `precio`, `gastos_incluidos`, `descripcion`, `disponibilidad`) VALUES
-(5, 27, 13, '', 90, 0, 350, 1, 'Habitación de 30m2, muy luminosa y bien aclimatada', '2022-04-19'),
-(6, 29, 13, '', 90, 1, 450, 1, 'Habitación de 50m2, muy luminosa y bien aclimatada, cuenta con baño propio.', '2022-04-20'),
-(7, 30, 13, '', 120, 1, 400, 1, 'Habitación muy luminosa, con baño propio.', '2022-05-05');
+INSERT INTO `habitaciones` (`id_habitacion`, `id_roomie`, `id_piso`, `cama_cm`, `banio_propio`, `precio`, `gastos_incluidos`, `descripcion`, `disponibilidad`) VALUES
+(5, 23, 13, 90, 0, 350, 1, 'Habitación de 30m2, muy luminosa y bien aclimatada', '2022-04-19'),
+(6, 24, 13, 90, 1, 450, 1, 'Habitación de 50m2, muy luminosa y bien aclimatada, cuenta con baño propio.', '2022-04-20'),
+(7, 25, 13, 120, 1, 400, 1, 'Habitación muy luminosa, con baño propio.', '2022-05-05'),
+(8, 0, 16, 90, 1, 550, 1, 'Esta habitacion est&aacute; orientada al este, con lo que dispone de gran cantidad de luz natural. Adem&aacute;s cuenta con un ba&ntilde;o privado con plato de ducha. Dispone de armario, escritorio, silla de oficina, cama y ropa de cama.', '2022-04-30');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `imagenes`
+-- Estructura de tabla para la tabla `imagenes_pisos`
 --
 
-CREATE TABLE `imagenes` (
-  `id_imagen` int(11) NOT NULL,
-  `nombre` varchar(2048) DEFAULT NULL,
-  `imagen` longblob NOT NULL
+CREATE TABLE `imagenes_pisos` (
+  `id` int(11) NOT NULL,
+  `ruta` varchar(20) NOT NULL,
+  `nombre` varchar(20) NOT NULL,
+  `mimeType` varchar(30) NOT NULL,
+  `id_piso` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Estructura de tabla para la tabla `imagenhabitacion`
+-- Volcado de datos para la tabla `imagenes_pisos`
 --
 
-CREATE TABLE `imagenhabitacion` (
-  `id_habitacion` int(11) NOT NULL,
-  `id_imagen` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `imagenes_pisos` (`id`, `ruta`, `nombre`, `mimeType`, `id_piso`) VALUES
+(9, '9.jpg', 'piso-3.jpg', 'image/jpeg', 16),
+(10, '10.jpg', 'piso-compartido-deco', 'image/jpeg', 16),
+(11, '11.jpg', 'piso-compartido-hoga', 'image/jpeg', 16),
+(14, '14.jpg', 'habitacion.jpg', 'image/jpeg', 16),
+(15, '15.jpg', 'habitacion2.jpg', 'image/jpeg', 16),
+(16, '16.jpg', 'baño.jpg', 'image/jpeg', 17),
+(17, '17.jpg', 'baño.jpg', 'image/jpeg', 16),
+(18, '18.jpg', 'piso-compartido-3.jp', 'image/jpeg', 18);
 
 -- --------------------------------------------------------
 
@@ -211,6 +229,7 @@ INSERT INTO `rolesusuario` (`id_usuario`, `rol`) VALUES
 (23, 1),
 (24, 1),
 (25, 1),
+(31, 1),
 (27, 2),
 (28, 2),
 (30, 2);
@@ -234,7 +253,8 @@ CREATE TABLE `roomies` (
 INSERT INTO `roomies` (`id_usuario`, `tiene_mascota`, `descripcion`) VALUES
 (23, 1, 'Soy una persona agradable, que se dedica a la música y amo los animales'),
 (24, 0, 'Soy una persona deportista a la que le encanta la lectura'),
-(25, 0, 'Soy un apasionado de las series y las películas, además de una persona tranquila.');
+(25, 0, 'Soy un apasionado de las series y las películas, además de una persona tranquila.'),
+(31, 0, 'Estoy buscando piso en Madrid para el proximo curso, ya que me mudaré allí para cursar un Máster en la Universidad Complutense de Madrid');
 
 -- --------------------------------------------------------
 
@@ -254,7 +274,8 @@ CREATE TABLE `roomie_aficiones` (
 INSERT INTO `roomie_aficiones` (`id_aficion`, `id_usuario`) VALUES
 (8, 23),
 (4, 24),
-(6, 25);
+(6, 25),
+(2, 31);
 
 -- --------------------------------------------------------
 
@@ -306,7 +327,8 @@ INSERT INTO `usuarios` (`id_usuario`, `correo`, `nombre`, `apellido1`, `apellido
 (25, 'dibidi@gmail.com', 'David', 'Herrero', 'Montiel', '$2y$10$Gl7866AXfR65AxcDfyUH4uGuhLNO818ZsJblMu2h3M2/TCW/FG7b.', '2005-07-14'),
 (27, 'jluso@gmail.com', 'Jose Luis', 'Casado', 'Herrero', '$2y$10$.WZKZEr4dAMwXbXn482JS.3Tx.u0eiLD.LZmqLSv6uGPAdM/mEK12', '2002-06-07'),
 (28, 'gacas@gmail.com', 'Gabriel', 'Hernandez', '', '$2y$10$LjF.aYZ5foykmkmKr7M/8.rOSdF4hKiUHyf2HZhM32LsO9.3uWutq', '1988-07-09'),
-(30, 'bmar123@gmail.com', 'Benito', 'Martinez', '', '$2y$10$hVluCkzvsIUCvvnC4DXNw.ouxRc9.g3p9iawon1PE2/vQEPlQhKma', '1993-10-20');
+(30, 'bmar123@gmail.com', 'Benito', 'Martinez', '', '$2y$10$hVluCkzvsIUCvvnC4DXNw.ouxRc9.g3p9iawon1PE2/vQEPlQhKma', '1993-10-20'),
+(31, 'violeta@gmail.com', 'Violeta', 'Mart&iacute;nez', '', '$2y$10$0ejmp2zVE/135HjLw13dXeA5xC7N3wLB5R26GL2PuyPiNwPCP6skm', '2006-03-25');
 
 --
 -- Índices para tablas volcadas
@@ -317,6 +339,14 @@ INSERT INTO `usuarios` (`id_usuario`, `correo`, `nombre`, `apellido1`, `apellido
 --
 ALTER TABLE `aficiones`
   ADD PRIMARY KEY (`id_aficion`);
+
+--
+-- Indices de la tabla `chat`
+--
+ALTER TABLE `chat`
+  ADD PRIMARY KEY (`id_chat`),
+  ADD KEY `id_roomie` (`id_usuario`),
+  ADD KEY `id_host` (`id_host`);
 
 --
 -- Indices de la tabla `detallespiso`
@@ -335,17 +365,10 @@ ALTER TABLE `habitaciones`
   ADD KEY `id_piso` (`id_piso`);
 
 --
--- Indices de la tabla `imagenes`
+-- Indices de la tabla `imagenes_pisos`
 --
-ALTER TABLE `imagenes`
-  ADD PRIMARY KEY (`id_imagen`);
-
---
--- Indices de la tabla `imagenhabitacion`
---
-ALTER TABLE `imagenhabitacion`
-  ADD PRIMARY KEY (`id_habitacion`,`id_imagen`),
-  ADD KEY `id_imagen` (`id_imagen`);
+ALTER TABLE `imagenes_pisos`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `pisos`
@@ -399,16 +422,22 @@ ALTER TABLE `aficiones`
   MODIFY `id_aficion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT de la tabla `chat`
+--
+ALTER TABLE `chat`
+  MODIFY `id_chat` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `habitaciones`
 --
 ALTER TABLE `habitaciones`
-  MODIFY `id_habitacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_habitacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT de la tabla `imagenes`
+-- AUTO_INCREMENT de la tabla `imagenes_pisos`
 --
-ALTER TABLE `imagenes`
-  MODIFY `id_imagen` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `imagenes_pisos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `pisos`
@@ -420,7 +449,7 @@ ALTER TABLE `pisos`
 -- AUTO_INCREMENT de la tabla `rolesusuario`
 --
 ALTER TABLE `rolesusuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `servicios`
@@ -432,11 +461,18 @@ ALTER TABLE `servicios`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `chat`
+--
+ALTER TABLE `chat`
+  ADD CONSTRAINT `chat_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `roomies` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chat_ibfk_2` FOREIGN KEY (`id_host`) REFERENCES `pisos` (`id_host`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `detallespiso`
@@ -450,13 +486,6 @@ ALTER TABLE `detallespiso`
 --
 ALTER TABLE `habitaciones`
   ADD CONSTRAINT `habitaciones_ibfk_1` FOREIGN KEY (`id_piso`) REFERENCES `pisos` (`id_piso`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `imagenhabitacion`
---
-ALTER TABLE `imagenhabitacion`
-  ADD CONSTRAINT `imagenhabitacion_ibfk_2` FOREIGN KEY (`id_imagen`) REFERENCES `imagenes` (`id_imagen`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `imagenhabitacion_ibfk_3` FOREIGN KEY (`id_habitacion`) REFERENCES `habitaciones` (`id_habitacion`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `pisos`
