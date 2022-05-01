@@ -121,7 +121,7 @@ class FormularioRegistroPiso extends Form
                 </div>
             </div>
 
-            <input id="btn-registro" form="formRegistroPiso" class="button" type="submit" value="Guardar">
+            <input class="btn-registro button" form="formRegistroPiso" type="submit" value="Guardar">
             
             
         EOF;

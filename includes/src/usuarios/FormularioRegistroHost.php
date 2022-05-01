@@ -14,7 +14,7 @@ class FormularioRegistroHost extends Form
     {
         // Se generan los mensajes de error si existen.
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['nombreUsuario', 'nombre', 'password', 'password2'], $this->errores, 'span', array('class' => 'error text-danger'));
+        $erroresCampos = self::generaErroresCampos(['nombreUsuario', 'nombre', 'apellido1', 'apellido2', 'pwd', 'cpwd'], $this->errores, 'span', array('class' => 'error text-danger'));
 
         $time = strtotime("-16 year", time());
         $hace_16_anios = date("Y-m-d", $time);
@@ -30,53 +30,80 @@ class FormularioRegistroHost extends Form
 
         $html = <<<EOF
             $htmlErroresGlobales
-            <div class="tab marg st-input">
-                <h2>Datos personales</h2>
-                <div>
-                    <label>Nombre <span class="text-danger">*</span></label>
-                    <input type="text" placeholder="Nombre" name="nombre" required>
-                    {$erroresCampos['nombre']}
+
+            <div class="formulario tab registro">
+
+                <div class="flex-registro">
+                    <div class="flex-2col-item block">
+                        <label>Nombre <span class="text-danger">*</span></label>
+                        <input type="text" placeholder="Nombre" name="nombre" required>
+                        {$erroresCampos['nombre']}
+                    </div>
+                    <div class="flex-2col-item block"></div>
                 </div>
-                <span>
+            
+                <div class="flex-registro">
+                    <div class="flex-2col-item block">
                     <label>Primer apellido <span class="text-danger">*</span></label>
                     <input type="text" placeholder="Primer apellido" name="apellido1" required>
-                </span>
-                <span>
-                    <label>Segundo apellido </label>
-                    <input type="text" placeholder="Segundo apellido" name="apellido2">
-                </span>
-                <h4>Fecha de nacimiento <span class="text-danger">*</span></h4>
-                <input type="date" name="birthday" min="$hace_80_anios" max="$hace_16_anios" required />
+                        {$erroresCampos['apellido1']}
+                    </div>
+                    <div class="flex-2col-item block num">
+                        <label>Segundo apellido </label>
+                        <input type="text" placeholder="Segundo apellido" name="apellido2">
+                        {$erroresCampos['apellido2']}
+                    </div>
+                </div>
+
+                <div class="flex-registro">
+                    <div class="flex-2col-item block">
+                        <h4>Fecha de nacimiento <span class="text-danger">*</span></h4>
+                        <input type="date" name="birthday" min="$hace_80_anios" max="$hace_16_anios" required />
+                    </div>
+                    <div class="flex-2col-item block"></div>
+                </div>
             </div>
-            <div class="tab marg st-input">
+
+            <div class="formulario tab registro">
                 <h2>Datos de acceso</h2>
-                <label>Correo electrónico<span class="text-danger">*</span></label>
-                <input type="email" name="email" placeholder="Email" /> 
+                <div class="flex-registro">
+                    <div class="flex-2col-item block">
+                        <label>Correo electrónico<span class="text-danger">*</span></label>
+                        <input type="email" name="email" placeholder="Email" /> 
+                    </div>
+                    <div class="flex-2col-item block"></div>
+                </div>
 
-                <label>Contraseña<span class="text-danger">*</span></label>
-                <input type="password" name="pwd" placeholder="Contraseña" /> 
-
-                <label>Confirmar contraseña<span class="text-danger">*</span></label>
-                <input type="password" name="cpwd" placeholder="Confirmar contraseña" />
-                <p class="err_msg text-danger" style="display:none">
+                <div class="flex-registro">
+                    <div class="flex-2col-item block">
+                        <label>Contraseña<span class="text-danger">*</span></label>
+                        <input type="password" name="pwd" placeholder="Contraseña" /> 
+                    </div>
+                    <div class="flex-2col-item block">
+                        <label>Confirmar contraseña<span class="text-danger">*</span></label>
+                        <input type="password" name="cpwd" placeholder="Confirmar contraseña" />
+                        {$erroresCampos['cpwd']}
+                    </div>
+                </div>
+               
+                <p class="err_msg text-danger">
                     **Contraseñas no coinciden**
                 </p>
-            </div>
-
-            <div class="overflow-auto">
-                <div class="float-r">
-                    <button type="button" id="prevBtn" onclick="nextPrev(-1)">Anterior</button>
-                    <button type="button" id="nextBtn" onclick="nextPrev(1)">Siguiente</button>
-                </div>
             </div>
 
             <div class='align-center mt-40'>
                 $steps
             </div>
+
+            
+            <input  class="btn-registro"  type="button" id="nextBtn" onclick="nextPrev(1)" value="Siguiente">
+            <input class="btn-registro" type="button" id="prevBtn" onclick="nextPrev(-1)" value="Anterior">
+           
        
             <script>
             var currentTab = 0; // Current tab is set to be the first tab (0)
             showTab(currentTab); // Display the current tab
+            document.getElementsByClassName("err_msg")[0].style.display = "";
 
             function showTab(n) {
                 // This function will display the specified tab of the form...
@@ -89,9 +116,9 @@ class FormularioRegistroHost extends Form
                     document.getElementById("prevBtn").style.display = "inline";
                 }
                 if (n == (x.length - 1)) {
-                    document.getElementById("nextBtn").innerHTML = "Finalizar";
+                    document.getElementById("nextBtn").value = "Finalizar";
                 } else {
-                    document.getElementById("nextBtn").innerHTML = "Siguiente";
+                    document.getElementById("nextBtn").value = "Siguiente";
                 }
                 //... and run a function that will display the correct step indicator:
                 fixStepIndicator(n)

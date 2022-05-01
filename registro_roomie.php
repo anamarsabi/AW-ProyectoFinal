@@ -12,7 +12,7 @@ $form_name = "form_registro_roomie";
 
 
 $contenidoPrincipal = <<<EOF
-    <div class='pl-20p pr-20p pt-2e'>
+    <div class='contenedor-principal'>
         <h1>$tituloPagina</h1>
         $html_form_registro;
 EOF;

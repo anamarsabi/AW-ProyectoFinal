@@ -8,7 +8,7 @@ $formulario_registro = new  es\ucm\fdi\aw\usuarios\FormularioRegistroPiso();
 $html_form_registro = $formulario_registro->gestiona();
 
 $contenidoPrincipal = <<<EOF
-    <div class='pl-20p pr-20p pt-5e'>
+    <div class='contenedor-principal'>
         <h1>$tituloPagina</h1>
         $html_form_registro
     </div>
