@@ -20,7 +20,6 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
             $boton_editar_detalles =  new \es\ucm\fdi\aw\usuarios\FormularioBotonEditDetallesPiso($p->id);
             $boton_eliminar = new \es\ucm\fdi\aw\usuarios\FormularioBotonDeletePiso($p->id);
             $boton_ver_habitaciones = new \es\ucm\fdi\aw\usuarios\FormularioBotonVerHabitaciones($p->id);
-            $boton_add_fotos = new \es\ucm\fdi\aw\usuarios\FormularioBotonAddFotos($p->id);
 
             $dict_status_habitacion = Piso::numHabOcupadasyLibresDelPiso($p->id);
             $num_ocupadas = $dict_status_habitacion['ocupadas'];
@@ -69,7 +68,7 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
                                 {$boton_editar_detalles->gestiona()}
                                 {$boton_eliminar->gestiona()}
                                 {$boton_ver_habitaciones->gestiona()}
-                                {$boton_add_fotos->gestiona()}
+
                             </div>
                         </div>
 

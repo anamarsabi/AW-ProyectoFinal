@@ -1,6 +1,8 @@
 <?php
 namespace es\ucm\fdi\aw;
 
+use es\ucm\fdi\aw\usuarios\FormularioBotonDeleteImagen;
+
 class Imagen
 {
     public static function crea($nombre, $mimeType, $ruta, $id_piso)
@@ -64,7 +66,7 @@ class Imagen
         $rs = $conn->query($query);
         if ($rs) {
             while ($fila = $rs->fetch_assoc()) {
-                $result[] = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila['id'], $fila['id_piso']);
+                $result[] = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila['id_piso'], $fila['id']);
             }
             $rs->free();
         } else {
@@ -74,7 +76,7 @@ class Imagen
         return $result;
     }
 
-    public static function printImagenes_idPiso($id_piso)
+    public static function printImagenes_idPiso($id_piso, $delForm=false)
     {
         /* https://www.w3schools.com/css/css3_images.asp */
         $result = self::buscaPorId_piso($id_piso);
@@ -82,22 +84,28 @@ class Imagen
         $html_imagenes ="";
         $html_imagenes .=<<<EOF
             <h2>Imagenes Piso: {$total} </h2>
-
+            <div class="flex-wrapper">
         EOF;
         foreach($result as $imagen)
         {
+            $form = $delForm
+                        ?(new FormularioBotonDeleteImagen($imagen->id))->gestiona()
+                        :"";
             $html_imagenes .=<<<EOF
-                <div class="polaroid">
-                    <img class="h-100 w-100" src="almacenPublico/$imagen->ruta">
+                <div class="polaroid w-100p mx-1e">
+                    <img class="w-100" src="almacenPublico/$imagen->ruta">
                     <div class="container-texto">
                         <p>{$imagen->nombre}</p>
+                        $form
                     </div>
                 </div>
             EOF;
         }
-        #$html_imagenes .= "</div>";
+        $html_imagenes .= "</div>";
         return $html_imagenes;
     }
+
+
 
     public static function getPortada($id_piso)
     {
@@ -173,11 +181,11 @@ class Imagen
         return self::borraPorId($imagen->id);
     }
 
-    private static function borraPorId($idImagen)
+    public static function borraPorId($idImagen)
     {
         $result = false;
 
-        $conn = BD::getInstance()->getConexionBd();
+        $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("DELETE FROM imagenes_pisos WHERE id = %d", intval($idImagen));
         $result = $conn->query($query);
         if (!$result) {

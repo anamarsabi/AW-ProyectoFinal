@@ -162,6 +162,10 @@ label.mt-2{
     width: 100%;
 }
 
+.w-100p{
+    width: 100px;
+}
+
 .px-10-20{
     padding: 10px 20px;
 }
@@ -453,6 +457,12 @@ div.del-btn-bg{
     display: inline-block;
     border-radius: 20%;
 
+}
+
+div.save-btn-bg{
+    background-color: #419A1C;
+    display: inline-block;
+    border-radius: 10%;
 }
 
 
@@ -913,25 +923,39 @@ h3.access-denied{
 
 }
 
-/* .fpiso{
-    grid-area: fpiso;
+.img-preview{
+    width: 200px;
+    margin: 5px;
+    flex-basis: 25%;
 }
 
-.rooms{
-    grid-area: rooms;
+.mt-20{
+    margin-top: 200px;
+}
+.flex-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+.tag {
+    margin-right: 5px;
+    background-color: rgba(0, 0, 0, 0);
+}
+.tag:hover {
+    margin-top: -5;
 }
 
-.gap{
-    grid-area: gap;
+.tag:hover > img{
+    transform: scale(1.25);
+}
+.tag {
+    margin-right: 10px;
+    transition: margin 0.5s ease-in-out;
+    background-color: rgba(0, 0, 0, 0);
 }
 
-.btns{
-    grid-area: btns;
-} */
-
-
-
-
+.clear.float{
+    clear:both;
+}
 
 
 
@@ -973,6 +997,10 @@ h3.access-denied{
         padding-left: 5%;
         padding-right: 5%;
         padding-top: 2em;
+    }
+
+    .polaroid{
+        width: 100%;
     }
 
    
