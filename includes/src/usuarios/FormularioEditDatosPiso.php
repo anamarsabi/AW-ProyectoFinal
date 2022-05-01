@@ -149,7 +149,7 @@ class FormularioEditDatosPiso extends Form{
                         {$erroresCampos['descripcion']}
                     </div>
                 </div>
-                <input id="btn-registro"  type="submit" value="Guardar">
+                <input id="btn-registro" form="formEditDatosPiso" type="submit" value="Guardar">
 
                 
                 
