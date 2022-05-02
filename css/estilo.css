@@ -8,6 +8,7 @@
 body {
   position: relative;
   min-height: 100vh;
+  margin: 0px;
   /* padding-bottom: 140px; */
 }
 
@@ -44,6 +45,71 @@ a.username{
     font-size: 20px;
 }
 
+.index-container{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.index-bg{
+    width:100%;
+    filter:grayscale(40%);
+}
+
+.search-container{
+    position: absolute;
+    top: 30%;
+    width: 100%;
+}
+
+.search-container h1{
+    color: white;
+    margin: 1em;
+    font-size: 40px;
+}
+
+.index-search-btn{
+    color: white;
+    font-size: 16px;
+
+
+}
+
+/* col-2 px-10-20 mx-8-0  */
+.index-input{
+    padding: 10px 20px;
+    margin: 8px 0;
+    height: 40px !important;
+
+}
+
+.search-container input{
+    display:block;
+    font-size: 16px;
+}
+
+.search-container label{
+    display:block;
+    color: white;
+    font-size: 18px;
+
+}
+
+.index-banner-block{
+    display:inline-block;
+    text-align: left;
+    margin: 10px !important;
+}
+
+.clear-both{
+    clear: both;
+}
+
+
+.index-banner-bg{
+    background-color: #525252ad;
+    min-height: 300px;
+}
 
 .centrado {
     vertical-align: baseline;
@@ -287,6 +353,7 @@ div.main-login{
 #logo_menu{
     margin: 1em;
     width: 55%;
+    margin-left: 40px;
 }
 
 .user_icon{
@@ -302,7 +369,8 @@ div.main-login{
     /* justify-content: center; */
     /* align-items: flex-start; */
     /* height: 8em; */
-    margin-right: 1em;
+    margin-right: 40px;
+    
 }
 
 
@@ -483,7 +551,7 @@ div.save-btn-bg{
 }
 
 
-ul.detalles > li{
+/* ul.detalles > li{
     padding: 1em;
     font-size: 1.2em;
     transition: background-color 0.5s ease;
@@ -491,19 +559,41 @@ ul.detalles > li{
     text-decoration: none;
     cursor: pointer;
 
-  
-    /* border-top-left-radius: 35%;
+    //Comenta lo de abajo
+    border-top-left-radius: 35%;
     border-top-right-radius: 35%;
-    border-bottom-left-radius: 35%; */
+    border-bottom-left-radius: 35%; 
+} */
+
+ul.detalles li{
+    padding: 1em;
+    font-size: 1.2em;
+    transition: background-color 0.5s ease;
+    transition: color 0.5s ease;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+ul.detalles li a{
+    text-decoration: none;
+    padding: 1em;
 }
 
 ul.detalles li.active{
-    background-color: #a2a2a2;
+    /* background-color: #a2a2a2; */
+    background-color: #c4c4c4;
+    border-right: 5px solid #1095B8;
 }
 
 ul.detalles > li:hover{
-    background-color: #1095B8;
+    border-right: 5px solid #1095B8;
+    /* background-color: #1095B8; */
+    background-color: #e9e9e9;
     color: white;
+}
+
+ul.detalles > li > a{
+    color: black;
 }
 
 
@@ -611,7 +701,7 @@ div.registro input{
 }
 
 .btn-registro{
-    /* width: 20% !important; */
+    width: 20% !important;
 
     margin: 10px;
     float: right;
@@ -712,6 +802,10 @@ div.registro div input.num{
 
 .mx-1e{
     margin: 1em;
+}
+
+div.clear{
+    clear: both;
 }
 
 .break {
@@ -903,6 +997,8 @@ h3.access-denied{
 
 .fpiso{
     grid-area: 1 / 1 / 3 / 1;
+    width: 300px;
+    height: 200px;
 }
 
 .rooms{
@@ -1014,9 +1110,10 @@ h3.access-denied{
 
     }
 
-    .card{
+    /* .card{
         width: 90%;
-    }
+    } */
+
 
     .contenedor-principal{
         padding-left: 5%;

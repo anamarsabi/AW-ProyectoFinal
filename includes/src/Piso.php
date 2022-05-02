@@ -318,7 +318,7 @@ class Piso
     
     public function imprimirDetalles(){
         //Fotos del piso
-        $html_imagenes_piso = Imagen::printImagenes_idPiso($this->id);
+        $html_imagenes_piso = Imagen::getHTMLImagenesPorIdEntidad($this->id);
 
 
         // Parte roomies del piso
@@ -372,7 +372,7 @@ class Piso
         //Parte habitaciones libres y ocupadas del piso
         $app= Aplicacion::getInstance();
         $ruta_color = $app->resuelve('/img/door_color.svg'); 
-        $ruta = $app->resuelve('/img/door.svg'); 
+        $ruta = $app->resuelve('/img/key.svg'); 
 
         
         $plazasLibOcup = self::numHabOcupadasyLibresDelPiso(self::getId());

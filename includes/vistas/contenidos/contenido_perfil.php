@@ -36,19 +36,24 @@
 
         <div class="centrado pagina id_2">
 
-            <div class="centrado card">
+            <div class="centrado card w-40">
                 <div class="card-header">
                     Correo electrónico
                 </div>
                 <div class="card-body">
                     <div class="formulario">
-                        <label class="mt-2">Correo electrónico</label>
-                        <input class="w-100 px-10-20 mx-8-0 inline default-input" value="$correo" type="text" name="email" placeholder="Nombre" disabled>
+                        <div class="col-11 centrado index-banner-block">
+                            <label class="mt-2">Correo electrónico</label>
+                            <input class="w-100 index-input inline default-input" value="$correo" type="text" name="email" placeholder="Nombre" disabled>
+                            
+                        </div>
+                    
+                        
                     </div>
                 </div>
             </div>
                 
-            <div class="centrado card">
+            <div class="centrado card w-40">
                 <div class="card-header">
                     Cambiar contraseña
                 </div>

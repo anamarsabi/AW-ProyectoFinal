@@ -21,7 +21,7 @@ class FormularioUpload extends Form
     {
         // Se generan los mensajes de error si existen.
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['archivo'], $this->errores, 'span', array('class' => 'error'));
+        $erroresCampos = self::generaErroresCampos(['archivos'], $this->errores, 'span', array('class' => 'error'));
 
         $app = Aplicacion::getInstance();
         $id_piso = $app->getAtributoPeticion("id_piso");
@@ -31,11 +31,28 @@ class FormularioUpload extends Form
 
         $html = <<<EOS
         $htmlErroresGlobales
-        <fieldset>
-            <legend>Subida de archivo</legend>
-            <div><label for="archivo">Archivo: <input type="file" name="archivo" id="archivo" /></label>{$erroresCampos['archivo']}</div>
-            <button type="submit">Subir</button>
-        </fieldset>
+     
+            <div>
+                <input type="file" name="archivos[]" onchange="loadFile(event)" multiple/>
+                {$erroresCampos['archivos']}
+            </div>
+
+            <div id="output" class="flex-wrapper">
+            
+            </div>
+
+            <script>
+                var loadFile = function(event) {
+                    var output = document.getElementById('output');
+
+                    Array.prototype.forEach.call(event.target.files, function(valor, indice, array) {
+                        var aux = URL.createObjectURL(valor);
+                        output.innerHTML += '<div class="tag"><img class="img-preview" src=' + aux + '></div>';
+                    });
+                };
+
+            </script>            
+      
         EOS;
 
         return $html;
@@ -50,11 +67,11 @@ class FormularioUpload extends Form
         $app->putAtributoPeticion("id_piso", $id_piso);
 
         // Verificamos que la subida ha sido correcta
-        $ok = $_FILES['archivo']['error'] == UPLOAD_ERR_OK && count($_FILES) == 1;
-        if (! $ok ) {
-            $this->errores['archivo'] = 'Error al subir el archivo';
-            return;
-        }  
+        // $ok = $_FILES['archivo']['error'] == UPLOAD_ERR_OK && count($_FILES) == 1;
+        // if (! $ok ) {
+        //     $this->errores['archivo'] = 'Error al subir el archivo';
+        //     return;
+        // }  
 
         $nombre = $_FILES['archivo']['name'];
 

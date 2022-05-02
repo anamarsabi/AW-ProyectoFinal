@@ -3,6 +3,7 @@
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\usuarios\Usuario;
 use es\ucm\fdi\aw\Piso;
+use es\ucm\fdi\aw\Imagen;
 
 
 $app= Aplicacion::getInstance();
@@ -16,25 +17,25 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
     if($habitaciones){
         $contenido = "<div class='centrado'>";
         $ruta_color = $app->resuelve('/img/door_color.svg'); 
-        $ruta = $app->resuelve('/img/door.svg'); 
+        $ruta = $app->resuelve('/img/key.svg'); 
 
         foreach ($habitaciones as $h) {
-            // $boton_editar_detalles =  new \es\ucm\fdi\aw\usuarios\FormularioBotonEditDetallesPiso($p->id);
-            // $boton_eliminar = new \es\ucm\fdi\aw\usuarios\FormularioBotonDeletePiso($p->id);
+            $boton_editar_detalles =  new \es\ucm\fdi\aw\usuarios\FormularioBotonEditDetallesHabitacion($h->id_habitacion);
+            $boton_eliminar = new \es\ucm\fdi\aw\usuarios\FormularioBotonDeleteHabitacion($h->id_habitacion);
 
             $precio = $h->detalles['precio'];
-            $boton_editar_detalles =  new \es\ucm\fdi\aw\usuarios\FormularioBotonEditDetallesHabitacion($h->id_habitacion);
-
+           
+            $html_img = Imagen::getPortada($h->id_habitacion);
         
             $contenido.= <<<EOS
                 <div class="centrado card">
                     <div class="card-header">
-                       Nombre o algo asi por aqui
+                       Habitación #{$h->id_habitacion}
                     </div>
                     <div class="card-body">
                     
                         <div class="grid-container">
-                            <img class="h-100 w-10e fpiso" src="img/room.svg" alt="Imagen"></img>
+                            $html_img
                             <div class='precio'>$precio €/mes</div>
                             <button class="clear-btn button more ">
                                 <img class=h-20" src="img/three-dots-vertical.svg" alt="more options">
@@ -42,6 +43,7 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
                             
                             <div class="inline-block btns">
                                 {$boton_editar_detalles->gestiona()}
+                                {$boton_eliminar->gestiona()}
                             </div>
                         </div>
 

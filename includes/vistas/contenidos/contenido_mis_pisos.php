@@ -35,6 +35,8 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
             }
 
             if($num_libres==0&&$num_ocupadas==0){
+                
+
                 $iconos_habitaciones .='<p>No se ha registrado ninguna habitación. Añade una </p>';
             }
 
@@ -56,7 +58,6 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
                         <div class="grid-container">
                             {$html_img}
                             
-
                             $iconos_habitaciones
                             $rango_precios
 
@@ -66,8 +67,8 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
                             
                             <div class="inline-block btns">
                                 {$boton_editar_detalles->gestiona()}
-                                {$boton_eliminar->gestiona()}
                                 {$boton_ver_habitaciones->gestiona()}
+                                {$boton_eliminar->gestiona()}
 
                             </div>
                         </div>
@@ -95,25 +96,6 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
 
     }
 
-    
-   
-
-    // <ul class="inline-block clear-style clear-pm ">
-    //                     <li class="inline-block">
-    //                         <img class="h-100 w-10e" src="img/logo.png" alt="Imagen"></img>
-    //                     </li>
-    //                     <li class="inline-block">
-    //                         <div class="grid-container">
-    //                             $iconos_habitaciones
-    //                             <div class="precio">{$p->getPrecio_min()} - {$p->getPrecio_max()} €/mes</div>
-    //                             <div class="btns">
-    //                                 {$formulario_editar_detalles->gestiona("1")}
-    //                                 <button>Editar habitaciones</button>
-    //                             </div>
-    //                         </div>
-                            
-    //                     </li>
-    //                 </ul>
     $contenido .="<div>";
 }
 else{

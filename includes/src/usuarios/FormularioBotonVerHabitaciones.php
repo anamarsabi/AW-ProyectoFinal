@@ -21,7 +21,7 @@ class FormularioBotonVerHabitaciones extends Form{
         $formulario = <<<EOS
             <div class="edit-btn-bg ">
                 <button class="clear-btn button" type="submit" form="$id_form" value="Submit">
-                    <img class="invert-color h-20" src="img/door.svg" alt="edit" />
+                    <img class="invert-color h-20" src="img/door_thicker.svg" alt="edit" />
                 </button>
             </div>
         EOS;

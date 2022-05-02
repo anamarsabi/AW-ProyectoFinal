@@ -5,18 +5,19 @@ use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Form;
 use es\ucm\fdi\aw\Habitacion;
 use es\ucm\fdi\aw\Busqueda;
+use es\ucm\fdi\aw\Imagen;
 
 class FormularioEditDatosHabitacion extends Form{
 
     public function __construct() {
-        parent::__construct('formEditDatosPersonales', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/mis_habitaciones.php')]);
+        parent::__construct('formEditDatosPersonales', ['enctype' => 'multipart/form-data','urlRedireccion' => Aplicacion::getInstance()->resuelve('/mis_habitaciones.php')]);
     }
 
     protected function generaCamposFormulario($datos)
     {
         // Se generan los mensajes de error si existen.
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['cama_cm', 'precio', 'descripcion', 'disponibilidad'], $this->errores, 'span', array('class' => 'error text-danger'));
+        $erroresCampos = self::generaErroresCampos(['archivos','cama_cm', 'precio', 'descripcion', 'disponibilidad'], $this->errores, 'span', array('class' => 'error text-danger'));
      
         $app = Aplicacion::getInstance();
         //Para que no se pierda este dato al recargar la página o al hacer submit
@@ -76,9 +77,7 @@ class FormularioEditDatosHabitacion extends Form{
                             <input type="date" value="$fecha_disponibilidad" name="disponibilidad" min="$hoy" max="2031-01-01" />
                             {$erroresCampos['disponibilidad']}
                         </div>
-                        <div class="flex-2col-item block">
-                            
-                        </div>
+                        <div class="flex-2col-item block"></div>
                             
                     </div>
                         
@@ -90,6 +89,27 @@ class FormularioEditDatosHabitacion extends Form{
                     
                     <div class="break"></div>
 
+                    <h2 class='mt-2'>Añade imágenes de la habitación</h2>
+              
+                    <div>
+                        <input type="file" name="archivos[]" onchange="loadFile(event)" multiple/>
+                        {$erroresCampos['archivos']}
+                    </div>
+                    <div id="output" class="flex-wrapper"></div>
+    
+    
+                    <script>
+                        var loadFile = function(event) {
+                            var output = document.getElementById('output');
+    
+                            Array.prototype.forEach.call(event.target.files, function(valor, indice, array) {
+                                var aux = URL.createObjectURL(valor);
+                                output.innerHTML += '<div class="tag"><img class="img-preview" src=' + aux + '></div>';
+                            });
+                        };
+    
+                    </script>        
+
                     <h2>Una breve descripción sobre la habitación:</h2>
                     <div class="flex flex-dir-col">
                         <div class="flex-container-servicios">
@@ -98,14 +118,11 @@ class FormularioEditDatosHabitacion extends Form{
                         </div>
                     </div>
                 </div>
-
-                <input id="btn-registro-habitacion" class="button" type="submit" value="Guardar">
-
+               
+                <input class="btn-registro button" type="submit" value="Guardar">
+      
             EOF;
-
         }
-
-        
 
         return $html;
     }
@@ -115,80 +132,115 @@ class FormularioEditDatosHabitacion extends Form{
     {
         $this->errores = [];
 
-        
-        $calle = trim($datos['calle'] ?? '');
-        $calle = filter_var($calle, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if (!$calle) {
-            $this->errores['calle'] = 'La calle contiene caracteres no permitidos.';
+        $app = Aplicacion::getInstance();
+        //Para que no se pierda este dato al recargar la página o al hacer submit
+        $id_habitacion = $app->getAtributoPeticion("id_habitacion");
+        $app->putAtributoPeticion("id_habitacion", $id_habitacion);
+
+        $cama_cm = trim($datos['cama_cm'] ?? 0);
+        $cama_cm = filter_var($cama_cm, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if (!$cama_cm || !is_numeric($cama_cm)) {
+            $this->errores['cama_cm'] = 'Contiene caracteres no permitidos.';
+        }
+        else if(strlen($cama_cm)>=4){
+            $this->errores['cama_cm'] = 'Es demasiado grande';
         }
 
-        //Campo opcional
-        $barrio = trim($datos['barrio'] ?? '');
-        if($barrio){
-            $barrio = filter_var($barrio, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            if ( !$barrio) {
-                $this->errores['barrio'] = 'El barrio contiene caracteres no permitidos.';
-            }
+        $precio = trim($datos['precio'] ?? 0);
+        $precio = filter_var($precio, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if (!$precio || !is_numeric($precio)) {
+            $this->errores['precio'] = 'Contiene caracteres no permitidos.';
+        }
+        else if(strlen($precio)>=5){
+            $this->errores['precio'] = 'Es demasiado grande';
         }
 
-        $ciudad = trim($datos['ciudad'] ?? '');
-        $ciudad = filter_var($ciudad, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( !$ciudad ) {
-            $this->errores['ciudad'] = 'La ciudad contiene caracteres no permitidos.';
+        $hoy = date("Y-m-d", time());
+
+        $disponibilidad = strtotime($datos["disponibilidad"]);
+        $disponibilidad = date('Y-m-d', $disponibilidad);
+        if($disponibilidad<$hoy){
+            $this->errores['disponibilidad'] = 'Debes estar disponible de hoy hacia delante.';
         }
 
-        $num_banios = $datos['num_banios'] ?? 0;
-        $num_banios = filter_var($num_banios, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( !$num_banios || !is_numeric($num_banios) || $num_banios>100 || $num_banios<0) {
-            $this->errores['num_banios'] = 'La cantidad introducida no es válida';
-        }
-
-        $servicios = $datos['lista_servicios']??Array();
-        $permite_mascota = $datos['permite_mascota']==="true";
-
-        $descripcion = trim($datos['descripcion'] ?? '');
+        //Campos opcionales
+        $descripcion = trim($datos['descripcion'] ?? "");
         if($descripcion){
             $descripcion = filter_var($descripcion, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             if ( !$descripcion) {
                 $this->errores['descripcion'] = 'La descripción contiene caracteres no permitidos.';
             }
         }
-        
-        
-        if (count($this->errores) === 0) {
-            $app = Aplicacion::getInstance();
-            //Comenta por qué haces get y put 
-            $id_piso = $app->getAtributoPeticion("id_piso");
-            $app->putAtributoPeticion("id_piso", $id_piso);
 
-            $piso = Piso::buscaPorId($id_piso);
+        $gastos_incluidos = isset($datos["gastos_incluidos"]);
+        $banio_propio = isset($datos["banio_propio"]);
+
+
+        if (count($this->errores) === 0) {
             
-            if (!$piso) {
-                $this->errores[] = "Piso no ha sido encontrado usando su id";
-            } else {
+            if(!$id_habitacion){
+                $this->errores[] = "No se ha podido encontrar el piso. Vuelve a mis pisos";
+            }
+            else{
+                $hab = Habitacion::buscaPorId($id_habitacion);
+
                 $detalles = [
-                    'mascota'=>$permite_mascota,
-                    'servicios'=>$servicios,
-                    'fotos'=>null,
+                    'tam_cama'=>$cama_cm,
+                    'banio_privado'=>$banio_propio,
+                    'precio'=>$precio,
                     'descripcion'=>$descripcion,
-                    'precio_max'=>0,
-                    'precio_min'=>0,
-                    'plazas_libres'=>0,
-                    'plazas_ocupadas'=>0,
-                    'num_banios'=>$num_banios
+                    'gastos_incluidos'=>$gastos_incluidos,
+                    'fecha_disponibilidad'=>$disponibilidad
                 ];
-                    
-                $piso->cambiaDatos($calle, $barrio, $ciudad, $detalles);
-                if($piso->guarda()){
-                    //print("A-ok");
-                }
-                else{
+
+                $hab->cambiaDatos($detalles);
+                if(!$hab->guarda()){
                     $this->errores[] = "No se ha podido actualizar los datos";
                 }
-            }
+                else{
+                    $tam = count($_FILES['archivos']['name']);
+                    if($tam && $_FILES['archivos']['name'][0]==""){$tam=0;}
 
-          
+                    for($i=0; $i<$tam; $i++){
+                        $nombre = $_FILES['archivos']['name'][$i];
+                        $ok = Imagen::check_file_uploaded_name($nombre) && Imagen::check_file_uploaded_length($nombre);
+            
+                        $extension = pathinfo($nombre, PATHINFO_EXTENSION);
+                        $ok = $ok && in_array($extension, Imagen::EXTENSIONES_PERMITIDAS);
+            
+
+                        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+                        $mimeType = $finfo->file($_FILES['archivos']['tmp_name'][$i]);
+
+                        $ok = preg_match('/image\/*./', $mimeType);
+            
+                        if (!$ok) {
+                            $this->errores['archivos'] = 'El archivo tiene un nombre o tipo no soportado';
+                        }
+            
+                        if (count($this->errores) > 0) {
+                            return;
+                        }
+            
+                        $tmp_name = $_FILES['archivos']['tmp_name'][$i];
+            
+                        $imagen = Imagen::crea($nombre, $mimeType, '', $hab->id_habitacion);
+                        $imagen->guarda();
+                        $fichero = "{$imagen->id}.{$extension}";
+                        $imagen->setRuta($fichero);
+                        $imagen->guarda();
+                        $ruta = implode(DIRECTORY_SEPARATOR, [RUTA_ALMACEN_PUBLICO, $fichero]);
+                        if (!move_uploaded_file($tmp_name, $ruta)) {
+                            $this->errores['archivos'] = 'Error al mover el archivo';
+                        }
+                    }
+
+                    $app->putAtributoPeticion("id_piso", $hab->id_piso);
+                }
+
+            }
         }
+
     }
 }
  

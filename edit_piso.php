@@ -6,12 +6,13 @@ $tituloPagina = 'Editar Detalles Piso';
 $id_host = $app->idUsuario();
 
 $id_piso = $app->getAtributoPeticion("id_piso");
+$app->putAtributoPeticion("id_piso", $id_piso);
 
 if(es\ucm\fdi\aw\Piso::pisoPerteneceAHost($id_host, $id_piso)){
     $formulario = new  es\ucm\fdi\aw\usuarios\FormularioEditDatosPiso();
     $html_form = $formulario->gestiona();
-    
-    $imagenes = es\ucm\fdi\aw\Imagen::printImagenes_idPiso($id_piso, true);
+    $url_redireccion = '/edit_piso.php';
+    $imagenes = es\ucm\fdi\aw\Imagen::getHTMLImagenesPorIdEntidad($id_piso, $url_redireccion, true);
 
     $contenidoPrincipal = <<<EOF
         <div class='contenedor-principal'>

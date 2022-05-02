@@ -20,6 +20,24 @@
 <div class="float-l">
     <ul class="clear-style detalles id_1">
         <li class="detalles-list-item active">
+            <a class="clear-text-deco" href="mi_perfil.php?pag=id_1">
+                Datos personales
+            </a>
+        </li>
+        <li class="detalles-list-item id_2">
+            <a class="clear-text-deco" href="mi_perfil.php?pag=id_2">
+                Datos de acceso
+            </a>
+        </li>
+
+
+        <?=$datos_caracteristico_tipo_usuario?>
+        
+    </ul>
+</div>
+
+
+<!-- <li class="detalles-list-item active">
             <a onclick="transicion('id_1')">
                 Datos personales
             </a>
@@ -28,20 +46,17 @@
             <a onclick="transicion('id_2')">
                 Datos de acceso
             </a>
-        </li>
-
-        <?=$datos_caracteristico_tipo_usuario?>
-        
-    </ul>
-</div>
-
+        </li> -->
 
 
 <script>
-//Busca una forma de pasarle una variable onload
-//JS coge datos de formularios. Puedes pasar datos por GET y recogerlos
+//https://www.sitepoint.com/get-url-parameters-with-javascript/
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
 window.onload = function exampleFunction() {
-    transicion("id_1");
+    var pag = urlParams.get('pag')??"id_1";
+    transicion(pag);
 }
 
 function transicion(name){

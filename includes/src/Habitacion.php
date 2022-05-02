@@ -65,31 +65,35 @@ class Habitacion
         );
         if ( $conn->query($query) ) {
             $hab->id_habitacion = $conn->insert_id;
-            $result = true;
+            return $hab;
+
         } else {
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
-        return $result;
+        return false;
     }
 
     private static function actualiza($hab)
     {
-        $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
+
         $query=sprintf("UPDATE habitaciones SET cama_cm = '%d', banio_propio='%d', precio='%d', gastos_incluidos='%d', descripcion='%s', disponibilidad='%s' WHERE id_habitacion=%d"
-            , $conn->real_escape_string($hab->cama_cm)
-            , $conn->real_escape_string($hab->banio_propio)
+            , $conn->real_escape_string($hab->tam_cama)
+            , $conn->real_escape_string($hab->tieneBanio_privado())
             , $conn->real_escape_string($hab->precio)
-            , $conn->real_escape_string($hab->gastos_incluidos)
+            , $conn->real_escape_string($hab->tieneGastos_incluidos())
             , $conn->real_escape_string($hab->descripcion)
-            , $conn->real_escape_string($hab->disponibilidad)
-            , $hab->id
+            , $conn->real_escape_string($hab->fecha_disponibilidad)
+            , $hab->id_habitacion
         );
         if ( !$conn->query($query) ) {
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
+        else{
+            return $hab;
+        }
         
-        return $result;
+        return false;
     }
 
     public static function habitacionPerteneceAHost($id_hab, $id_host){
@@ -150,40 +154,40 @@ class Habitacion
         return $this->id_habitacion;
     }
 
-    // public function getIdPiso()
-    // {
-    //     return $this->id_piso;
-    // }
+    public function getId_piso()
+    {
+        return $this->id_piso;
+    }
 
-    // public function getTamCama()
-    // {
-    //     return $this->tam_cama;
-    // }
+    public function getTam_cama()
+    {
+        return $this->detalles['tam_cama'];
+    }
 
-    // public function tieneBanioPrivado()
-    // {
-    //     return $this->banio_privado==true;
-    // }
+    public function tieneBanio_privado()
+    {
+        return $this->detalles['banio_privado']==true;
+    }
 
     public function getPrecio()
     {
         return $this->detalles['precio'];
     }
 
-    // public function tieneGastosIncluidos()
-    // {
-    //     return $this->gastos_incluidos==true;
-    // }
+    public function getDescripcion()
+    {
+        return $this->detalles['descripcion'];
+    }
 
-    // public function getDescripcion()
-    // {
-    //     return $this->descripcion;
-    // }
+    public function tieneGastos_incluidos()
+    {
+        return $this->detalles['gastos_incluidos']==true;
+    }
 
-    // public function getFechaDisponibilidadn()
-    // {
-    //     return $this->fecha_disponibilidad;
-    // }
+    public function getFecha_disponibilidad()
+    {
+        return $this->detalles['fecha_disponibilidad'];
+    }
 
     public function estaOcupada()
     {
@@ -243,5 +247,40 @@ class Habitacion
     //     EOS;
     //     return $detalles;
     // }
+
+
+    public function cambiaDatos($detalles)
+    {
+        $this->aniadeDetalles($detalles);
+    }
+
+    public function borrate()
+    {
+        if ($this->id_habitacion !== null) {
+            return self::borra($this);
+        }
+        return false;
+    }
+
+    private static function borra($hab)
+    {
+        return self::borraPorId($hab->id_habitacion);
+    }
+
+    private static function borraPorId($idHab)
+    {
+        if (!$idHab) {
+            return false;
+        } 
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("DELETE FROM habitaciones WHERE id_habitacion = %d"
+            , $idHab
+        );
+        if ( ! $conn->query($query) ) {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+            return false;
+        }
+        return true;
+    }
 }
 

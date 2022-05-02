@@ -9,8 +9,8 @@ class FormularioBotonDeleteImagen extends Form{
 
     private $id_imagen;
 
-    public function __construct($id_imagen) {
-        parent::__construct('formDeleteImg_'.$id_imagen, ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/edit_piso.php')]);
+    public function __construct($id_imagen, $url_redireccion) {
+        parent::__construct('formDeleteImg_'.$id_imagen, ['urlRedireccion' => Aplicacion::getInstance()->resuelve($url_redireccion)]);
         $this->id_imagen = intval($id_imagen);
     }
 

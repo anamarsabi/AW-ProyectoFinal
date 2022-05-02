@@ -30,10 +30,8 @@ class FormularioBotonEditDetallesHabitacion extends Form{
 
     protected function procesaFormulario($datos)
     {
-
         $app = Aplicacion::getInstance();
         $app->putAtributoPeticion("id_habitacion", $this->id_habitacion);
-
     }
 }
  

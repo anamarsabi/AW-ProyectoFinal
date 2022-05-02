@@ -6,23 +6,13 @@ use es\ucm\fdi\aw\Form;
 
 class FormularioCambioContrasenia extends Form{
     public function __construct() {
-        parent::__construct('formCambioContrasenia', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/mi_perfil.php')]);
+        parent::__construct('formCambioContrasenia', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/mi_perfil.php?pag=id_2')]);
     }
 
     protected function generaCamposFormulario($datos)
     {
-
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        //     $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        //     $erroresCampos = self::generaErroresCampos(['contrasenia_actual', 'nueva_contrasenia', 'repetir_contrasenia'], $this->errores, 'span', array('class' => 'error text-danger'));
-        // }
-        // else{
-        //     $erroresCampos = self::generaErroresCampos(['contrasenia_actual', 'nueva_contrasenia', 'repetir_contrasenia'], array(), 'span', array('class' => 'error text-danger'));
-        // }
-
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
         $erroresCampos = self::generaErroresCampos(['contrasenia_actual', 'nueva_contrasenia', 'repetir_contrasenia'], $this->errores, 'span', array('class' => 'error text-danger'));
-        
         
         $app = Aplicacion::getInstance();
         $usuario = Usuario::buscaUsuario($app->correo());
@@ -32,23 +22,37 @@ class FormularioCambioContrasenia extends Form{
         $formulario = <<<EOS
 
             <div class="formulario">
-                <label class="mt-2">Contraseña actual<span class="text-danger">*</span></label>
-                <div class="float-r">{$erroresCampos['contrasenia_actual']}</div>
-                <input class="w-100 px-10-20 mx-8-0 inline default-input" type="password" name="contrasenia_actual" placeholder="Contraseña actual" required>
+
+                <div class="col-11 centrado index-banner-block">
+                    <label class="mt-2">Contraseña actual<span class="text-danger">*</span></label>
+                    <div class="float-r">{$erroresCampos['contrasenia_actual']}</div>
+                    <input class="w-100 index-input inline default-input" type="password" name="contrasenia_actual" placeholder="Contraseña actual" required>
+                </div>
+
+                <div class="col-11 centrado index-banner-block">
+                    <label class="mt-2">Nueva contraseña<span class="text-danger">*</span></label>
+                    <div class="float-r">{$erroresCampos['nueva_contrasenia']}</div>
+                    <input class="w-100 index-input inline default-input" type="password" name="nueva_contrasenia" placeholder="Nueva contraseña" required>
+                </div>
+
+                <div class="col-11 centrado index-banner-block">
+                    <label class="mt-2">Repetir contraseña<span class="text-danger">*</span></label>
+                    <div class="float-r">{$erroresCampos['repetir_contrasenia']}</div>
+                    <input class="w-100 index-input inline default-input" type="password" name="repetir_contrasenia" placeholder="Repetir contraseña" required>
+                    
+                </div>
+
+
+                
                 
 
-                <label class="mt-2">Nueva contraseña<span class="text-danger">*</span></label>
-                <div class="float-r">{$erroresCampos['nueva_contrasenia']}</div>
-                <input class="w-100 px-10-20 mx-8-0 inline default-input" type="password" name="nueva_contrasenia" placeholder="Nueva contraseña" required>
                 
 
-                <label class="mt-2">Repetir contraseña<span class="text-danger">*</span></label>
-                <div class="float-r">{$erroresCampos['repetir_contrasenia']}</div>
-                <input class="w-100 px-10-20 mx-8-0 inline default-input" type="password" name="repetir_contrasenia" placeholder="Repetir contraseña" required>
                 
             </div>
-
-            <input class="button left-align" type="submit" value="Cambiar">
+            
+            <input class="btn-registro" type="submit" value="Cambiar">
+            <div class="clear"></div>
         EOS;
 
         return $formulario;
@@ -91,13 +95,8 @@ class FormularioCambioContrasenia extends Form{
                 $usuario->cambiaPassword($nueva_contrasenia);
                 Usuario::actualiza_pwd($usuario);
                 $app->login($usuario);
-
-                // $app->putAtributoPeticion("pag_detalles_perfil", "id_2");
                 
             }
-
-
-
         }
     }
 }

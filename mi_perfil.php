@@ -5,7 +5,7 @@ $tituloPagina = 'Mi perfil';
 
 $email = $app->correo();
 
-$paths = ["vistas/comun/contenido_perfil.php"];
+$paths = ["vistas/contenidos/contenido_perfil.php"];
 
 $vista->carga_contenido($paths);
 

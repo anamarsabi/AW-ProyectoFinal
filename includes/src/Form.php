@@ -219,9 +219,6 @@ abstract class Form
             header("Location: {$this->urlRedireccion}");
             exit();
         }
-        else{
-            //print("no redirige :'v");
-        }
     }
 
     /**

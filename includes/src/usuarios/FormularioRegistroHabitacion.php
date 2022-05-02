@@ -6,18 +6,20 @@ use es\ucm\fdi\aw\Form;
 use es\ucm\fdi\aw\Busqueda;
 use es\ucm\fdi\aw\Habitacion;
 use es\ucm\fdi\aw\Piso;
+use es\ucm\fdi\aw\Imagen;
 
 class FormularioRegistroHabitacion extends Form
 {
+
     public function __construct() {
-        parent::__construct('form_registro_habitacion', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/mis_habitaciones.php')]);
+        parent::__construct('form_registro_habitacion', ['enctype' => 'multipart/form-data', 'urlRedireccion' => Aplicacion::getInstance()->resuelve('/mis_habitaciones.php')]);
     }
     
     protected function generaCamposFormulario($datosIniciales)
     {
         // Se generan los mensajes de error si existen.
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['cama_cm', 'precio', 'descripcion', 'disponibilidad'], $this->errores, 'span', array('class' => 'error text-danger'));
+        $erroresCampos = self::generaErroresCampos(['archivos','cama_cm', 'precio', 'descripcion', 'disponibilidad'], $this->errores, 'span', array('class' => 'error text-danger'));
      
         $hoy = date("Y-m-d", time());
 
@@ -76,6 +78,24 @@ class FormularioRegistroHabitacion extends Form
                 </div>
                 
                 <div class="break"></div>
+
+                <h2 class='mt-2'>Añade imágenes de la habitación</h2>
+                <div>
+                    <input type="file" name="archivos[]" onchange="loadFile(event)" multiple/>
+                    {$erroresCampos['archivos']}
+                </div>
+                <div id="output" class="flex-wrapper"></div>
+
+                <script>
+                    var loadFile = function(event) {
+                        var output = document.getElementById('output');
+
+                        Array.prototype.forEach.call(event.target.files, function(valor, indice, array) {
+                            var aux = URL.createObjectURL(valor);
+                            output.innerHTML += '<div class="tag"><img class="img-preview" src=' + aux + '></div>';
+                        });
+                    };
+                </script>
 
                 <h2>Una breve descripción sobre la habitación:</h2>
                 <div class="flex flex-dir-col">
@@ -143,11 +163,9 @@ class FormularioRegistroHabitacion extends Form
 
 
         if (count($this->errores) === 0) {
-
-            $id_piso = Piso::buscaIdPiso();
-
+            
             if(!$id_piso){
-                $this->errores[] = "No se ha podido encontrar el usuario";
+                $this->errores[] = "No se ha podido encontrar el piso. Vuelve a mis pisos";
             }
             else{
                 $detalles = [
@@ -160,8 +178,57 @@ class FormularioRegistroHabitacion extends Form
                 ];
 
                 $hab = Habitacion::crea($id_piso, $detalles);
+
+                $tam = count($_FILES['archivos']['name']);
+                if($tam && $_FILES['archivos']['name'][0]==""){$tam=0;}
+
+                for($i=0; $i<$tam; $i++){
+                    $nombre = $_FILES['archivos']['name'][$i];
+                    $ok = Imagen::check_file_uploaded_name($nombre) && Imagen::check_file_uploaded_length($nombre);
+        
+                    /* 1.b) Sanitiza el nombre del archivo (elimina los caracteres que molestan)
+                    $ok = self::sanitize_file_uploaded_name($nombre);
+                    */
+        
+                    /* 1.c) Utilizar un id de la base de datos como nombre de archivo */
+                    // Vamos a optar por esta opciÃ³n que es la que se implementa mÃ¡s adelante
+        
+                    /* 2. comprueba si la extensiÃ³n estÃ¡ permitida */
+                    $extension = pathinfo($nombre, PATHINFO_EXTENSION);
+                    $ok = $ok && in_array($extension, Imagen::EXTENSIONES_PERMITIDAS);
+        
+                    /* 3. comprueba el tipo mime del archivo corresponde a una imagen image/* */
+                    $finfo = new \finfo(FILEINFO_MIME_TYPE);
+                    $mimeType = $finfo->file($_FILES['archivos']['tmp_name'][$i]);
+
+                    $ok = preg_match('/image\/*./', $mimeType);
+        
+                    if (!$ok) {
+                        $this->errores['archivos'] = 'El archivo tiene un nombre o tipo no soportado';
+                    }
+        
+                    if (count($this->errores) > 0) {
+                        return;
+                    }
+        
+                    $tmp_name = $_FILES['archivos']['tmp_name'][$i];
+        
+                    $imagen = Imagen::crea($nombre, $mimeType, '', $hab->id_habitacion);
+                    $imagen->guarda();
+                    $fichero = "{$imagen->id}.{$extension}";
+                    $imagen->setRuta($fichero);
+                    $imagen->guarda();
+                    $ruta = implode(DIRECTORY_SEPARATOR, [RUTA_ALMACEN_PUBLICO, $fichero]);
+                    if (!move_uploaded_file($tmp_name, $ruta)) {
+                        $this->errores['archivos'] = 'Error al mover el archivo';
+                    }
+
+                }
                 
             }
         }
     }
+
+    
+
 }

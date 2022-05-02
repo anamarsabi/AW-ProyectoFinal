@@ -24,33 +24,28 @@ class FormularioBusqueda extends Form
 
         $html = <<<EOF
         $htmlErroresGlobales
-        <div>
-            <table class="centrado">
-                <tr>
-                    <td>         
-                        <input class="w-100 px-10-20 mx-8-0 inline default-input" id="ciudad" name="ciudad" type="search" value="$ciudad" placeholder="Ciudad" aria-label="Search" required>
-                        {$erroresCampos['ciudad']}
-                    </td>
-                    <td>
-                        <div>
-                            <label for="fecha">Fecha de entrada</label>
-                        </div>
-                        <input class="w-100 px-10-20 mx-8-0 inline default-input" type="date" name="fecha" id="fecha" min="2021-03-01" max="2031-01-01" required>
-                    </td>
-                    <td>
-                        <input class="w-100" type="submit" value="Buscar">  
-                    </td>
-                </tr>
-            </table>
+        
+        <div class="align-center">
+            <div class="col-2 centrado index-banner-block">
+                <label for="ciudad">Ciudad destino</label>
+                <input class="w-100 index-input inline default-input" id="ciudad" name="ciudad" type="search" value="$ciudad" placeholder="Ciudad" aria-label="Search" required>
+                {$erroresCampos['ciudad']}
+            </div>
+
+            <div class="col-2 centrado index-banner-block">
+                <label for="fecha">Fecha de entrada</label>
+                <input class="w-100 index-input inline default-input" type="date" name="fecha" id="fecha" min="2021-03-01" max="2031-01-01" required>
+            </div>
+
+            <div class="index-banner-block">
+                <input class="index-input index-search-btn" type="submit" value="Buscar">  
+            </div>
         </div>
         EOF;
         return $html;
     }
 
-/* <input class="w-100 px-10-20 mx-8-0 inline default-input" type="text" name="email" placeholder="Correo electrónico" required> */
-/* <button type="submit" name="buscador">Buscar</button> */    
-/*<button type="submit" name="buscador"><input type="image" src='img/lupa.png' alt="buscador" width="19"
-                            height=auto/></button>*/
+
     protected function procesaFormulario($datos)
     {
         $ciudad = $datos['ciudad'] ?? '';

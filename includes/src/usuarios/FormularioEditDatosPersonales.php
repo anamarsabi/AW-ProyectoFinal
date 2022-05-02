@@ -6,7 +6,7 @@ use es\ucm\fdi\aw\Form;
 
 class FormularioEditDatosPersonales extends Form{
     public function __construct() {
-        parent::__construct('formEditDatosPersonales', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/mi_perfil.php')]);
+        parent::__construct('formEditDatosPersonales', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/mi_perfil.php?pag=id_1')]);
     }
 
     protected function generaCamposFormulario($datos)
@@ -32,23 +32,36 @@ class FormularioEditDatosPersonales extends Form{
 
         $formulario = <<<EOS
             <div class="formulario">
-                <label class="mt-2">Nombre<span class="text-danger">*</span></label>
-                <input class="w-100 px-10-20 mx-8-0 inline default-input" value="$nombre" type="text" name="nombre" placeholder="Nombre" required>
-                {$erroresCampos['nombre']}
 
-                <label class="mt-2">Primer apellido<span class="text-danger">*</span></label>
-                <input class="w-100 px-10-20 mx-8-0 inline default-input" value="$apellido1" type="text" name="apellido1" placeholder="Primer apellido" required>
-                {$erroresCampos['apellido1']}
+                <div class="col-5 centrado index-banner-block">
+                    <label class="mt-2">Nombre<span class="text-danger">*</span></label>
+                    <input class="w-100 index-input inline default-input" value="$nombre" type="text" name="nombre" placeholder="Nombre" required>
+                    {$erroresCampos['nombre']}
+                </div>
 
-                <label class="mt-2">Segundo apellido</label>
-                <input class="w-100 px-10-20 mx-8-0 inline default-input" value="$apellido2" type="text" name="apellido2" placeholder="Segundo apellido">
-                {$erroresCampos['apellido2']}
+                
+                <div class="col-5 centrado index-banner-block">
+                    <label class="mt-2">Primer apellido<span class="text-danger">*</span></label>
+                    <input class="w-100 index-input inline default-input" value="$apellido1" type="text" name="apellido1" placeholder="Primer apellido" required>
+                    {$erroresCampos['apellido1']}
+                </div>
 
-                <label class="mt-2">Fecha de nacimiento<span class="text-danger">*</span></label>
-                <input class="w-100 px-10-20 mx-8-0 inline default-input" type="date" value={$usuario->getBirthday()} name="birthday" min=$hace_80_anios max=$hace_16_anios required />
+                <div class="col-5 centrado index-banner-block">
+                    <label class="mt-2">Segundo apellido</label>
+                    <input class="w-100 index-input inline default-input" value="$apellido2" type="text" name="apellido2" placeholder="Segundo apellido">
+                    {$erroresCampos['apellido2']}
+                </div>
+
+                <div class="col-5 centrado index-banner-block">
+                    <label class="mt-2">Fecha de nacimiento<span class="text-danger">*</span></label>
+                    <input class="w-100 index-input inline default-input" type="date" value={$usuario->getBirthday()} name="birthday" min=$hace_80_anios max=$hace_16_anios required />
+                </div>
+                
             </div>
 
-            <input class="button left-align" type="submit" value="Guardar">
+
+            <input class="btn-registro" type="submit" value="Cambiar">
+            <div class="clear"></div>
         EOS;
 
         return $formulario;
@@ -91,7 +104,6 @@ class FormularioEditDatosPersonales extends Form{
 
             $usuario = Usuario::buscaPorId($app->idUsuario());
             
-
             if (!$usuario) {
                 $this->errores[] = "Usuario no ha sido encontrado usando su id";
             } else {
@@ -103,10 +115,7 @@ class FormularioEditDatosPersonales extends Form{
                     $this->errores[] = "No se ha podido actualizar los datos";
                 }
             }
-        }
-        else{
-            //print("Hay errores");
-        }
+        }        
     }
 }
  
