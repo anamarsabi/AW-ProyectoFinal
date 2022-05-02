@@ -15,6 +15,9 @@ if ($app->usuarioLogueado()){
         case "mis_habitaciones.php":
             $app->doinclude("vistas/comun/detalles_mis_habitaciones.php");
             break;
+        case "mostrar_chat.php":
+            $app->doinclude("vistas/comun/historial_chats.php");
+            break;
     }   
 }
 

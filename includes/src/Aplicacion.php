@@ -504,5 +504,19 @@ class Aplicacion
         }
     }
 
+    public function setChat(Chat $chat){
+        $this->compruebaInstanciaInicializada();
+        $_SESSION['chat'] =  serialize($chat);
+    }
 
+    public function getChat(){
+        $this->compruebaInstanciaInicializada();
+        $chat = unserialize($_SESSION['chat']??"");
+        return $chat;
+    }
+
+    public function delChat(Chat $chat){
+        $this->compruebaInstanciaInicializada();
+        unset($_SESSION['chat']);
+    }
 }

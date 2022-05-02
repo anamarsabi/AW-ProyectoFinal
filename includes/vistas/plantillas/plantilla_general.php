@@ -33,7 +33,7 @@
             ?>
             
         </div>
-        <?= $javascript??"" ?>
+        <script src= "<?= $params['javascript'] ?>"></script>
     </body>
 </html>
 
