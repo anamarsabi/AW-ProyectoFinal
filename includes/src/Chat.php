@@ -13,12 +13,22 @@ class Chat{
     private $id_usuario;
     private $id_host;
     private $mensaje;
+      
     
-    public function __construct($id_usuario,$id_chat=null,$id_host,$mensaaje){
+    public function __construct($id_usuario, $id_host,){
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "SELECT * 
+                    FROM chat
+                    WHERE id_usuario ='$id_usuario' and id_host = '$id_host'";
 
-		    $this->$id_usuario = $id_usuario;
-        $this->$id_chat = $id_chat;
-        $this->$mensaje = $mensaje;
+        $result = $conn->query($sql);
+        if(empty($result)){
+            $this->$mensaje = "";
+        }else {
+            $row = $result->fetch_assoc();
+            $this->$mensaje = $row['mensaje'];
+        }
+	    $this->$id_usuario = $id_usuario;
         $this->$id_host = $id_host;
     }
 
@@ -26,7 +36,7 @@ class Chat{
     {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        
+        //comprobar si no existe 
         $query = sprintf("INSERT INTO chat (id_usuario, id_host, mensaje)  
                         VALUES ('%s','%s', '%s')"
             , $conn->real_escape_string($chat->id_usuario)
@@ -133,6 +143,11 @@ class Chat{
   public function getMensaje()
   {
       return $this->mensaje;
+  }
+
+  public function setMensaje($msg)
+  {
+    $this->mensaje = $msg;
   }
 
   public function getIdhost()

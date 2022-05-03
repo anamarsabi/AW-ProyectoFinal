@@ -7,13 +7,18 @@ use es\ucm\fdi\aw\Form;
 class FormularioContacto extends Form
 {
     public function __construct() {
+
+        parent::__construct('formBusqueda', [
+            'action' =>  Aplicacion::getInstance()->resuelve('/barra_busqueda.php'),
+            'urlRedireccion' => Aplicacion::getInstance()->resuelve('/mostrar_chat.php')]);
+
+
         $app = Aplicacion::getInstance();
         $piso = $app->getPiso();
         $id_host = $piso->getIdHost(); 
-        $user_host = Usuario::buscaPorId($id_host);
-        
-        parent::__construct('formContacto', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/mostrar_chat.php')]);
-    }
+        new \es\ucm\fdi\aw\Chat($app->idUsuario(), $id_host);   
+        $app->setChat($chat);     
+    } 
     
     protected function generaCamposFormulario($datos)
     {
@@ -45,21 +50,21 @@ class FormularioContacto extends Form
     protected function procesaFormulario($datos)
     {       
         $app = Aplicacion::getInstance();
-        $chat->getChat($app->getIdUsuario());
-
+        $chat = $app->getChat();
+        
         $this->errores = [];
-        $mensaje = $datos['msg'] ?? '';
-        if(empty($mensaje))
+        $msg = $datos['msg'] ?? '';
+        if(empty($msg))
         {
             $this->errores['msg'] = "El mensaje no puede estar vacío.";
         }
 
+        $mensaje = $chat->getMensaje();
+        $mensaje = $mensaje ?? $msg;
+        
+        $app->setContexo('mostrar_chat.php')
 
-        $piso = $app->getPiso();
-        $id_piso = $piso->getId();
-        $app->putAtributoPeticion("id_piso", $id_piso);
-
-        $res = $app->resuelve('/mostrar_piso.php');
+        $res = $app->resuelve('/mostrar_chat.php');
 
         return $res;
         
