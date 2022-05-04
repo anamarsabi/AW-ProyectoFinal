@@ -11,7 +11,7 @@ $app->putAtributoPeticion("id_habitacion", $id_habitacion);
 if(es\ucm\fdi\aw\Habitacion::habitacionPerteneceAHost($id_host, $id_habitacion)){
     $formulario = new  es\ucm\fdi\aw\usuarios\FormularioEditDatosHabitacion();
     $url_redireccion = '/edit_habitacion.php';
-    $imagenes = es\ucm\fdi\aw\Imagen::getHTMLImagenesPorIdEntidad($id_habitacion, $url_redireccion, true);
+    $imagenes = es\ucm\fdi\aw\Imagen::getHTMLImagenesPorId_habitacion($id_habitacion, $url_redireccion, true);
 
     $html_form = $formulario->gestiona();
 

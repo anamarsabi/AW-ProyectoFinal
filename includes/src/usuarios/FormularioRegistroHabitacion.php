@@ -214,10 +214,10 @@ class FormularioRegistroHabitacion extends Form
                     $tmp_name = $_FILES['archivos']['tmp_name'][$i];
         
                     $imagen = Imagen::crea($nombre, $mimeType, '', $hab->id_habitacion);
-                    $imagen->guarda();
+                    $imagen->guarda_habitacion();
                     $fichero = "{$imagen->id}.{$extension}";
                     $imagen->setRuta($fichero);
-                    $imagen->guarda();
+                    $imagen->guarda_habitacion();
                     $ruta = implode(DIRECTORY_SEPARATOR, [RUTA_ALMACEN_PUBLICO, $fichero]);
                     if (!move_uploaded_file($tmp_name, $ruta)) {
                         $this->errores['archivos'] = 'Error al mover el archivo';

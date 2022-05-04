@@ -25,7 +25,7 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
 
             $precio = $h->detalles['precio'];
            
-            $html_img = Imagen::getPortada($h->id_habitacion);
+            $html_img = Imagen::getPortadaHabitacion($h->id_habitacion);
         
             $contenido.= <<<EOS
                 <div class="centrado card">

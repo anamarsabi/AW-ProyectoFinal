@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-04-2022 a las 20:12:29
+-- Tiempo de generación: 04-05-2022 a las 10:16:23
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -132,7 +132,29 @@ INSERT INTO `habitaciones` (`id_habitacion`, `id_roomie`, `id_piso`, `cama_cm`, 
 (5, 23, 13, 90, 0, 350, 1, 'Habitación de 30m2, muy luminosa y bien aclimatada', '2022-04-19'),
 (6, 24, 13, 90, 1, 450, 1, 'Habitación de 50m2, muy luminosa y bien aclimatada, cuenta con baño propio.', '2022-04-20'),
 (7, 25, 13, 120, 1, 400, 1, 'Habitación muy luminosa, con baño propio.', '2022-05-05'),
-(8, 0, 16, 90, 1, 550, 1, 'Esta habitacion est&aacute; orientada al este, con lo que dispone de gran cantidad de luz natural. Adem&aacute;s cuenta con un ba&ntilde;o privado con plato de ducha. Dispone de armario, escritorio, silla de oficina, cama y ropa de cama.', '2022-04-30');
+(8, 0, 16, 90, 1, 550, 1, 'Esta habitacion est&aacute; orientada al este, con lo que dispone de gran cantidad de luz natural. Adem&aacute;s cuenta con un ba&ntilde;o privado con plato de ducha. Dispone de armario, escritorio, silla de oficina, cama y ropa de cama.', '2022-05-05');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `imagenes_habitaciones`
+--
+
+CREATE TABLE `imagenes_habitaciones` (
+  `id` int(11) NOT NULL,
+  `ruta` varchar(20) NOT NULL,
+  `nombre` varchar(20) NOT NULL,
+  `mimeType` varchar(30) NOT NULL,
+  `id_habitacion` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `imagenes_habitaciones`
+--
+
+INSERT INTO `imagenes_habitaciones` (`id`, `ruta`, `nombre`, `mimeType`, `id_habitacion`) VALUES
+(1, '1.jpg', 'habitacion.jpg', 'image/jpeg', 8),
+(2, '2.jpg', 'habitacion2.jpg', 'image/jpeg', 8);
 
 -- --------------------------------------------------------
 
@@ -344,6 +366,12 @@ ALTER TABLE `habitaciones`
   ADD KEY `id_piso` (`id_piso`);
 
 --
+-- Indices de la tabla `imagenes_habitaciones`
+--
+ALTER TABLE `imagenes_habitaciones`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `imagenes_pisos`
 --
 ALTER TABLE `imagenes_pisos`
@@ -407,10 +435,16 @@ ALTER TABLE `habitaciones`
   MODIFY `id_habitacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT de la tabla `imagenes_habitaciones`
+--
+ALTER TABLE `imagenes_habitaciones`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `imagenes_pisos`
 --
 ALTER TABLE `imagenes_pisos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `pisos`

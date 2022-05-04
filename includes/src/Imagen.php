@@ -41,7 +41,7 @@ class Imagen
 
     public static function buscaPorId($idImagen)
     {
-        $result = null;
+        $result = [];
 
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
@@ -49,7 +49,27 @@ class Imagen
         $rs = $conn->query($query);
         if ($rs) {
             while ($fila = $rs->fetch_assoc()) {
-                $result = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila['id'], $fila['id_piso']);
+                $result[] = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila['id'], $fila['id_piso']);
+            }
+            $rs->free();
+        } else {
+            error_log($conn->error);
+        }
+
+        return $result;
+    }
+
+    public static function buscaPorId_habitacion($idImagen)
+    {
+        $result = [];
+
+        $app = Aplicacion::getInstance();
+        $conn = $app->getConexionBd();
+        $query = sprintf('SELECT * FROM imagenes_habitaciones WHERE id = %d', intval($idImagen));
+        $rs = $conn->query($query);
+        if ($rs) {
+            while ($fila = $rs->fetch_assoc()) {
+                $result[] = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila['id'], $fila['id_habitacion']);
             }
             $rs->free();
         } else {
@@ -109,6 +129,36 @@ class Imagen
         return $html_imagenes;
     }
 
+    public static function getHTMLImagenesPorId_habitacion($id, $url_redireccion="", $delForm=false)
+    {
+        /* https://www.w3schools.com/css/css3_images.asp */
+        $result = self::buscaPorId_habitacion($id);
+        $total = count($result);
+        $html_imagenes ="";
+        $html_imagenes .=<<<EOF
+            <h2>Imagenes: {$total} </h2>
+            <div class="flex-wrapper">
+        EOF;
+       
+        foreach($result as $imagen)
+        {
+            $form = $delForm
+                        ?(new FormularioBotonDeleteImagen($imagen->id, $url_redireccion))->gestiona()
+                        :"";
+            $html_imagenes .=<<<EOF
+                <div class="polaroid w-100p mx-1e">
+                    <img class="w-100" src="almacenPublico/$imagen->ruta">
+                    <div class="container-texto">
+                        <p>{$imagen->nombre}</p>
+                        $form
+                    </div>
+                </div>
+            EOF;
+        }
+        $html_imagenes .= "</div>";
+        return $html_imagenes;
+    }
+
     public static function getPortada($id)
     {
         $html_portada ="";
@@ -132,7 +182,7 @@ class Imagen
     public static function getPortadaHabitacion($id_hab)
     {
         $html_portada ="";
-        $result = self::buscaPorIdEntidadHabitacion($id_hab);
+        $result = self::buscaPorId_habitacion($id_hab);
         if (count($result)===0)
         {
             $html_portada .=<<<EOF
@@ -174,6 +224,31 @@ class Imagen
         return $result;
     }
 
+    private static function inserta_habitacion($imagen)
+    {
+        $result = false;
+
+        $app = Aplicacion::getInstance();
+        $conn = $app->getConexionBd();
+        $query = sprintf(
+            "INSERT INTO imagenes_habitaciones (ruta, nombre, mimeType, id_habitacion) VALUES ('%s', '%s', '%s', %s)",
+            $conn->real_escape_string($imagen->ruta),
+            $conn->real_escape_string($imagen->nombre),
+            $conn->real_escape_string($imagen->mimeType),
+            $imagen->id_piso
+        );
+
+        $result = $conn->query($query);
+        if ($result) {
+            $imagen->id = $conn->insert_id;
+            $result = $imagen;
+        } else {
+            error_log($conn->error);
+        }
+
+        return $result;
+    }
+
     private static function actualiza($imagen)
     {
         $result = false;
@@ -198,9 +273,38 @@ class Imagen
         return $result;
     }
 
+    private static function actualiza_habitacion($imagen)
+    {
+        $result = false;
+
+        $app = Aplicacion::getInstance();
+        $conn = $app->getConexionBd();
+        $query = sprintf(
+            "UPDATE imagenes_habitaciones SET ruta = '%s', nombre = '%s', mimeType = '%s', id_habitacion = %s WHERE id = %d",
+            $conn->real_escape_string($imagen->ruta),
+            $conn->real_escape_string($imagen->nombre),
+            $conn->real_escape_string($imagen->mimeType),
+            $conn->real_escape_string($imagen->id_piso),
+            $imagen->id
+        );
+        $result = $conn->query($query);
+        if (!$result) {
+            error_log($conn->error);
+        } else if ($conn->affected_rows != 1) {
+            error_log(__CLASS__ . ": Se han actualizado '$conn->affected_rows' !");
+        }
+
+        return $result;
+    }
+
     private static function borra($imagen)
     {
         return self::borraPorId($imagen->id);
+    }
+
+    private static function borra_habitacion($imagen)
+    {
+        return self::borraPorId_habitacion($imagen->id);
     }
 
     public static function borraPorId($idImagen)
@@ -209,6 +313,22 @@ class Imagen
 
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("DELETE FROM imagenes_pisos WHERE id = %d", intval($idImagen));
+        $result = $conn->query($query);
+        if (!$result) {
+            error_log($conn->error);
+        } else if ($conn->affected_rows != 1) {
+            error_log("Se han borrado '$conn->affected_rows' !");
+        }
+
+        return $result;
+    }
+
+    public static function borraPorId_habitacion($idImagen)
+    {
+        $result = false;
+
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("DELETE FROM imagenes_habitaciones WHERE id = %d", intval($idImagen));
         $result = $conn->query($query);
         if (!$result) {
             error_log($conn->error);
@@ -286,6 +406,17 @@ class Imagen
             self::inserta($this);
         } else {
             self::actualiza($this);
+        }
+
+        return $this;
+    }
+
+    public function guarda_habitacion()
+    {
+        if (!$this->id) {
+            self::inserta_habitacion($this);
+        } else {
+            self::actualiza_habitacion($this);
         }
 
         return $this;
