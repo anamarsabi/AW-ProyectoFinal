@@ -59,17 +59,17 @@ class Imagen
         return $result;
     }
 
-    public static function buscaPorId_habitacion($idImagen)
+    public static function buscaPorIdEntidad($id, $tabla="imagenes_pisos", $entidad="id_piso")
     {
         $result = [];
 
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
-        $query = sprintf('SELECT * FROM imagenes_habitaciones WHERE id = %d', intval($idImagen));
+        $query = sprintf('SELECT * FROM '.$tabla.' WHERE '.$entidad.' = %d', intval($id));
         $rs = $conn->query($query);
         if ($rs) {
             while ($fila = $rs->fetch_assoc()) {
-                $result[] = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila['id'], $fila['id_habitacion']);
+                $result[] = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila[$entidad], $fila['id']);
             }
             $rs->free();
         } else {
@@ -78,31 +78,22 @@ class Imagen
 
         return $result;
     }
-
-    public static function buscaPorIdEntidad($id_piso)
+    
+    public static function getHTMLImagenes($datos)
     {
-        $result = [];
+        //Id de la entidad que tiene las imágenes
+        $id = $datos['id'];
+        //Si quiere o no el botón de borrar imagen
+        $delForm = $datos['delForm']??"false"; 
+        //Si quiere el botón de borrar, a dónde redirigir si se borra
+        $url_redireccion = $datos['url_redireccion']??"index.php"; 
+        //Nombre de la tabla en la BD
+        $tabla = $datos['tabla']??null; 
+        //Nombre de la columna id_entidad
+        $entidad = $datos['entidad']??null;
 
-        $app = Aplicacion::getInstance();
-        $conn = $app->getConexionBd();
-        $query = sprintf('SELECT * FROM imagenes_pisos WHERE id_piso = %d', intval($id_piso));
-        $rs = $conn->query($query);
-        if ($rs) {
-            while ($fila = $rs->fetch_assoc()) {
-                $result[] = new Imagen($fila['ruta'], $fila['nombre'], $fila['mimeType'], $fila['id_piso'], $fila['id']);
-            }
-            $rs->free();
-        } else {
-            error_log($conn->error);
-        }
-
-        return $result;
-    }
-
-    public static function getHTMLImagenesPorIdEntidad($id, $url_redireccion="", $delForm=false)
-    {
         /* https://www.w3schools.com/css/css3_images.asp */
-        $result = self::buscaPorIdEntidad($id);
+        $result = self::buscaPorIdEntidad($id, $tabla, $entidad);
         $total = count($result);
         $html_imagenes ="";
         $html_imagenes .=<<<EOF
@@ -129,40 +120,17 @@ class Imagen
         return $html_imagenes;
     }
 
-    public static function getHTMLImagenesPorId_habitacion($id, $url_redireccion="", $delForm=false)
+    public static function getPortada($datos)
     {
-        /* https://www.w3schools.com/css/css3_images.asp */
-        $result = self::buscaPorId_habitacion($id);
-        $total = count($result);
-        $html_imagenes ="";
-        $html_imagenes .=<<<EOF
-            <h2>Imagenes: {$total} </h2>
-            <div class="flex-wrapper">
-        EOF;
-       
-        foreach($result as $imagen)
-        {
-            $form = $delForm
-                        ?(new FormularioBotonDeleteImagen($imagen->id, $url_redireccion))->gestiona()
-                        :"";
-            $html_imagenes .=<<<EOF
-                <div class="polaroid w-100p mx-1e">
-                    <img class="w-100" src="almacenPublico/$imagen->ruta">
-                    <div class="container-texto">
-                        <p>{$imagen->nombre}</p>
-                        $form
-                    </div>
-                </div>
-            EOF;
-        }
-        $html_imagenes .= "</div>";
-        return $html_imagenes;
-    }
+        //Id de la entidad que tiene las imágenes
+        $id = $datos['id'];
+        //Nombre de la tabla en la BD
+        $tabla = $datos['tabla']??null; 
+        //Nombre de la columna id_entidad
+        $entidad = $datos['entidad']??null;
 
-    public static function getPortada($id)
-    {
         $html_portada ="";
-        $result = self::buscaPorIdEntidad($id);
+        $result = self::buscaPorIdEntidad($id, $tabla, $entidad);
         if (count($result)===0)
         {
             $html_portada .=<<<EOF
@@ -179,38 +147,18 @@ class Imagen
         return $html_portada;
     }
 
-    public static function getPortadaHabitacion($id_hab)
-    {
-        $html_portada ="";
-        $result = self::buscaPorId_habitacion($id_hab);
-        if (count($result)===0)
-        {
-            $html_portada .=<<<EOF
-                <img class="h-100 w-10e fpiso" src="img/logo.png" alt="Imagen">
-            EOF;
-        }
-        else
-        {
-            $imagen = $result[0];
-            $html_portada .=<<<EOF
-                <img class="h-100 w-10e" src="almacenPublico/$imagen->ruta">
-            EOF;
-        }
-        return $html_portada;
-    }
-
-    private static function inserta($imagen)
+    private static function inserta($imagen, $entidad="id_piso", $tabla="imagenes_pisos")
     {
         $result = false;
 
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
         $query = sprintf(
-            "INSERT INTO imagenes_pisos (ruta, nombre, mimeType, id_piso) VALUES ('%s', '%s', '%s', %s)",
+            "INSERT INTO ".$tabla." (ruta, nombre, mimeType, ".$entidad.") VALUES ('%s', '%s', '%s', %s)",
             $conn->real_escape_string($imagen->ruta),
             $conn->real_escape_string($imagen->nombre),
             $conn->real_escape_string($imagen->mimeType),
-            $imagen->id_piso
+            $imagen->id_entidad
         );
 
         $result = $conn->query($query);
@@ -249,18 +197,21 @@ class Imagen
         return $result;
     }
 
-    private static function actualiza($imagen)
+
+    
+
+    private static function actualiza($imagen, $entidad="id_piso", $tabla="imagenes_pisos")
     {
         $result = false;
 
         $app = Aplicacion::getInstance();
         $conn = $app->getConexionBd();
         $query = sprintf(
-            "UPDATE imagenes_pisos SET ruta = '%s', nombre = '%s', mimeType = '%s', id_piso = %s WHERE id = %d",
+            "UPDATE ".$tabla." SET ruta = '%s', nombre = '%s', mimeType = '%s', ".$entidad." = %s WHERE id = %d",
             $conn->real_escape_string($imagen->ruta),
             $conn->real_escape_string($imagen->nombre),
             $conn->real_escape_string($imagen->mimeType),
-            $conn->real_escape_string($imagen->id_piso),
+            $conn->real_escape_string($imagen->id_entidad),
             $imagen->id
         );
         $result = $conn->query($query);
@@ -349,14 +300,14 @@ class Imagen
 
     private $mimeType;
 
-    private $id_piso;
+    private $id_entidad;
 
-    private function __construct($ruta, $nombre, $mimeType, $id_piso, $id = NULL)
+    private function __construct($ruta, $nombre, $mimeType, $id_entidad, $id = NULL)
     {
         $this->ruta = $ruta;
         $this->nombre = $nombre;
         $this->mimeType = $mimeType;
-        $this->id_piso = $id_piso;
+        $this->id_entidad = $id_entidad;
         $this->id = intval($id);
     }
 
@@ -390,37 +341,37 @@ class Imagen
         return $this->mimeType;
     }
 
-    public function getId_piso()
+    public function getId_entidad()
     {
-        return $this->id_piso;
+        return $this->id_entidad;
     }
 
-    public function setId_piso($nuevoId_piso)
+    public function setId_entidad($nuevo)
     {
-        $this->id_piso = $nuevoId_piso;
+        $this->id_entidad = $nuevo;
     }
 
-    public function guarda()
+    public function guarda($entidad="id_piso", $tabla="imagenes_pisos")
     {
         if (!$this->id) {
-            self::inserta($this);
+            self::inserta($this, $entidad, $tabla);
         } else {
-            self::actualiza($this);
+            self::actualiza($this, $entidad, $tabla);
         }
 
         return $this;
     }
 
-    public function guarda_habitacion()
-    {
-        if (!$this->id) {
-            self::inserta_habitacion($this);
-        } else {
-            self::actualiza_habitacion($this);
-        }
+    // public function guarda_habitacion()
+    // {
+    //     if (!$this->id) {
+    //         self::inserta_habitacion($this);
+    //     } else {
+    //         self::actualiza_habitacion($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function borrate()
     {
@@ -430,6 +381,55 @@ class Imagen
         return false;
     }
 
+
+    public static function insertaImagen($datos){
+
+        $tam = count($_FILES['archivos']['name']);
+        $errores = Array();
+        if($tam && $_FILES['archivos']['name'][0]==""){$tam=0;}
+
+        $id_entidad = $datos['id_entidad'];
+        $carpeta = $datos['carpeta'];
+        $entidad = $datos['entidad'];
+        $tabla = $datos['tabla'];
+
+
+        for($i=0; $i<$tam; $i++){
+            $nombre = $_FILES['archivos']['name'][$i];
+            $ok = self::check_file_uploaded_name($nombre) && self::check_file_uploaded_length($nombre);
+
+            /* 2. comprueba si la extensiÃ³n estÃ¡ permitida */
+            $extension = pathinfo($nombre, PATHINFO_EXTENSION);
+            $ok = $ok && in_array($extension, self::EXTENSIONES_PERMITIDAS);
+
+            /* 3. comprueba el tipo mime del archivo corresponde a una imagen image/* */
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->file($_FILES['archivos']['tmp_name'][$i]);
+
+            $ok = preg_match('/image\/*./', $mimeType);
+
+            if (!$ok) {
+                $errores[] = 'El archivo tiene un nombre o tipo no soportado';
+            }
+
+            if (count($errores) == 0) {
+           
+                $tmp_name = $_FILES['archivos']['tmp_name'][$i];
+
+                $imagen = Imagen::crea($nombre, $mimeType, '', $id_entidad);
+                $imagen->guarda($entidad, $tabla);
+                $fichero = "{$imagen->id}.{$extension}";
+                $imagen->setRuta($carpeta.'/'.$fichero);
+                $imagen->guarda($entidad, $tabla);
+                $ruta = implode(DIRECTORY_SEPARATOR, [RUTA_ALMACEN_PUBLICO, $carpeta, $fichero]);
+                if (!move_uploaded_file($tmp_name, $ruta)) {
+                    $errores[] = 'Error al mover el archivo';
+                }
+            }
+
+            return $errores;
+        }
+    }
 
 
 

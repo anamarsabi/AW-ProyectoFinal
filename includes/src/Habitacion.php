@@ -31,8 +31,8 @@ class Habitacion
         $this->detalles['fecha_disponibilidad'] = $detalles['fecha_disponibilidad'];
     }
 
-    public static function crea($id_piso, $detalles){
-        $hab = new Habitacion($id_piso);
+    public static function crea($id_hab, $detalles){
+        $hab = new Habitacion($id_hab);
         $hab->aniadeDetalles($detalles);
         return $hab->guarda();
     }
@@ -194,59 +194,6 @@ class Habitacion
         return $this->id_roomie;
     }
 
-    // public function imprimirCorto()
-    // {
-    //     $imp = "";
-    //     $imp .= <<<EOF
-    //     <div id = "piso">
-    //             <h1>$this->calle</h1>
-    //             <p>Habitaciones desde $this->precio_min € - $this->precio_max € al mes</p>
-    //             <p>Número de plazas libres $this->plazas_libres</p>
-    //     </div>
-    //     EOF;
-
-    //     return $imp;
-    // }
-
-    // public function imprimirDetalles()
-    // {
-    //     $imp = "";
-    //     $imp .= <<<EOF
-    //         <h1>$this->calle</h1>
-    //         <a href="contacto.php">Contactar</a>
-    //         <div class="imagenes">
-    //             <p>Fotos</p>
-    //         </div>
-    //         <p>Habitaciones desde $this->precio_min € - $this->precio_max € al mes</p>
-    //         <p>$this->descripcion_piso</p>
-    //         <p>Falta servicios</p>
-    //         <p>Falta roomies</p>
-
-    // public function imprimirDetalles(){
-    //     $detalles = <<<EOS
-    //         <div class="centrado card">
-    //             <div class="card-header">
-    //                 {$this->calle} - Avenida Rivas de Somewhere, 4, 6A
-    //             </div>
-    //             <div class="card-body">
-    //                 <ul class="inline-block clear-style clear-pm">
-    //                     <li>
-    //                         <img class="va-middle h-100 w-10e" src="img/logo.png" alt="Imagen"></img>
-    //                     </li>
-    //                     <li>
-    //                         <p>2/3 habitaciones libres</p>
-    //                         <p>120-560 euros/mes</p>
-    //                         <p>
-    //                             <button>Editar detalles</button>
-    //                             <button>Editar habitaciones</button>
-    //                         </p>
-    //                     </li>
-    //                 </ul>
-    //             </div>
-    //         </div>
-    //     EOS;
-    //     return $detalles;
-    // }
 
 
     public function cambiaDatos($detalles)

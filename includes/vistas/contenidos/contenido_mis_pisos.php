@@ -35,8 +35,6 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
             }
 
             if($num_libres==0&&$num_ocupadas==0){
-                
-
                 $iconos_habitaciones .='<p>No se ha registrado ninguna habitación. Añade una </p>';
             }
 
@@ -46,7 +44,13 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
                 ?"<div class='precio'>{$p->getPrecio_min()} - {$p->getPrecio_max()} €/mes</div>"
                 : "";
             
-            $html_img = Imagen::getPortada($p->id);
+            $datos = [
+                'id'=>$p->id,
+                'tabla'=>'imagenes_pisos',
+                'entidad'=>'id_piso'
+            ];
+
+            $html_img = Imagen::getPortada($datos);
 
             $contenido.= <<<EOS
                 <div class="centrado card">

@@ -24,9 +24,15 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
             $boton_eliminar = new \es\ucm\fdi\aw\usuarios\FormularioBotonDeleteHabitacion($h->id_habitacion);
 
             $precio = $h->detalles['precio'];
-           
-            $html_img = Imagen::getPortadaHabitacion($h->id_habitacion);
-        
+            
+            $datos = [
+                'id'=>$h->id_habitacion,
+                'tabla'=>'imagenes_habitaciones',
+                'entidad'=>'id_habitacion'
+            ];
+
+            $html_img = Imagen::getPortada($datos);
+
             $contenido.= <<<EOS
                 <div class="centrado card">
                     <div class="card-header">

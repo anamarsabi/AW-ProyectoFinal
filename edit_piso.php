@@ -12,7 +12,16 @@ if(es\ucm\fdi\aw\Piso::pisoPerteneceAHost($id_host, $id_piso)){
     $formulario = new  es\ucm\fdi\aw\usuarios\FormularioEditDatosPiso();
     $html_form = $formulario->gestiona();
     $url_redireccion = '/edit_piso.php';
-    $imagenes = es\ucm\fdi\aw\Imagen::getHTMLImagenesPorIdEntidad($id_piso, $url_redireccion, true);
+
+    $datos = [
+        'id'=>$id_piso,
+        'url_redireccion'=>$url_redireccion,
+        'delForm'=>true,
+        'tabla'=>'imagenes_pisos',
+        'entidad'=>'id_piso'
+    ];
+
+    $imagenes = es\ucm\fdi\aw\Imagen::getHTMLImagenes($datos);
 
     $contenidoPrincipal = <<<EOF
         <div class='contenedor-principal'>

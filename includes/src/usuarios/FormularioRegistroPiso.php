@@ -196,108 +196,17 @@ class FormularioRegistroPiso extends Form
 
                 $piso = Piso::crea($id_host, $calle, $barrio, $ciudad, $detalles);
 
-                $tam = count($_FILES['archivos']['name']);
-                if($tam && $_FILES['archivos']['name'][0]==""){$tam=0;}
+                $datos = ['id_entidad'=>$piso->id,
+                            'carpeta'=>"pisos",
+                            'tabla'=>"imagenes_pisos",
+                            'entidad'=>"id_piso"];
 
-                for($i=0; $i<$tam; $i++){
-                    $nombre = $_FILES['archivos']['name'][$i];
-                    $ok = Imagen::check_file_uploaded_name($nombre) && Imagen::check_file_uploaded_length($nombre);
-        
-                    /* 1.b) Sanitiza el nombre del archivo (elimina los caracteres que molestan)
-                    $ok = self::sanitize_file_uploaded_name($nombre);
-                    */
-        
-                    /* 1.c) Utilizar un id de la base de datos como nombre de archivo */
-                    // Vamos a optar por esta opciÃ³n que es la que se implementa mÃ¡s adelante
-        
-                    /* 2. comprueba si la extensiÃ³n estÃ¡ permitida */
-                    $extension = pathinfo($nombre, PATHINFO_EXTENSION);
-                    $ok = $ok && in_array($extension, Imagen::EXTENSIONES_PERMITIDAS);
-        
-                    /* 3. comprueba el tipo mime del archivo corresponde a una imagen image/* */
-                    $finfo = new \finfo(FILEINFO_MIME_TYPE);
-                    $mimeType = $finfo->file($_FILES['archivos']['tmp_name'][$i]);
+                $errores = Imagen::insertaImagen($datos);
 
-                    $ok = preg_match('/image\/*./', $mimeType);
-        
-                    if (!$ok) {
-                        $this->errores['archivos'] = 'El archivo tiene un nombre o tipo no soportado';
-                    }
-        
-                    if (count($this->errores) > 0) {
-                        return;
-                    }
-        
-                    $tmp_name = $_FILES['archivos']['tmp_name'][$i];
-        
-                    $imagen = Imagen::crea($nombre, $mimeType, '', $piso->id);
-                    $imagen->guarda();
-                    $fichero = "{$imagen->id}.{$extension}";
-                    $imagen->setRuta($fichero);
-                    $imagen->guarda();
-                    $ruta = implode(DIRECTORY_SEPARATOR, [RUTA_ALMACEN_PUBLICO, $fichero]);
-                    if (!move_uploaded_file($tmp_name, $ruta)) {
-                        $this->errores['archivos'] = 'Error al mover el archivo';
-                    }
-
+                foreach($errores as $err){
+                    $this->errores['archivos'] = $err;
                 }
-            }
-
-            
-
+            }        
         }
-
-        
     }
-
-    
-    /**
-     * Check $_FILES[][name]
-     *
-     * @param (string) $filename - Uploaded file name.
-     * @author Yousef Ismaeil Cliprz
-     * @See http://php.net/manual/es/function.move-uploaded-file.php#111412
-     */
-    private static function check_file_uploaded_name($filename)
-    {
-        return (bool) ((preg_match("`^[-0-9A-Z_\.]+$`i",$filename)) ? true : false);
-    }
-    /**
-     * Sanitize $_FILES[][name]. Remove anything which isn't a word, whitespace, number
-     * or any of the following caracters -_~,;[]().
-     *
-     * If you don't need to handle multi-byte characters you can use preg_replace
-     * rather than mb_ereg_replace.
-     * 
-     * @param (string) $filename - Uploaded file name.
-     * @author Sean Vieira
-     * @see http://stackoverflow.com/a/2021729
-     */
-    private static function sanitize_file_uploaded_name($filename)
-    {
-        /* Remove anything which isn't a word, whitespace, number
-     * or any of the following caracters -_~,;[]().
-     * If you don't need to handle multi-byte characters
-     * you can use preg_replace rather than mb_ereg_replace
-     * Thanks @Åukasz Rysiak!
-     */
-        $newName = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $filename);
-        // Remove any runs of periods (thanks falstro!)
-        $newName = mb_ereg_replace("([\.]{2,})", '', $newName);
-
-        return $newName;
-    }
-
-    /**
-     * Check $_FILES[][name] length.
-     *
-     * @param (string) $filename - Uploaded file name.
-     * @author Yousef Ismaeil Cliprz.
-     * @See http://php.net/manual/es/function.move-uploaded-file.php#111412
-     */
-    private function check_file_uploaded_length($filename)
-    {
-        return (bool) ((mb_strlen($filename, 'UTF-8') < 250) ? true : false);
-    }
-
 }

@@ -198,49 +198,19 @@ class FormularioEditDatosHabitacion extends Form{
                     $this->errores[] = "No se ha podido actualizar los datos";
                 }
                 else{
-                    $tam = count($_FILES['archivos']['name']);
-                    if($tam && $_FILES['archivos']['name'][0]==""){$tam=0;}
+                    $datos = ['id_entidad'=>$hab->id_habitacion,
+                        'carpeta'=>"habitaciones",
+                        'tabla'=>"imagenes_habitaciones",
+                        'entidad'=>"id_habitacion"];
 
-                    for($i=0; $i<$tam; $i++){
-                        $nombre = $_FILES['archivos']['name'][$i];
-                        $ok = Imagen::check_file_uploaded_name($nombre) && Imagen::check_file_uploaded_length($nombre);
-            
-                        $extension = pathinfo($nombre, PATHINFO_EXTENSION);
-                        $ok = $ok && in_array($extension, Imagen::EXTENSIONES_PERMITIDAS);
-            
+                    $errores = Imagen::insertaImagen($datos);
 
-                        $finfo = new \finfo(FILEINFO_MIME_TYPE);
-                        $mimeType = $finfo->file($_FILES['archivos']['tmp_name'][$i]);
-
-                        $ok = preg_match('/image\/*./', $mimeType);
-            
-                        if (!$ok) {
-                            $this->errores['archivos'] = 'El archivo tiene un nombre o tipo no soportado';
-                        }
-            
-                        if (count($this->errores) > 0) {
-                            return;
-                        }
-            
-                        $tmp_name = $_FILES['archivos']['tmp_name'][$i];
-            
-                        $imagen = Imagen::crea($nombre, $mimeType, '', $hab->id_habitacion);
-                        $imagen->guarda_habitacion();
-                        $fichero = "{$imagen->id}.{$extension}";
-                        $imagen->setRuta($fichero);
-                        $imagen->guarda_habitacion();
-                        $ruta = implode(DIRECTORY_SEPARATOR, [RUTA_ALMACEN_PUBLICO, $fichero]);
-                        if (!move_uploaded_file($tmp_name, $ruta)) {
-                            $this->errores['archivos'] = 'Error al mover el archivo';
-                        }
+                    foreach($errores as $err){
+                        $this->errores['archivos'] = $err;
                     }
-
-                    $app->putAtributoPeticion("id_piso", $hab->id_piso);
                 }
-
             }
         }
-
     }
 }
  
