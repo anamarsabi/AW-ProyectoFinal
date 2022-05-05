@@ -79,7 +79,14 @@ else
 
         $iconos_habitaciones .= "</div>";
         */
-        $html_img = Imagen::getPortada($p->id);
+
+        $datos = [
+            'id'=>$p->id,
+            'tabla'=>'imagenes_pisos',
+            'entidad'=>'id_piso'
+        ];
+
+        $html_img = Imagen::getPortada($datos);
 
         $contenido.= <<<EOS
             <div class="centrado card">

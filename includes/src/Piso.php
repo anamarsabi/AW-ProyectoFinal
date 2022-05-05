@@ -318,7 +318,14 @@ class Piso
     
     public function imprimirDetalles(){
         //Fotos del piso
-        $html_imagenes_piso = Imagen::getHTMLImagenesPorIdEntidad($this->id);
+        $datos = [
+            'id'=>$this->id,
+            'delForm'=>false,
+            'tabla'=>'imagenes_pisos',
+            'entidad'=>'id_piso'
+        ];
+        $html_imagenes_piso = Imagen::getHTMLImagenes($datos);
+        
 
 
         // Parte roomies del piso
