@@ -1,6 +1,8 @@
 <?php
     require_once __DIR__.'/../../config.php';
+    use es\ucm\fdi\aw\Vista;
 
+    $contenidoAdmin="";
 
     $formulario_dp = new es\ucm\fdi\aw\usuarios\FormularioEditDatosPersonales();
     $formulario_cc = new es\ucm\fdi\aw\usuarios\FormularioCambioContrasenia();
@@ -12,10 +14,23 @@
     $correo= es\ucm\fdi\aw\Aplicacion::getInstance()->correo();
     $id= es\ucm\fdi\aw\Aplicacion::getInstance()->idUsuario();
     $rol= es\ucm\fdi\aw\usuarios\Usuario::obtieneRol($id);
+    $app = es\ucm\fdi\aw\Aplicacion::getInstance();
 
-    if($rol==1){
+
+    if($app->tieneRol(es\ucm\fdi\aw\usuarios\Usuario::ROOMIE_ROLE)){
         $html_form_dr = $formulario_dr->gestiona();
-    }else{
+        $contenidoAdmin="No tiene permisos de acceso a esta sección";
+
+    }elseif($app->tieneRol(es\ucm\fdi\aw\usuarios\Usuario::ADMIN_ROLE)){
+        $html_form_dr = null;
+        $vista = Vista::getInstance();
+        $paths = ["vistas/comun/admin.php"];
+        $vista->carga_contenido($paths);
+        $contenidoAdmin = $vista->get_contenido();
+
+    }
+    else{
+        $contenidoAdmin="No tiene permisos de acceso a esta sección";
         $html_form_dr = null;
     }
 
@@ -75,6 +90,20 @@
                 </div>
             </div>
         </div>
+
+        <div class="centrado pagina id_4">
+
+            <div class="centrado card">
+                <div class="card-header">
+                    Consola de administración
+                </div>
+                <div class="card-body">
+                    $contenidoAdmin
+                   
+                </div>
+            </div>
+        </div>
+  
 
         
     EOS;

@@ -192,7 +192,7 @@ class Usuario
         return self::borraPorId($usuario->id);
     }
     
-    private static function borraPorId($idUsuario)
+    public static function borraPorId($idUsuario)
     {
         if (!$idUsuario) {
             return false;
@@ -387,4 +387,22 @@ class Usuario
         }
         return $result;
     }
+
+    public static function getUsuarios()
+    {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * FROM usuarios");
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+            while ($fila = $rs->fetch_assoc()) {
+                $result[] = new Usuario($fila['correo'], $fila['nombre'], $fila['apellido1'],  $fila['apellido2'], $fila['fecha_nacimiento'],$fila['contrasenia'], $fila['id_usuario']);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
+
 }

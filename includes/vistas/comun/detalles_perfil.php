@@ -13,6 +13,15 @@
                 </a>
             </li>
         EOS;
+    }elseif($app->tieneRol(es\ucm\fdi\aw\usuarios\Usuario::ADMIN_ROLE)){
+
+        $datos_caracteristico_tipo_usuario = <<<EOS
+            <li>
+                <a class="clear-text-deco" href="mi_perfil.php?pag=id_4">
+                     Administración
+                </a>
+            </li>
+    EOS;
     }
 
 ?>
@@ -30,23 +39,11 @@
             </a>
         </li>
 
-
+     
         <?=$datos_caracteristico_tipo_usuario?>
         
     </ul>
 </div>
-
-
-<!-- <li class="detalles-list-item active">
-            <a onclick="transicion('id_1')">
-                Datos personales
-            </a>
-        </li>
-        <li class="detalles-list-item id_2">
-            <a onclick="transicion('id_2')">
-                Datos de acceso
-            </a>
-        </li> -->
 
 
 <script>
