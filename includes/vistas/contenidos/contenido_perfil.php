@@ -24,7 +24,7 @@
     }elseif($app->tieneRol(es\ucm\fdi\aw\usuarios\Usuario::ADMIN_ROLE)){
         $html_form_dr = null;
         $vista = Vista::getInstance();
-        $paths = ["vistas/comun/admin.php"];
+        $paths = ["vistas/comun/admin_usuarios.php","vistas/comun/admin_pisos.php"];
         $vista->carga_contenido($paths);
         $contenidoAdmin = $vista->get_contenido();
 

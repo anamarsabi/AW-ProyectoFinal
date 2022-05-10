@@ -388,6 +388,19 @@ class Usuario
         return $result;
     }
 
+    public static function obtieneNombreRol($rolUsuario)
+    {
+       if( $rolUsuario==0){
+           $result="Admin";
+       }elseif( $rolUsuario==1){
+            $result="Roomie";
+       }else{
+            $result="Host";
+       }
+
+        return $result;
+    }
+
     public static function getUsuarios()
     {
         $conn = Aplicacion::getInstance()->getConexionBd();

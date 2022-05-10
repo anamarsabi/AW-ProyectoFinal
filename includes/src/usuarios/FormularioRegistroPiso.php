@@ -8,14 +8,18 @@ use es\ucm\fdi\aw\Piso;
 use es\ucm\fdi\aw\Imagen;
 
 class FormularioRegistroPiso extends Form
-{
-
+{   private $admin_host_aux;
+ 
     public function __construct() {
         parent::__construct('formRegistroPiso', ['enctype' => 'multipart/form-data','urlRedireccion' => Aplicacion::getInstance()->resuelve('/mis_pisos.php')]);
     }
     
     protected function generaCamposFormulario($datosIniciales)
     {
+        $app = Aplicacion::getInstance();
+        $admin_host= $app->getAtributoPeticion("id_host");
+        $app->putAtributoPeticion("id_host", $admin_host);
+
         // Se generan los mensajes de error si existen.
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
         $erroresCampos = self::generaErroresCampos(['archivos', 'calle', 'barrio', 'ciudad', 'num_banios', 'descripcion'], $this->errores, 'span', array('class' => 'error text-danger'));
@@ -177,9 +181,16 @@ class FormularioRegistroPiso extends Form
         
         
         if (count($this->errores) === 0) {
+            $id_host="";  
             $app = Aplicacion::getInstance();
-            $id_host = $app->idUsuario();
-
+            $admin_host=$app->getAtributoPeticion("id_host");
+    
+            if($admin_host!=""){
+                $id_host= $admin_host;
+            }else{
+                $id_host = $app->idUsuario();
+            }
+            
             if(!$id_host){
                 $this->errores[] = "No se ha podido encontrar el usuario";
             }

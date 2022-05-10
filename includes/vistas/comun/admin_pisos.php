@@ -3,25 +3,22 @@
 $usuarios = es\ucm\fdi\aw\usuarios\Usuario::getUsuarios();
 $app =es\ucm\fdi\aw\Aplicacion::getInstance();
 
-$botonAgregarHost =  new \es\ucm\fdi\aw\usuarios\FormularioBotonAgregarHost();
-$botonAgregarRoomie = new \es\ucm\fdi\aw\usuarios\FormularioBotonAgregarRoomie();
+$botonAgregarPiso =  new \es\ucm\fdi\aw\usuarios\FormularioBotonRegistroPiso();
 
 $contenido = <<<EOS
     <div class="col-5 centrado index-banner-block">
-            <h1>Agregar Host</h1>
-            {$botonAgregarHost->gestiona()}
+            <h1>Agregar Pisos</h1>
+            {$botonAgregarPiso->gestiona()}
         </div> 
+
     <div class="col-5 centrado index-banner-block">
-            <h1>Agregar Roomie</h1>
-            {$botonAgregarRoomie->gestiona()}
-        </div> 
-    <div class="col-5 centrado index-banner-block">
-        <h1>Vista de usuarios</h1>
+        <h1>Vista de pisos</h1>
     </div> 
 EOS;
 
 if($usuarios){
     foreach ($usuarios as $usuario) {
+        $rol=$usuario->obtieneRol($usuario->getId());
         $botonEditarUsuario =  new \es\ucm\fdi\aw\usuarios\FormularioBotonEditUsuario($usuario->getId());
         $botonEliminarUsuario =  new \es\ucm\fdi\aw\usuarios\FormularioBotonEliminarUsuario($usuario->getId());
           $contenido.= <<<EOS
@@ -32,12 +29,10 @@ if($usuarios){
                     </div>
 
                     <div class="card-body">
-                       Primer Apellido: {$usuario->getApellido1()}
-                       Segundo Apellido: {$usuario->getApellido2()}
-                    </div>
-
+                       Id: #{$usuario->getId()}
+                     </div>
                     <div class="card-body">
-                       Segundo Apellido: {$usuario->getApellido2()}
+                        Apellidos: {$usuario->getApellido1()} {$usuario->getApellido2()}
                     </div>
 
                     <div class="card-body">
@@ -49,7 +44,7 @@ if($usuarios){
                     </div>
 
                     <div class="card-body">
-                        Id: {$usuario->getId()}
+                    Tipo de usuario: {$usuario->obtieneNombreRol($rol)}
                     </div>
 
                      <div class="card-body">

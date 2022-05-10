@@ -8,106 +8,110 @@ use es\ucm\fdi\aw\Imagen;
 
 $app= Aplicacion::getInstance();
 
-if($app->comprueba_permisos(Usuario::HOST_ROLE)){
-    $pisos = es\ucm\fdi\aw\Piso::getPisosPorIdHost($app->idUsuario());
+if($app->tieneRol(es\ucm\fdi\aw\usuarios\Usuario::ADMIN_ROLE)){
+    $contenido="<div class='centrado'> Se ha agregado el piso correctamente </div> ";
+}else{
 
-    if($pisos){
-        $contenido = "<div class='centrado'>";
-        $ruta_color = $app->resuelve('/img/door_color.svg'); 
-        $ruta = $app->resuelve('/img/door.svg'); 
+    if($app->comprueba_permisos(Usuario::HOST_ROLE)){
+        $pisos = es\ucm\fdi\aw\Piso::getPisosPorIdHost($app->idUsuario());
 
-        foreach ($pisos as $p) {
-            $boton_editar_detalles =  new \es\ucm\fdi\aw\usuarios\FormularioBotonEditDetallesPiso($p->id);
-            $boton_eliminar = new \es\ucm\fdi\aw\usuarios\FormularioBotonDeletePiso($p->id);
-            $boton_ver_habitaciones = new \es\ucm\fdi\aw\usuarios\FormularioBotonVerHabitaciones($p->id);
+        if($pisos){
+            $contenido = "<div class='centrado'>";
+            $ruta_color = $app->resuelve('/img/door_color.svg'); 
+            $ruta = $app->resuelve('/img/door.svg'); 
 
-            $dict_status_habitacion = Piso::numHabOcupadasyLibresDelPiso($p->id);
-            $num_ocupadas = $dict_status_habitacion['ocupadas'];
-            $num_libres = $dict_status_habitacion['libres'];
+            foreach ($pisos as $p) {
+                $boton_editar_detalles =  new \es\ucm\fdi\aw\usuarios\FormularioBotonEditDetallesPiso($p->id);
+                $boton_eliminar = new \es\ucm\fdi\aw\usuarios\FormularioBotonDeletePiso($p->id);
+                $boton_ver_habitaciones = new \es\ucm\fdi\aw\usuarios\FormularioBotonVerHabitaciones($p->id);
 
-            $iconos_habitaciones = "<div class='rooms'>";
-            for($i=0;$i<$num_ocupadas;$i++){
-                $iconos_habitaciones .= '<img src="'.$ruta_color.'" alt="Hab. Ocupada '.$i.'" width="50" height="50">';
+                $dict_status_habitacion = Piso::numHabOcupadasyLibresDelPiso($p->id);
+                $num_ocupadas = $dict_status_habitacion['ocupadas'];
+                $num_libres = $dict_status_habitacion['libres'];
+
+                $iconos_habitaciones = "<div class='rooms'>";
+                for($i=0;$i<$num_ocupadas;$i++){
+                    $iconos_habitaciones .= '<img src="'.$ruta_color.'" alt="Hab. Ocupada '.$i.'" width="50" height="50">';
+                }
+
+                for($i=0;$i<$num_libres;$i++){
+                    $iconos_habitaciones .= '<img src="'.$ruta.'" alt="Hab. Libre '.$i.'" width="50" height="50">';
+                }
+
+                if($num_libres==0&&$num_ocupadas==0){
+                    $iconos_habitaciones .='<p>No se ha registrado ninguna habitación. Añade una </p>';
+                }
+
+                $iconos_habitaciones .= "</div>";
+
+                $rango_precios = $p->getPrecio_max()!=0
+                    ?"<div class='precio'>{$p->getPrecio_min()} - {$p->getPrecio_max()} €/mes</div>"
+                    : "";
+                
+                $datos = [
+                    'id'=>$p->id,
+                    'tabla'=>'imagenes_pisos',
+                    'entidad'=>'id_piso'
+                ];
+
+                $html_img = Imagen::getPortada($datos);
+
+                $contenido.= <<<EOS
+                    <div class="centrado card">
+                        <div class="card-header">
+                            {$p->getCalle()}
+                        </div>
+                        <div class="card-body">
+                        
+                            <div class="grid-container">
+                                {$html_img}
+                                
+                                $iconos_habitaciones
+                                $rango_precios
+
+                                <button class="clear-btn button more ">
+                                    <img class=h-20" src="img/three-dots-vertical.svg" alt="more options">
+                                </button>
+                                
+                                <div class="inline-block btns">
+                                    {$boton_editar_detalles->gestiona()}
+                                    {$boton_ver_habitaciones->gestiona()}
+                                    {$boton_eliminar->gestiona()}
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                EOS;
+
             }
-
-            for($i=0;$i<$num_libres;$i++){
-                $iconos_habitaciones .= '<img src="'.$ruta.'" alt="Hab. Libre '.$i.'" width="50" height="50">';
-            }
-
-            if($num_libres==0&&$num_ocupadas==0){
-                $iconos_habitaciones .='<p>No se ha registrado ninguna habitación. Añade una </p>';
-            }
-
-            $iconos_habitaciones .= "</div>";
-
-            $rango_precios = $p->getPrecio_max()!=0
-                ?"<div class='precio'>{$p->getPrecio_min()} - {$p->getPrecio_max()} €/mes</div>"
-                : "";
-            
-            $datos = [
-                'id'=>$p->id,
-                'tabla'=>'imagenes_pisos',
-                'entidad'=>'id_piso'
-            ];
-
-            $html_img = Imagen::getPortada($datos);
-
-            $contenido.= <<<EOS
+        }
+        else{
+            $contenido= <<<EOS
                 <div class="centrado card">
                     <div class="card-header">
-                        {$p->getCalle()}
+                        No tienes ningún piso todavía
                     </div>
                     <div class="card-body">
-                    
                         <div class="grid-container">
-                            {$html_img}
+                            <h2>Añade tu primer piso!</h2>
                             
-                            $iconos_habitaciones
-                            $rango_precios
-
-                            <button class="clear-btn button more ">
-                                <img class=h-20" src="img/three-dots-vertical.svg" alt="more options">
-                            </button>
-                            
-                            <div class="inline-block btns">
-                                {$boton_editar_detalles->gestiona()}
-                                {$boton_ver_habitaciones->gestiona()}
-                                {$boton_eliminar->gestiona()}
-
-                            </div>
                         </div>
-
                     </div>
                 </div>
             EOS;
 
         }
+
+        $contenido .="<div>";
     }
     else{
-        $contenido= <<<EOS
-            <div class="centrado card">
-                <div class="card-header">
-                    No tienes ningún piso todavía
-                </div>
-                <div class="card-body">
-                    <div class="grid-container">
-                        <h2>Añade tu primer piso!</h2>
-                        
-                    </div>
-                </div>
-            </div>
+        $contenido = <<<EOS
+            No tienes permisos para acceder a esta página
         EOS;
-
     }
-
-    $contenido .="<div>";
 }
-else{
-    $contenido = <<<EOS
-        No tienes permisos para acceder a esta página
-    EOS;
-}
-
 
 
            
