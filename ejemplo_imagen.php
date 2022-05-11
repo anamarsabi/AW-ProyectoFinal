@@ -15,7 +15,7 @@ RUTA_ALMACEN_PUBLICO
 	<head>
 		<meta charset="UTF-8">
 		<title>Ejemplo de formulario con archivos</title>
-    <script type="text/javascript" src="utils.js"></script>
+    <script src="utils.js"></script>
 	</head>
   <body>
     <h2>Subir nueva imagen</h2>

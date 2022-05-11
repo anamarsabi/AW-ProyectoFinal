@@ -7,7 +7,7 @@ use es\ucm\fdi\aw\Form;
 class FormularioRegistroRoomie extends Form
 {
     public function __construct() {
-        parent::__construct('form_registro_usuario',['urlRedireccion' => Aplicacion::getInstance()->resuelve('/index.php')]);
+        parent::__construct('form_registro_usuario', ['urlRedireccion' => Aplicacion::getInstance()->resuelve('/index.php')]);
     }
     
     protected function generaCamposFormulario($datosIniciales)
@@ -30,63 +30,93 @@ class FormularioRegistroRoomie extends Form
 
         $html = <<<EOF
             $htmlErroresGlobales
-            <div class="tab marg st-input">
-                <h2>Datos personales</h2>
-                <div>
+            
+            <div class="formulario tab registro">
+
+            <div class="flex-registro">
+                <div class="flex-2col-item block">
                     <label>Nombre <span class="text-danger">*</span></label>
                     <input type="text" placeholder="Nombre" name="nombre" required>
                     {$erroresCampos['nombre']}
                 </div>
-                <span>
-                    <label>Primer apellido <span class="text-danger">*</span></label>
-                    <input type="text" placeholder="Primer apellido" name="apellido1" required>
-                </span>
-                <span>
+                <div class="flex-2col-item block"></div>
+            </div>
+        
+            <div class="flex-registro">
+                <div class="flex-2col-item block">
+                <label>Primer apellido <span class="text-danger">*</span></label>
+                <input type="text" placeholder="Primer apellido" name="apellido1" required>
+                    {$erroresCampos['apellido1']}
+                </div>
+                <div class="flex-2col-item block num">
                     <label>Segundo apellido </label>
                     <input type="text" placeholder="Segundo apellido" name="apellido2">
-                </span>
-                <h4>Fecha de nacimiento <span class="text-danger">*</span></h4>
-                <input type="date" name="birthday" min="$hace_80_anios" max="$hace_16_anios" required />
+                    {$erroresCampos['apellido2']}
+                </div>
             </div>
+
+            <div class="flex-registro">
+                <div class="flex-2col-item block">
+                    <h4>Fecha de nacimiento <span class="text-danger">*</span></h4>
+                    <input type="date" name="birthday" min="$hace_80_anios" max="$hace_16_anios" required />
+                </div>
+                <div class="flex-2col-item block"></div>
+            </div>
+        </div>
+
+        <div class="formulario tab registro">
+            <h2>Datos de acceso</h2>
+            <div class="flex-registro">
+                <div class="flex-2col-item block">
+                    <label>Correo electrónico<span class="text-danger">*</span></label>
+                    <input id="correo" type="email" name="email" placeholder="Email" /> 
+                    <div id="email_err_msg"></div>
+                </div>
+                <div class="flex-2col-item block"></div>
+            </div>
+
+            <div class="flex-registro">
+                <div class="flex-2col-item block">
+                    <label>Contraseña<span class="text-danger">*</span></label>
+                    <input type="password" name="pwd" placeholder="Contraseña" /> 
+                </div>
+                <div class="flex-2col-item block">
+                    <label>Confirmar contraseña<span class="text-danger">*</span></label>
+                    <input type="password" name="cpwd" placeholder="Confirmar contraseña" />
+                    {$erroresCampos['cpwd']}
+                </div>
+            </div>
+           
+            <p class="err_msg text-danger">
+                **Contraseñas no coinciden**
+            </p>
+        </div>
             <div class="tab marg st-input">
-                <h2>Datos de acceso</h2>
-                <label>Correo electrónico<span class="text-danger">*</span></label>
-                <input type="email" id="correo" name="email" placeholder="Email" /> 
+                <h2>Datos Roomie</h2>
+                <div>
+                    <label>Elige una aficion:</label>
+                    <div >
+                    <input name="aficiones[]" type=checkbox value="Leer" />Leer
+                    <input name="aficiones[]" type=checkbox value="Musica" />Musica
+                    <input name="aficiones[]" type=checkbox value="Deportes" />Deportes
+                    <input name="aficiones[]" type=checkbox value="Aire Libre" />Aire Libre
+                    <input name="aficiones[]" type=checkbox value="Naturaleza" />Naturaleza
+                    <input name="aficiones[]" type=checkbox value="Historia" />Historia
+                    <input name="aficiones[]" type=checkbox value="Fiesta" />Fiesta
+                    <input name="aficiones[]" type=checkbox value="Animales" />Animales
+                    </div>
+                </div>
 
-                <label>Contraseña<span class="text-danger">*</span></label>
-                <input type="password" name="pwd" placeholder="Contraseña" /> 
+                <div>
+                    <label> Una breve descripción sobre ti </label>
+                    <textarea name="descripcion" rows="4" cols="100" placeholder="Soy una persona..."></textarea><br>
+                </div>
 
-                <label>Confirmar contraseña<span class="text-danger">*</span></label>
-                <input type="password" name="cpwd" placeholder="Confirmar contraseña" />
-                <p class="err_msg text-danger" style="display:none">
-                    **Contraseñas no coinciden**
-                </p>
-            </div>
-
-            <div class="tab marg st-input">
-            <h2>Datos Roomie</h2>
-            <div>
-            <label>Elige una aficion:</label>
-                <input name="aficiones[]" type=checkbox value="Leer" />Leer
-                <input name="aficiones[]" type=checkbox value="Musica" />Musica
-                <input name="aficiones[]" type=checkbox value="Deportes" />Deportes
-                <input name="aficiones[]" type=checkbox value="Aire Libre" />Aire Libre
-                <input name="aficiones[]" type=checkbox value="Naturaleza" />Naturaleza
-                <input name="aficiones[]" type=checkbox value="Historia" />Historia
-                <input name="aficiones[]"  type=checkbox value="Fiesta" />Fiesta
-                <input name="aficiones[]" type=checkbox value="Animales" />Animales
-            </div>
-
-            <div>
-            <label> Una breve descripción sobre ti </label>
-            <textarea name="descripcion" rows="4" cols="100" placeholder="Soy una persona..."></textarea><br>
-            </div>
-
-            <div>
-            <label>¿Tienes mascotas?</label>
-            <input name="mascota" type=radio value="1" />Sí
-            <input name="mascota" type=radio value="0" checked />NO
-            </div>
+                <div>
+                    <label>¿Tienes mascotas?</label>
+                    <input name="mascota" type=radio value="1" />Sí
+                    <input name="mascota" type=radio value="0" checked />NO
+                </div>
             </div>
             
             <div class='align-center mt-40'>
@@ -97,7 +127,7 @@ class FormularioRegistroRoomie extends Form
             <input  class="btn-registro"  type="button" id="nextBtn" onclick="nextPrev(1)" value="Siguiente">
             <input class="btn-registro" type="button" id="prevBtn" onclick="nextPrev(-1)" value="Anterior">
            
-       
+
             <script>
                 var currentTab = 0; // Current tab is set to be the first tab (0)
                 showTab(currentTab); // Display the current tab
