@@ -18,7 +18,7 @@ class FormularioBotonAgregarRoomie extends Form{
         $formulario = <<<EOS
             <div class="save-btn-bg">
                 <button class="clear-btn button" type="submit" value="Submit">
-                    <img src="img/roomie.jpg" alt="agegarRoomie" />
+                    <img class="img-button" src="img/roomie.jpg" alt="agegarRoomie" />
                 </button>
             </div>
         EOS;

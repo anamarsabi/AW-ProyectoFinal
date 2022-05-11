@@ -7,17 +7,19 @@ $botonAgregarHost =  new \es\ucm\fdi\aw\usuarios\FormularioBotonAgregarHost();
 $botonAgregarRoomie = new \es\ucm\fdi\aw\usuarios\FormularioBotonAgregarRoomie();
 
 $contenido = <<<EOS
-    <div class="col-5 centrado index-banner-block">
-            <h1>Agregar Host</h1>
-            {$botonAgregarHost->gestiona()}
+    <div>
+        <div class="col-5 centrado index-banner-block">
+                <h1>Agregar Host</h1>
+                {$botonAgregarHost->gestiona()}
+            </div> 
+        <div class="col-5 centrado index-banner-block">
+                <h1>Agregar Roomie</h1>
+                {$botonAgregarRoomie->gestiona()}
+            </div> 
+        <div class="col-5 centrado index-banner-block">
+            <h1>Vista de usuarios</h1>
         </div> 
-    <div class="col-5 centrado index-banner-block">
-            <h1>Agregar Roomie</h1>
-            {$botonAgregarRoomie->gestiona()}
-        </div> 
-    <div class="col-5 centrado index-banner-block">
-        <h1>Vista de usuarios</h1>
-    </div> 
+    </div>
 EOS;
 
 if($usuarios){

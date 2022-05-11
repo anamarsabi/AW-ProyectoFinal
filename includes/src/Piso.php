@@ -551,8 +551,24 @@ class Piso
         if ($rs) {
             while ($fila = $rs->fetch_assoc()) {
                 $detalles = Piso::getDetallesPiso($fila);
-                //$id_host, $calle, $barrio, $ciudad, $detalles = array(), $id = null
                 $result[] = new Piso($id, $fila['calle'], $fila['barrio'],  $fila['ciudad'], $detalles, $fila['id_piso']);
+            }
+            $rs->free();
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
+
+    public static function getAllPisos(){
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * FROM pisos");
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+            while ($fila = $rs->fetch_assoc()) {
+                $detalles = Piso::getDetallesPiso($fila);
+                $result[] = new Piso($fila['id_host'], $fila['calle'], $fila['barrio'],  $fila['ciudad'], $detalles, $fila['id_piso']);
             }
             $rs->free();
         } else {

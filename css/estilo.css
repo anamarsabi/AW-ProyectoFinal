@@ -1106,6 +1106,12 @@ h3.access-denied{
 
 }
 
+.img-button{
+    width: 100px;
+    margin: 5px;
+    flex-basis: 25%;
+}
+
 .img-preview{
     width: 200px;
     margin: 5px;

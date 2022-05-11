@@ -1,60 +1,93 @@
 <?php
 
-$usuarios = es\ucm\fdi\aw\usuarios\Usuario::getUsuarios();
+use es\ucm\fdi\aw\Aplicacion;
+use es\ucm\fdi\aw\usuarios\Usuario;
+use es\ucm\fdi\aw\Piso;
+use es\ucm\fdi\aw\Imagen;
+
+$pisos = es\ucm\fdi\aw\Piso::getAllPisos();
 $app =es\ucm\fdi\aw\Aplicacion::getInstance();
 
-$botonAgregarPiso =  new \es\ucm\fdi\aw\usuarios\FormularioBotonRegistroPiso();
+$botonAgregarPiso = new \es\ucm\fdi\aw\usuarios\FormularioBotonRegistroPiso();
 
-$contenido = <<<EOS
-    <div class="col-5 centrado index-banner-block">
-            <h1>Agregar Pisos</h1>
-            {$botonAgregarPiso->gestiona()}
-        </div> 
+$contenido= <<<EOS
+    <div>
+                <h1>Agregar Pisos</h1>
+                {$botonAgregarPiso->gestiona()}
 
-    <div class="col-5 centrado index-banner-block">
-        <h1>Vista de pisos</h1>
-    </div> 
+            <div class="col-5 centrado index-banner-block">
+                <h1>Vista de pisos</h1>
+            </div> 
+    </div>
 EOS;
 
-if($usuarios){
-    foreach ($usuarios as $usuario) {
-        $rol=$usuario->obtieneRol($usuario->getId());
-        $botonEditarUsuario =  new \es\ucm\fdi\aw\usuarios\FormularioBotonEditUsuario($usuario->getId());
-        $botonEliminarUsuario =  new \es\ucm\fdi\aw\usuarios\FormularioBotonEliminarUsuario($usuario->getId());
-          $contenido.= <<<EOS
+if($pisos){
+    
+    $ruta_color = $app->resuelve('/img/door_color.svg'); 
+    $ruta = $app->resuelve('/img/door.svg'); 
+    foreach ($pisos as $p) {
+        $boton_editar_detalles =  new \es\ucm\fdi\aw\usuarios\FormularioBotonEditDetallesPiso($p->id);
+        $boton_eliminar = new \es\ucm\fdi\aw\usuarios\FormularioBotonDeletePiso($p->id);
+        $boton_ver_habitaciones = new \es\ucm\fdi\aw\usuarios\FormularioBotonVerHabitaciones($p->id);
+        
+        $propietario=es\ucm\fdi\aw\usuarios\Usuario::buscaPorId($p->getIdHost());
 
+        $dict_status_habitacion = es\ucm\fdi\aw\Piso::numHabOcupadasyLibresDelPiso($p->id);
+        $num_ocupadas = $dict_status_habitacion['ocupadas'];
+        $num_libres = $dict_status_habitacion['libres'];
+
+        $iconos_habitaciones = "<div class='rooms'>";
+        for($i=0;$i<$num_ocupadas;$i++){
+            $iconos_habitaciones .= '<img src="'.$ruta_color.'" alt="Hab. Ocupada '.$i.'" width="50" height="50">';
+        }
+
+        for($i=0;$i<$num_libres;$i++){
+            $iconos_habitaciones .= '<img src="'.$ruta.'" alt="Hab. Libre '.$i.'" width="50" height="50">';
+        }
+
+        if($num_libres==0&&$num_ocupadas==0){
+            $iconos_habitaciones .='<p>No se ha registrado ninguna habitación. Añade una </p>';
+        }
+
+        $iconos_habitaciones .= "</div>";
+
+        $rango_precios = $p->getPrecio_max()!=0
+            ?"<div class='precio'>{$p->getPrecio_min()} - {$p->getPrecio_max()} €/mes</div>"
+            : "";
+        
+        $datos = [
+            'id'=>$p->id,
+            'tabla'=>'imagenes_pisos',
+            'entidad'=>'id_piso'
+        ];
+
+        $html_img = Imagen::getPortada($datos);
+
+        $contenido.= <<<EOS
+        
             <div class="centrado card">
-                    <div class="card-header">
-                        {$usuario->getNombre()}
+                <div class="card-header">
+                    C/ {$p->getCalle()}
+                    <br/>
+                     Propietario: {$propietario->getNombre()}
+                </div>
+                <div class="card-body">
+                
+                    <div class="grid-container">
+                        {$html_img}
+                        
+                        $iconos_habitaciones
+                        $rango_precios
+                        
                     </div>
+                    <div class="inline-block btns">
+                    {$boton_editar_detalles->gestiona()}
+                    {$boton_ver_habitaciones->gestiona()}
+                    {$boton_eliminar->gestiona()}
 
-                    <div class="card-body">
-                       Id: #{$usuario->getId()}
-                     </div>
-                    <div class="card-body">
-                        Apellidos: {$usuario->getApellido1()} {$usuario->getApellido2()}
-                    </div>
-
-                    <div class="card-body">
-                        Fecha de nacimiento: {$usuario->getBirthday()}
-                    </div>
-
-                    <div class="card-body">
-                        Correo: {$usuario->getCorreo()}
-                    </div>
-
-                    <div class="card-body">
-                    Tipo de usuario: {$usuario->obtieneNombreRol($rol)}
-                    </div>
-
-                     <div class="card-body">
-                        Editar: {$botonEditarUsuario->gestiona()}
-                        Eliminar: {$botonEliminarUsuario->gestiona()}
-                    </div>
-                  
+                </div>
+                </div>
             </div>
-
-    EOS;
+        EOS;
     }
-   
 }  

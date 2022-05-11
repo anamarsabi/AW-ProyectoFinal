@@ -14,17 +14,16 @@ class FormularioBotonRegistroPiso extends Form{
 
     protected function generaCamposFormulario($datos)
     {
-      
         $formulario = <<<EOS
+        
             <div class="card-header">
-                Id del usuario Host al que añade el nuevo piso
-                <br />
+                Id del usuario Host al que añade el nuevo piso:
                 <input type="number" placeholder="Id Host" name="idHost" required>
             </div>
-            <br /> <br />
+                <br /> 
             <div class="save-btn-bg">
                 <button class="clear-btn button" type="submit" value="Submit">
-                    <img src="img/top-hat.svg" alt="registroPiso" />
+                    <img class="img-button" src="img/addPisos.jpg" alt="registroPiso" />
                 </button>
             </div>
         EOS;

@@ -18,7 +18,7 @@ class FormularioBotonAgregarHost extends Form{
         $formulario = <<<EOS
             <div class="save-btn-bg">
                 <button class="clear-btn button" type="submit" value="Submit">
-                    <img  src="img/host.png" alt="agegarHost" />
+                    <img class="img-button" src="img/host.png" alt="agegarHost" />
                 </button>
             </div>
         EOS;
