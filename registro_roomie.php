@@ -16,12 +16,6 @@ $contenidoPrincipal = <<<EOF
         <h1>$tituloPagina</h1>
         $html_form_registro
 EOF;
- 
-$nPag = 3;
-for($i=0; $i<$nPag; $i++){
-    $contenidoPrincipal .= "<span class='step'></span>";
-}
-    $contenidoPrincipal.="</div>";
 
 $params = ['tituloPagina' => $tituloPagina, 'contenidoPrincipal' => $contenidoPrincipal];
 $app->generaVista('/plantillas/plantilla_general.php', $params);
