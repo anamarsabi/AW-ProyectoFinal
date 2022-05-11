@@ -17,7 +17,7 @@ class FormularioLogin extends Form{
         
         $formulario = <<<EOS
         <div class="formulario align-center pt-5e">
-            <img class="centrado" src="img/logo.png" height="170"/>
+            <img class="centrado" src="img/logo.png" height="170" alt="logo_roomie"/>
             <div class="main-login centrado">
                 <div>
                     <input class="w-100 px-10-20 mx-8-0 inline default-input" id="correo" type="text" name="email" placeholder="Correo electrónico" required>
@@ -29,14 +29,15 @@ class FormularioLogin extends Form{
                     {$erroresCampos['password']}
                 </div>
                 <input class="w-100" type="submit" value="Login" style="color:white;">
-            <div>
-            ¿No tienes una cuenta?
-            <p>
-                <a href="registro_roomie.php">Regístrate como roomie</a>
-            </p>
-            <p>
-                <a href="registro_host.php">Regístrate como propietario</a>
-            </p>
+            
+                ¿No tienes una cuenta?
+                <p>
+                    <a href="registro_roomie.php">Regístrate como roomie</a>
+                </p>
+                <p>
+                    <a href="registro_host.php">Regístrate como propietario</a>
+                </p>
+            </div>
         </div>
  
         EOS;
