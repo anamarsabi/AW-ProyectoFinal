@@ -21,7 +21,7 @@ class FormularioLogin extends Form{
             <div class="main-login centrado">
                 
                 <div>
-                    <input class="w-100 px-10-20 mx-8-0 inline default-input" type="text" name="email" placeholder="Correo electrónico" required>
+                    <input class="w-100 px-10-20 mx-8-0 inline default-input" id="correo" type="text" name="email" placeholder="Correo electrónico" required>
                     {$erroresCampos['email']}
                 </div>
                 <div>

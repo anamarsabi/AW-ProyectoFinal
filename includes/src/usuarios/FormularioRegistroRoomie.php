@@ -51,7 +51,7 @@ class FormularioRegistroRoomie extends Form
             <div class="tab marg st-input">
                 <h2>Datos de acceso</h2>
                 <label>Correo electrónico<span class="text-danger">*</span></label>
-                <input type="email" name="email" placeholder="Email" /> 
+                <input type="email" id="correo" name="email" placeholder="Email" /> 
 
                 <label>Contraseña<span class="text-danger">*</span></label>
                 <input type="password" name="pwd" placeholder="Contraseña" /> 
