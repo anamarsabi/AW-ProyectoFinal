@@ -5,8 +5,8 @@
 
     <div class="footer-content">
 
-        <div class="contenedor-principal no-pt">
-            <div class="footer-col col-4-red index-banner-block va-top">
+        <div class="contenedor-footer no-pt">
+            <div class="footer-col col-4-red index-footer-block">
                 <h3>Acerca de Roomie</h3>
                 <p>Información corporativa</p>
                 <p>Información de socios</p>
@@ -15,11 +15,11 @@
                 <p>Política de cookies</p>
 
             </div>
-            <div class="footer-col col-4-amp index-banner-block va-top">
+            <div class="footer-col col-4-red index-footer-block">
                 <h3>Sobre nosotros</h3>
                 <p>El equipo</p>
             </div>
-            <div class="footer-col col-4-red index-banner-block  va-top">
+            <div class="footer-col col-4-red index-footer-block">
                 <h3>Contáctanos</h3>
                 <p><a class="clear-style-link" href="mailto:info@roomie.com?subject=Solicitud%20información&body=Heyyy%20🥐">info@roomie.com</a></p>
                 <p>901 902 903</p>
@@ -30,7 +30,7 @@
             </div>
 
          
-            <div class="col-12 index-banner-block">
+            <div class="col-12 index-footer-block">
                 <a href="http://jigsaw.w3.org/css-validator/check/referer">
                     <img style="border:0;width:88px;height:31px"
                         src="http://jigsaw.w3.org/css-validator/images/vcss"

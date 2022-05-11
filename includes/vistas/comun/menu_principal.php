@@ -11,7 +11,10 @@ function opciones_menu() {
     $contenido ="";
     if($app->tieneRol(Usuario::HOST_ROLE)){
        $contenido = <<<EOS
-            <a href="mis_pisos.php">Mis pisos</a>
+            <div class="link-container">
+                <a class="mis-pisos-btn" href="mis_pisos.php">Mis pisos</a>
+            </div>
+            
        EOS;
     }
     elseif($app->tieneRol(Usuario::ROOMIE_ROLE)){

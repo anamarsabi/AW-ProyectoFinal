@@ -43,8 +43,8 @@ class FormularioEditDatosPiso extends Form{
             $check = in_array($s, $servicios)?"checked":""; 
 
             $html_checkboxes .= <<<EOS
-                <input type="checkbox" id="$s" value="$s" name="lista_servicios[]" class="visually-hidden checkbox-servicios" $check>
-                <label class="label-servicios mx-1e" for="$s">$s</label>
+                <input type="checkbox" id="$id" value="$s" name="lista_servicios[]" class="visually-hidden checkbox-servicios" $check>
+                <label class="label-servicios mx-1e" for="$id">$s</label>
             EOS;
         }
         $html_checkboxes .= '</div>';

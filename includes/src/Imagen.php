@@ -108,7 +108,7 @@ class Imagen
                         :"";
             $html_imagenes .=<<<EOF
                 <div class="polaroid w-100p mx-1e">
-                    <img class="w-100" src="almacenPublico/$imagen->ruta">
+                    <img class="w-100" src="almacenPublico/$imagen->ruta" alt="$imagen->nombre">
                     <div class="container-texto">
                         <p>{$imagen->nombre}</p>
                         $form
@@ -134,14 +134,14 @@ class Imagen
         if (count($result)===0)
         {
             $html_portada .=<<<EOF
-                <img class="h-100 w-10e " src="img/logo.png" alt="Imagen">
+                <img class="h-100 w-10e" src="img/logo.png" alt="Image_not_found">
             EOF;
         }
         else
         {
             $imagen = $result[0];
             $html_portada .=<<<EOF
-                <img class="fpiso" src="almacenPublico/$imagen->ruta">
+                <img class="fpiso" src="almacenPublico/$imagen->ruta" alt="$imagen->nombre">
             EOF;
         }
         return $html_portada;

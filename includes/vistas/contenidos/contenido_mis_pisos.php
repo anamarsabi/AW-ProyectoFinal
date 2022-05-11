@@ -16,7 +16,7 @@ if($app->tieneRol(es\ucm\fdi\aw\usuarios\Usuario::ADMIN_ROLE)){
         $pisos = es\ucm\fdi\aw\Piso::getPisosPorIdHost($app->idUsuario());
 
         if($pisos){
-            $contenido = "<div class='centrado'>";
+            $contenido = "";
             $ruta_color = $app->resuelve('/img/door_color.svg'); 
             $ruta = $app->resuelve('/img/door.svg'); 
 
@@ -57,6 +57,7 @@ if($app->tieneRol(es\ucm\fdi\aw\usuarios\Usuario::ADMIN_ROLE)){
                 $html_img = Imagen::getPortada($datos);
 
                 $contenido.= <<<EOS
+                
                     <div class="centrado card">
                         <div class="card-header">
                             {$p->getCalle()}
@@ -68,10 +69,6 @@ if($app->tieneRol(es\ucm\fdi\aw\usuarios\Usuario::ADMIN_ROLE)){
                                 
                                 $iconos_habitaciones
                                 $rango_precios
-
-                                <button class="clear-btn button more ">
-                                    <img class=h-20" src="img/three-dots-vertical.svg" alt="more options">
-                                </button>
                                 
                                 <div class="inline-block btns">
                                     {$boton_editar_detalles->gestiona()}
@@ -104,7 +101,7 @@ if($app->tieneRol(es\ucm\fdi\aw\usuarios\Usuario::ADMIN_ROLE)){
 
         }
 
-        $contenido .="<div>";
+        
     }
     else{
         $contenido = <<<EOS

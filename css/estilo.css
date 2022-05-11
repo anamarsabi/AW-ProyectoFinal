@@ -71,9 +71,28 @@ a.username{
 .index-search-btn{
     color: white;
     font-size: 16px;
+}
 
+.mis-pisos-btn{
+    text-decoration: none;
+    font-size: 22px;
+    color:#419A1C;
+    margin: 5px;
 
 }
+
+.link-container{
+    box-shadow: 8px 8px;
+    color: #8cd5e7;
+    transition: 0.3s color;
+}
+
+.link-container:hover{
+    color: #98e78c;
+}
+
+
+
 
 /* col-2 px-10-20 mx-8-0  */
 .index-input{
@@ -101,6 +120,18 @@ a.username{
     /* margin: 10px !important; */
     margin-right: 20px;
     margin-left: 20px;
+}
+
+.contenedor-footer{
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+.index-footer-block{
+    text-align: left;
+    display: inline-block;
+    padding: 10px;
+    vertical-align: top;
 }
 
 .clear-both{
@@ -454,6 +485,11 @@ li.desplegable_item{
     margin: 0px;
     opacity: 0;
     cursor: pointer;
+  }
+
+  .bloque_desplegable ul{
+      display: block;
+      z-index: 99;
   }
   
   .dropdown input[type="checkbox"]:checked {
@@ -1124,7 +1160,7 @@ h3.access-denied{
 }
 
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1066px) {
     /* For desktop: */
     .col-2 {
         width: 50%;

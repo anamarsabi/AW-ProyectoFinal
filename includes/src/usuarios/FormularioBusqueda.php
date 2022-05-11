@@ -26,13 +26,13 @@ class FormularioBusqueda extends Form
         $htmlErroresGlobales
         
         <div class="align-center">
-            <div class="col-2 centrado index-banner-block">
+            <div class="col-3 centrado index-banner-block">
                 <label for="ciudad">Ciudad destino</label>
                 <input class="w-100 index-input inline default-input" id="ciudad" name="ciudad" type="search" value="$ciudad" placeholder="Ciudad" aria-label="Search" required>
                 {$erroresCampos['ciudad']}
             </div>
 
-            <div class="col-2 centrado index-banner-block">
+            <div class="col-3 centrado index-banner-block">
                 <label for="fecha">Fecha de entrada</label>
                 <input class="w-100 index-input inline default-input" type="date" name="fecha" id="fecha" min="2021-03-01" max="2031-01-01" required>
             </div>

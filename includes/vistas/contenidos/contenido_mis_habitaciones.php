@@ -15,7 +15,7 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
     $habitaciones = es\ucm\fdi\aw\Piso::getHabitacionesPorIdPiso($id_piso);
 
     if($habitaciones){
-        $contenido = "<div class='centrado'>";
+        $contenido = "";
         $ruta_color = $app->resuelve('/img/door_color.svg'); 
         $ruta = $app->resuelve('/img/key.svg'); 
 
@@ -43,10 +43,6 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
                         <div class="grid-container">
                             $html_img
                             <div class='precio'>$precio €/mes</div>
-                            <button class="clear-btn button more ">
-                                <img class=h-20" src="img/three-dots-vertical.svg" alt="more options">
-                            </button>
-                            
                             <div class="inline-block btns">
                                 {$boton_editar_detalles->gestiona()}
                                 {$boton_eliminar->gestiona()}
@@ -69,14 +65,12 @@ if($app->comprueba_permisos(Usuario::HOST_ROLE)){
                 <div class="card-body">
                     <div class="grid-container">
                         <h2>Añade tu primera habitación!</h2>
-                        
                     </div>
                 </div>
             </div>
         EOS;
-
     }
-    $contenido .="<div>";
+   
 }
 else{
     $contenido = <<<EOS
