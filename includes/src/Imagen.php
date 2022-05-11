@@ -151,6 +151,34 @@ class Imagen
         return $html_portada;
     }
 
+
+    public static function getPathsRelatedTo($id, $tabla, $entidad){
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        
+        $query = 'SELECT ruta FROM '.$tabla.' WHERE '.$entidad.'='.$id;
+        
+        $rs = $conn->query($query);
+        if ($rs) {
+            while ($fila = $rs->fetch_assoc()) {
+                $result[] = $fila['ruta'];
+            }
+            $rs->free();
+        } else {
+            error_log($conn->error);
+        }
+
+        return $result;
+    }
+
+
+    public static function deleteEntitysFiles($id, $tabla, $entidad){
+        $paths = self::getPathsRelatedTo($id, $tabla, $entidad);
+
+        foreach($paths as $path ){
+            unlink("almacenPublico/".$path);
+        }
+    }
+
     private static function inserta($imagen, $entidad="id_piso", $tabla="imagenes_pisos")
     {
         $result = false;
@@ -168,7 +196,7 @@ class Imagen
         $result = $conn->query($query);
         if ($result) {
             $imagen->id = $conn->insert_id;
-            $result = $imagen;
+            return $imagen;
         } else {
             error_log($conn->error);
         }
@@ -362,23 +390,13 @@ class Imagen
     {
         if (!$this->id) {
             self::inserta($this, $entidad, $tabla);
+            
         } else {
             self::actualiza($this, $entidad, $tabla);
         }
 
         return $this;
     }
-
-    // public function guarda_habitacion()
-    // {
-    //     if (!$this->id) {
-    //         self::inserta_habitacion($this);
-    //     } else {
-    //         self::actualiza_habitacion($this);
-    //     }
-
-    //     return $this;
-    // }
 
     public function borrate()
     {
@@ -402,6 +420,7 @@ class Imagen
 
 
         for($i=0; $i<$tam; $i++){
+            
             $nombre = $_FILES['archivos']['name'][$i];
             $ok = self::check_file_uploaded_name($nombre) && self::check_file_uploaded_length($nombre);
 
@@ -431,11 +450,11 @@ class Imagen
                 $ruta = implode(DIRECTORY_SEPARATOR, [RUTA_ALMACEN_PUBLICO, $carpeta, $fichero]);
                 if (!move_uploaded_file($tmp_name, $ruta)) {
                     $errores[] = 'Error al mover el archivo';
+                    print("Error al mover el fichero");
                 }
             }
-
-            return $errores;
         }
+        return $errores;
     }
 
 

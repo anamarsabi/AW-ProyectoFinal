@@ -4,6 +4,7 @@ namespace es\ucm\fdi\aw\usuarios;
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Form;
 use es\ucm\fdi\aw\Habitacion;
+use es\ucm\fdi\aw\Imagen;
 
 class FormularioBotonDeleteHabitacion extends Form{
 
@@ -29,9 +30,10 @@ class FormularioBotonDeleteHabitacion extends Form{
 
     protected function procesaFormulario($datos)
     {
-        
         $app = Aplicacion::getInstance();
         $hab = Habitacion::buscaPorId($this->id_hab);
+
+        Imagen::deleteEntitysFiles($this->id_hab, "imagenes_habitaciones", "id_habitacion");
         $hab->borrate();
     }
 }

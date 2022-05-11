@@ -81,21 +81,10 @@ class FormularioRegistroHabitacion extends Form
 
                 <h2 class='mt-2'>Añade imágenes de la habitación</h2>
                 <div>
-                    <input type="file" name="archivos[]" onchange="loadFile(event)" multiple/>
+                    <input type="file" name="archivos[]" accept="image/*" onchange="loadFile(event)" multiple/>
                     {$erroresCampos['archivos']}
                 </div>
                 <div id="output" class="flex-wrapper"></div>
-
-                <script>
-                    var loadFile = function(event) {
-                        var output = document.getElementById('output');
-
-                        Array.prototype.forEach.call(event.target.files, function(valor, indice, array) {
-                            var aux = URL.createObjectURL(valor);
-                            output.innerHTML += '<div class="tag"><img class="img-preview" src=' + aux + '></div>';
-                        });
-                    };
-                </script>
 
                 <h2>Una breve descripción sobre la habitación:</h2>
                 <div class="flex flex-dir-col">

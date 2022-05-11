@@ -183,6 +183,21 @@ class Piso
         return $result;
     }
 
+
+    public function getIdHabitaciones(){
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT id_habitacion FROM habitaciones WHERE id_piso=%d", $this->id);
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+            while ($fila = $rs->fetch_assoc()) {
+                $result[] = $fila['id_habitacion'];
+            }
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
     
     public function encuentraRoomies()
     {
@@ -201,7 +216,6 @@ class Piso
             // Tomamos el total de los resultados
             $total = mysqli_num_rows($result);
             if ($total == 0) {
-                //echo "No se han encontrado filas, nada a imprimir, asi que voy a detenerme.";
                 exit;
             }
 
@@ -615,21 +629,6 @@ class Piso
         if ($rs) {
             $result = Array();
             while ($fila = $rs->fetch_assoc()) {
-                /*
-                $id = $fila['id'];
-                $id_piso = $fila['id_piso'];
-                $tam_cama = $fila['cama'];
-                $banio_privado = $fila['banio']==1;
-                $precio  = $fila['precio'];
-                $gastos_incluidos = $fila['gastos_incluidos']==1;
-                $descripcion = $fila['descripcion'];
-                $d = strtotime($fila['disponibilidad']);
-                $fecha_disponibilidad = strtotime($fila['disponibilidad'])<=0
-                    ?$fila['disponibilidad']
-                    :NULL;
-              
-                $result[] = new Habitacion($id, $id_piso, $tam_cama, $banio_privado, $precio, $gastos_incluidos, $descripcion, $fecha_disponibilidad);
-                */
                 $id_habitacion = $fila['id_habitacion'];
                 $tam_cama = $fila['cama_cm'];
                 $banio_privado = $fila['banio_propio']==1;

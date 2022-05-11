@@ -66,7 +66,6 @@ class FormularioBusqueda extends Form
             // Tomamos el total de los resultados
             $total = mysqli_num_rows($result);
             if ($total == 0) {
-                //echo "No se han encontrado filas, nada a imprimir, asi que voy a detenerme.";
                 exit;
             }
             

@@ -17,7 +17,7 @@ propiedades y que sea responsive */
 .contenedor-principal{
     padding-left: 20%;
     padding-right: 20%;
-    padding-top: 5em;
+    padding-top: 2em;
 }
 
 .diplay-flex{
@@ -92,8 +92,15 @@ a.username{
 }
 
 
+.enlace-detalles{
+    font-size: 1.2em;
+    padding: 1em;
+    color: black;
+}
 
-
+.enlace-detalles:hover{
+    color:#419A1C;
+}
 /* col-2 px-10-20 mx-8-0  */
 .index-input{
     padding: 10px 20px;

@@ -4,6 +4,7 @@ namespace es\ucm\fdi\aw\usuarios;
 use es\ucm\fdi\aw\Aplicacion;
 use es\ucm\fdi\aw\Form;
 use es\ucm\fdi\aw\Piso;
+use es\ucm\fdi\aw\Imagen;
 
 class FormularioBotonDeletePiso extends Form{
 
@@ -30,10 +31,18 @@ class FormularioBotonDeletePiso extends Form{
 
     protected function procesaFormulario($datos)
     {
-        
         $app = Aplicacion::getInstance();
         $piso = Piso::buscaPorId($this->id_piso);
 
+        $id_habs = $piso->getIdHabitaciones();
+
+        if($id_habs){
+            foreach($id_habs as $id){
+                Imagen::deleteEntitysFiles($id, "imagenes_habitaciones", "id_habitacion");
+            }
+        }
+
+        Imagen::deleteEntitysFiles($this->id_piso, "imagenes_pisos", "id_piso");
         $piso->borrate();
     }
 }

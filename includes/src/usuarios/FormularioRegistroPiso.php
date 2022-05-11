@@ -98,21 +98,10 @@ class FormularioRegistroPiso extends Form
 
                 <h2 class='mt-2'>Añade imágenes del piso</h2>
                 <div>
-                    <input type="file" name="archivos[]" onchange="loadFile(event)" multiple/>
+                    <input type="file" name="archivos[]" accept="image/*" onchange="loadFile(event)" multiple/>
                     {$erroresCampos['archivos']}
                 </div>
                 <div id="output" class="flex-wrapper"></div>
-
-                <script>
-                    var loadFile = function(event) {
-                        var output = document.getElementById('output');
-
-                        Array.prototype.forEach.call(event.target.files, function(valor, indice, array) {
-                            var aux = URL.createObjectURL(valor);
-                            output.innerHTML += '<div class="tag"><img class="img-preview" src=' + aux + '></div>';
-                        });
-                    };
-                </script>
 
                 <h2>Una breve descripción sobre el piso:</h2>
                 <div class="flex flex-dir-col">
@@ -178,7 +167,6 @@ class FormularioRegistroPiso extends Form
             }
 
         }
-        
         
         if (count($this->errores) === 0) {
             $id_host="";  

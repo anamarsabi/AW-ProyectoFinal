@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/includes/config.php';
 
-$tituloPagina = 'Mis pisos';
+$tituloPagina = 'Mis pisos | Roomie';
 
 $paths = ["vistas/contenidos/contenido_mis_pisos.php"];
 
