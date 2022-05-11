@@ -128,9 +128,8 @@ class FormularioEditDatosPiso extends Form{
                 <h2>Una breve descripción sobre el piso:</h2>
                 <div class="flex flex-dir-col">
                     <div class="flex-container-servicios">
-                        <div id="wordcount"></div>
                         <textarea id="textarea-pisos" class="w-100 px-10 max-w-100 min-w-50 h-150" name="descripcion" maxlength="2048" placeholder="Este piso ofrece...">$descripcion</textarea>
-                        
+                        <div id="wordcount">0/1024</div>
                         {$erroresCampos['descripcion']}
                     </div>
                 </div>
