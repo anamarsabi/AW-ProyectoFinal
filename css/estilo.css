@@ -98,7 +98,13 @@ a.username{
     color: black;
 }
 
-.enlace-detalles:hover{
+.enlace-login{
+    font-size: 1.2em;
+    padding: 1em;
+    color: black;
+}
+
+.enlace-detalles:hover, .enlace-login:hover{
     color:#419A1C;
 }
 /* col-2 px-10-20 mx-8-0  */
@@ -634,6 +640,24 @@ div.save-btn-bg{
 .clear-style-link{
     text-decoration: none;
     color: #c4c4c4;
+}
+
+#index-ico-1:hover{
+    color:#1095B8;
+}
+
+#index-ico-2:hover{
+    color:#419A1C;
+}
+
+#index-ico-3:hover{
+    color:#e0b300;
+}
+
+#contacto-center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
