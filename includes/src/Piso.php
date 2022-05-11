@@ -441,6 +441,14 @@ class Piso
         {
             if(!$hab->estaOcupada())
             {
+                $datos = [
+                    'id'=>$hab->id_habitacion,
+                    'tabla'=>'imagenes_habitaciones',
+                    'entidad'=>'id_habitacion'
+                ];
+    
+                $html_img = Imagen::getPortada($datos);
+
                 $hab_detalles=$hab->getDetalles();
                 $tiene_baño="";
                 if ($hab_detalles['banio_privado']===1){
@@ -462,7 +470,10 @@ class Piso
                     <div class="card-header">
                         Habitación {$i}
                     </div>
-                    <div class="card-body"> 
+                    <div class="card-body">
+                        <div class="align-center">
+                            $html_img
+                        </div> 
                         <ul class="inline-block clear-style clear-pm">
                             <li>
                                 <p>Cama {$hab_detalles['tam_cama']} cm </p>
@@ -470,9 +481,6 @@ class Piso
                             <li>
                                 <p>{$hab_detalles['descripcion']}</p>
                                 {$tiene_baño}
-                            </li>
-                            <li>
-                                <p>Disponible a partir de {$hab_detalles['fecha_disponibilidad']}</p>
                             </li>
                             <li>
                                 <h4>{$hab_detalles['precio']}€/mes</h4>

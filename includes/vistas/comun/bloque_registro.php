@@ -2,7 +2,7 @@
 
 $contenido = <<<EOS
 
-<div>
+<div class="align-center">
 
     <a href="registro_host.php">
         <img class="col-4 " src="img/eres_propietario.png" alt="¿Tienes piso?" />

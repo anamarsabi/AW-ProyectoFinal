@@ -23,6 +23,8 @@ class FormularioEditDatosHabitacion extends Form{
         //Para que no se pierda este dato al recargar la página o al hacer submit
         $id_habitacion = $app->getAtributoPeticion("id_habitacion");
         $app->putAtributoPeticion("id_habitacion", $id_habitacion);
+        $id_piso = $app->getAtributoPeticion("id_piso");
+        $app->putAtributoPeticion("id_piso", $id_piso);
 
         $hab = Habitacion::buscaPorId($id_habitacion);
 
@@ -136,6 +138,8 @@ class FormularioEditDatosHabitacion extends Form{
         //Para que no se pierda este dato al recargar la página o al hacer submit
         $id_habitacion = $app->getAtributoPeticion("id_habitacion");
         $app->putAtributoPeticion("id_habitacion", $id_habitacion);
+        $id_piso = $app->getAtributoPeticion("id_piso");
+        $app->putAtributoPeticion("id_piso", $id_piso);
 
         $cama_cm = trim($datos['cama_cm'] ?? 0);
         $cama_cm = filter_var($cama_cm, FILTER_SANITIZE_FULL_SPECIAL_CHARS);

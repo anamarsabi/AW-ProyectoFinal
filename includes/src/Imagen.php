@@ -103,8 +103,12 @@ class Imagen
        
         foreach($result as $imagen)
         {
+            $data = [
+                'id_imagen'=>$imagen->id,
+                'tabla'=>$tabla
+            ];
             $form = $delForm
-                        ?(new FormularioBotonDeleteImagen($imagen->id, $url_redireccion))->gestiona()
+                        ?(new FormularioBotonDeleteImagen($data, $url_redireccion))->gestiona()
                         :"";
             $html_imagenes .=<<<EOF
                 <div class="polaroid w-100p mx-1e">
@@ -258,12 +262,15 @@ class Imagen
         return self::borraPorId_habitacion($imagen->id);
     }
 
-    public static function borraPorId($idImagen)
+    public static function borraPorId($datos)
     {
+        $idImagen = $datos['id_imagen'];
+        $tabla = $datos['tabla'];
+
         $result = false;
 
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("DELETE FROM imagenes_pisos WHERE id = %d", intval($idImagen));
+        $query = sprintf("DELETE FROM ".$tabla." WHERE id = %d", intval($idImagen));
         $result = $conn->query($query);
         if (!$result) {
             error_log($conn->error);

@@ -14,7 +14,7 @@ $form_name = "form_registro_roomie";
 $contenidoPrincipal = <<<EOF
     <div class='contenedor-principal'>
         <h1>$tituloPagina</h1>
-        $html_form_registro;
+        $html_form_registro
 EOF;
  
 $nPag = 3;

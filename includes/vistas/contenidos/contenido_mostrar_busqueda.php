@@ -14,10 +14,15 @@ $formulario_busqueda = new \es\ucm\fdi\aw\usuarios\FormularioBusqueda();
 $form = $formulario_busqueda->gestiona();
 
 
- $formulario_filtro = new \es\ucm\fdi\aw\usuarios\FormularioFiltro();
- $formFil = $formulario_filtro->gestiona();
- $contenido = $form;
- $contenido .= $formFil;
+$formulario_filtro = new \es\ucm\fdi\aw\usuarios\FormularioFiltro();
+$formFil = $formulario_filtro->gestiona();
+
+$contenido =<<<EOF
+    <div class="pt-2e">
+        $form
+    </div>
+EOF;
+$contenido .= $formFil;
 
 #$contenido = "";
 

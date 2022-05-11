@@ -51,7 +51,8 @@ class Habitacion
         $conn = $app->getConexionBd();
         #$correo = $app->correo();
 
-        $aux = print_r($hab->detalles);
+        #Daba error en VPS
+        #$aux = print_r($hab->detalles);
         
         $query = sprintf("INSERT INTO habitaciones (id_piso, cama_cm, banio_propio, precio, gastos_incluidos, descripcion, disponibilidad)  
                         VALUES ('%d','%d', '%d', '%d', '%d', '%s', '%s')"
