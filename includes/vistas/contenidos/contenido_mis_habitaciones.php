@@ -8,7 +8,12 @@ use es\ucm\fdi\aw\Imagen;
 
 $app= Aplicacion::getInstance();
 
-if($app->comprueba_permisos(Usuario::HOST_ROLE)){
+ $rol_necesario=Usuario::HOST_ROLE;
+ if($app->tieneRol(es\ucm\fdi\aw\usuarios\Usuario::ADMIN_ROLE)){
+    $rol_necesario=Usuario::ADMIN_ROLE;
+}
+
+if($app->comprueba_permisos($rol_necesario)){
     $id_piso = $app->getAtributoPeticion("id_piso");
     $app->putAtributoPeticion("id_piso", $id_piso);
 

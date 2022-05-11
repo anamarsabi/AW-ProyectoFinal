@@ -153,6 +153,7 @@ class Imagen
 
 
     public static function getPathsRelatedTo($id, $tabla, $entidad){
+        $result="";
         $conn = Aplicacion::getInstance()->getConexionBd();
         
         $query = 'SELECT ruta FROM '.$tabla.' WHERE '.$entidad.'='.$id;
