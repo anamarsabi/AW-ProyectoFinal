@@ -35,20 +35,6 @@ $(document).ready(function() {
 		}
 	});
 
-	
-	$("#formLogin").submit(function(e){
-		const campo = $("#correo");
-		var input = campo.val();
-
-		if(!validateEmail(input)){
-			e.preventDefault();
-			campo[0].setCustomValidity("Introduce un correo válido");
-      		return false;
-		}
-
-	});
-
-
 
 	$("#textarea-pisos").keydown(function(){
 		const campo = $("#textarea-pisos");

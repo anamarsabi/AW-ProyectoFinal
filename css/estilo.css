@@ -98,13 +98,7 @@ a.username{
     color: black;
 }
 
-.enlace-login{
-    font-size: 1.2em;
-    padding: 1em;
-    color: black;
-}
-
-.enlace-detalles:hover, .enlace-login:hover{
+.enlace-detalles:hover{
     color:#419A1C;
 }
 /* col-2 px-10-20 mx-8-0  */
@@ -143,13 +137,6 @@ a.username{
 .index-footer-block{
     text-align: left;
     display: inline-block;
-    padding: 10px;
-    vertical-align: top;
-}
-
-.index-content-block{
-    text-align: center;
-    display: inline-block !important;
     padding: 10px;
     vertical-align: top;
 }
@@ -642,28 +629,6 @@ div.save-btn-bg{
     color: #c4c4c4;
 }
 
-#index-ico-1:hover{
-    color:#1095B8;
-}
-
-#index-ico-2:hover{
-    color:#419A1C;
-}
-
-#index-ico-3:hover{
-    color:#e0b300;
-}
-
-#contacto-center{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-
-.white{
-    color: white;
-}
 
 /* ul.detalles > li{
     padding: 1em;
@@ -993,7 +958,7 @@ div.clear{
 }
 
 
-h1, h2, h4, p{
+h1, h2, h4{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -1061,39 +1026,6 @@ form{
     height: 20px;
 }
 
-
-
-/* https://www.w3schools.com/howto/howto_css_image_overlay.asp */
-
-.bloque-middle {
-    transition: .6s ease;
-    opacity: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    text-align: center;
-}
-
-.contenedor-imagen{
-    position: relative;
-}
-
-.contenedor-imagen:hover .imagen {
-    opacity: 0.4;
-}
-
-.contenedor-imagen:hover .bloque-middle {
-    opacity: 1;
-}
-  
-.text-middle {
-    background-color: #419A1C;
-    color: white;
-    font-size: 30px;
-    padding: 16px 32px;
-}
 
 
 
@@ -1217,13 +1149,6 @@ h3.access-denied{
     clear:both;
 }
 
-.px-1{
-    padding: 10px;
-}
-
-.pt-3{
-    padding-top: 3em;
-}
 
 
 

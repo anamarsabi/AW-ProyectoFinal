@@ -63,7 +63,7 @@ else{
     $contexto = <<<EOS
         <div class="align-item-center diplay-flex">
             <div class="pr-10p">
-                <a class=" clear-text-deco enlace-login" href="login.php">
+                <a href="login.php">
                     Inicia sesión
                 </a> 
             </div>
