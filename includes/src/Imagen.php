@@ -171,6 +171,33 @@ class Imagen
         return $result;
     }
 
+    public static function getPathImagen($id, $tabla)
+    {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        
+        $query = 'SELECT ruta FROM '.$tabla.' WHERE id ='.$id;
+        
+        $rs = $conn->query($query);
+        if ($rs) {
+            while ($fila = $rs->fetch_assoc()) {
+                $result = $fila['ruta'];
+            }
+            $rs->free();
+        } else {
+            error_log($conn->error);
+        }
+
+        return $result;
+    }
+
+    public static function deleteFileImagen($id, $tabla)
+    {
+        $path = self::getPathImagen($id, $tabla);
+        if($path){
+            unlink("almacenPublico/".$path);
+        }
+    }
+
 
     public static function deleteEntitysFiles($id, $tabla, $entidad){
         $paths = self::getPathsRelatedTo($id, $tabla, $entidad);
@@ -297,6 +324,7 @@ class Imagen
         $idImagen = $datos['id_imagen'];
         $tabla = $datos['tabla'];
 
+        self::deleteFileImagen($idImagen, $tabla);
         $result = false;
 
         $conn = Aplicacion::getInstance()->getConexionBd();
