@@ -153,7 +153,7 @@ class Imagen
 
 
     public static function getPathsRelatedTo($id, $tabla, $entidad){
-        $result="";
+        $result=[];
         $conn = Aplicacion::getInstance()->getConexionBd();
         
         $query = 'SELECT ruta FROM '.$tabla.' WHERE '.$entidad.'='.$id;
@@ -174,9 +174,10 @@ class Imagen
 
     public static function deleteEntitysFiles($id, $tabla, $entidad){
         $paths = self::getPathsRelatedTo($id, $tabla, $entidad);
-
-        foreach($paths as $path ){
-            unlink("almacenPublico/".$path);
+        if($paths){
+            foreach($paths as $path ){
+                unlink("almacenPublico/".$path);
+            }
         }
     }
 
