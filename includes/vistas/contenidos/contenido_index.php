@@ -19,7 +19,7 @@ if($app->usuarioLogueado()){
     }
 }
 else{
-    $paths = ["vistas/comun/barra_busqueda.php", "vistas/comun/bloque_registro.php",  "vistas/comun/info_index.php"];
+    $paths = ["vistas/comun/barra_busqueda.php", "vistas/comun/info_index.php", "vistas/comun/bloque_registro.php"];
     
     $vista = Vista::getInstance();
     $vista->carga_contenido($paths);
