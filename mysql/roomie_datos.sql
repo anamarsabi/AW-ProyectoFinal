@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: vm09.db.swarm.test
--- Tiempo de generación: 12-05-2022 a las 16:07:10
--- Versión del servidor: 10.8.2-MariaDB-1:10.8.2+maria~focal
--- Versión de PHP: 8.0.15
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 12-05-2022 a las 20:55:29
+-- Versión del servidor: 10.4.22-MariaDB
+-- Versión de PHP: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -97,7 +97,7 @@ INSERT INTO `detallespiso` (`id_piso`, `id_servicio`) VALUES
 INSERT INTO `habitaciones` (`id_habitacion`, `id_roomie`, `id_piso`, `cama_cm`, `banio_propio`, `precio`, `gastos_incluidos`, `descripcion`, `disponibilidad`) VALUES
 (5, 23, 13, 90, 0, 350, 1, 'Habitaci&oacute;n de 30m2, muy luminosa y bien aclimatada', '2022-05-14'),
 (6, NULL, 13, 90, 1, 450, 1, 'Habitaci&oacute;n de 25m2, muy luminosa y bien aclimatada, cuenta con ba&ntilde;o propio. Ideal para estudiantes o j&oacute;venes trabajadores', '2022-05-14'),
-(7, 25, 13, 120, 1, 400, 1, 'Habitación muy luminosa, con baño propio.', '2022-05-05'),
+(7, 25, 13, 120, 1, 400, 1, 'Habitaci&oacute;n muy luminosa, con ba&ntilde;o propio.', '2022-05-21'),
 (8, 0, 16, 90, 1, 550, 1, 'Esta habitacion est&aacute; orientada al este, con lo que dispone de gran cantidad de luz natural. Adem&aacute;s cuenta con un ba&ntilde;o privado con plato de ducha. Dispone de armario, escritorio, silla de oficina, cama y ropa de cama.', '2022-05-14'),
 (11, NULL, 18, 150, 1, 550, 0, 'Se ofrece habitaci&oacute;n con un gran ventanal de orientaci&oacute;n este. Dispone de armario, mesa de estudio y c&oacute;moda cama doble.', '2022-05-19'),
 (12, 36, 17, 90, 1, 300, 0, 'Habitaci&oacute;n ideal para estudiantes o j&oacute;venes trabajadores. Gran escritorio e iluminaci&oacute;n natural', '2022-05-27'),
@@ -107,41 +107,50 @@ INSERT INTO `habitaciones` (`id_habitacion`, `id_roomie`, `id_piso`, `cama_cm`, 
 (22, NULL, 14, 90, 1, 350, 0, 'Habitaci&oacute;n peque&ntilde;a pero confortable. Cuenta con un ba&ntilde;o privado.', '2022-05-14'),
 (23, 24, 15, 150, 1, 375, 0, 'Habitaci&oacute;n con mucha luz natural y amplia mesa de trabajo. En las im&aacute;genes est&aacute;n las pertenencias del actual inquilino, no est&aacute;n incluidas.', '2022-05-21'),
 (27, NULL, 17, 140, 0, 550, 1, 'Habitaci&oacute;n disponible durante este verano. Muy acogedora y fresca', '2022-05-17'),
-(28, NULL, 19, 90, 0, 330, 1, 'Habitaci&oacute;n con todo lo que puede necesitar un estudiante: cama, mesa de estudio y un armario. La ventana da a un patio de manzanas muy amplio y bien ventilado.', '2022-05-15');
+(28, NULL, 19, 90, 0, 330, 1, 'Habitaci&oacute;n con todo lo que puede necesitar un estudiante: cama, mesa de estudio y un armario. La ventana da a un patio de manzanas muy amplio y bien ventilado.', '2022-05-15'),
+(29, NULL, 16, 150, 0, 675, 1, 'Esta habitaci&oacute;n es un verdadero lujo, muy confortable. Preferiblemente estancias largas', '2022-05-16');
 
 --
 -- Volcado de datos para la tabla `imagenes_habitaciones`
 --
 
 INSERT INTO `imagenes_habitaciones` (`id`, `ruta`, `nombre`, `mimeType`, `id_habitacion`) VALUES
-(28, 'habitaciones/28.jpg', 'habitacion.jpg', 'image/jpeg', 5),
-(29, 'habitaciones/29.jpg', 'habitacion2.jpg', 'image/jpeg', 6),
-(30, 'habitaciones/30.jpg', 'habitacion.jpg', 'image/jpeg', 19),
-(31, 'habitaciones/31.jpg', 'habitacion2.jpg', 'image/jpeg', 20),
-(32, 'habitaciones/32.jpg', 'habitacion3.jpg', 'image/jpeg', 21),
-(33, 'habitaciones/33.jpg', 'baño.jpg', 'image/jpeg', 22),
-(35, 'habitaciones/35.jpg', 'habitacion4.jpg', 'image/jpeg', 22),
-(36, 'habitaciones/36.jpg', 'armario.jpg', 'image/jpeg', 23),
-(37, 'habitaciones/37.jpg', 'habitacion5.jpg', 'image/jpeg', 23),
-(38, 'habitaciones/38.jpg', 'habitacion5.jpg', 'image/jpeg', 8),
-(39, 'habitaciones/39.jpg', 'habitacion4.jpg', 'image/jpeg', 12),
-(40, 'habitaciones/40.jpg', 'habitacion3.jpg', 'image/jpeg', 27);
+(42, 'habitaciones/42.jpg', 'baño.jpg', 'image/jpeg', 8),
+(43, 'habitaciones/43.jpg', 'habitacion2.jpg', 'image/jpeg', 8),
+(44, 'habitaciones/44.jpg', 'habitacion3.jpg', 'image/jpeg', 11),
+(45, 'habitaciones/45.jpg', 'habitacion4.jpg', 'image/jpeg', 28),
+(46, 'habitaciones/46.jpg', 'armario.jpg', 'image/jpeg', 5),
+(47, 'habitaciones/47.jpg', 'habitacion3.jpg', 'image/jpeg', 5),
+(48, 'habitaciones/48.jpg', 'habitacion.jpg', 'image/jpeg', 6),
+(49, 'habitaciones/49.jpg', 'Mesa-de-estudio-1.jp', 'image/jpeg', 6),
+(50, 'habitaciones/50.jpg', 'habitacion.jpg', 'image/jpeg', 7),
+(51, 'habitaciones/51.jpg', 'habitacion5.jpg', 'image/jpeg', 19),
+(52, 'habitaciones/52.jpg', 'habitacion6.jpg', 'image/jpeg', 22),
+(53, 'habitaciones/53.jpg', 'habitacion2.jpg', 'image/jpeg', 20),
+(54, 'habitaciones/54.jpg', 'armario.jpg', 'image/jpeg', 21),
+(55, 'habitaciones/55.jpg', 'habitacion6.jpg', 'image/jpeg', 21),
+(56, 'habitaciones/56.jpg', 'habitacion3.jpg', 'image/jpeg', 23),
+(57, 'habitaciones/57.jpg', 'Mesa-de-estudio-1.jp', 'image/jpeg', 23),
+(58, 'habitaciones/58.jpg', 'habitacion6.jpg', 'image/jpeg', 29);
 
 --
 -- Volcado de datos para la tabla `imagenes_pisos`
 --
 
 INSERT INTO `imagenes_pisos` (`id`, `ruta`, `nombre`, `mimeType`, `id_piso`) VALUES
-(55, 'pisos/55.jpg', 'piso-3.jpg', 'image/jpeg', 13),
-(57, 'pisos/57.jpg', 'piso-compartido-hogar-1024x682.jpg', 'image/jpeg', 13),
-(58, 'pisos/58.jpg', 'piscina.jpg', 'image/jpeg', 13),
-(59, 'pisos/59.jpg', 'baño.jpg', 'image/jpeg', 14),
-(60, 'pisos/60.jpg', 'habitacion.jpg', 'image/jpeg', 14),
-(61, 'pisos/61.jpg', 'piso-barna.jpg', 'image/jpeg', 15),
-(62, 'pisos/62.jpg', 'balcon.jpg', 'image/jpeg', 16),
-(63, 'pisos/63.jpg', 'piscina.jpg', 'image/jpeg', 17),
-(64, 'pisos/64.jpg', 'piso-compartido-deco.jpg', 'image/jpeg', 17),
-(65, 'pisos/65.jpg', 'piso-compartido-3.jpg', 'image/jpeg', 19);
+(69, 'pisos/69.jpg', 'piso-3.jpg', 'image/jpeg', 16),
+(70, 'pisos/70.jpg', 'piso-compartido-hogar-1024x682.jpg', 'image/jpeg', 16),
+(71, 'pisos/71.jpg', 'habitacion5.jpg', 'image/jpeg', 17),
+(72, 'pisos/72.jpg', 'piso-compartido-3.jpg', 'image/jpeg', 17),
+(73, 'pisos/73.jpg', 'piso-barna.jpg', 'image/jpeg', 18),
+(74, 'pisos/74.jpg', 'balcon.jpg', 'image/jpeg', 19),
+(75, 'pisos/75.jpg', 'piso-compartido-deco.jpg', 'image/jpeg', 19),
+(76, 'pisos/76.jpg', 'piscina.jpg', 'image/jpeg', 13),
+(77, 'pisos/77.jpg', 'piso-compartido-hogar-1024x682.jpg', 'image/jpeg', 13),
+(78, 'pisos/78.jpg', 'balcon.jpg', 'image/jpeg', 14),
+(79, 'pisos/79.jpg', 'piso-compartido-3.jpg', 'image/jpeg', 14),
+(80, 'pisos/80.jpg', 'cocina.jpg', 'image/jpeg', 15),
+(81, 'pisos/81.jpg', 'piso-4.jpg', 'image/jpeg', 15);
 
 --
 -- Volcado de datos para la tabla `pisos`
@@ -153,7 +162,7 @@ INSERT INTO `pisos` (`id_piso`, `id_host`, `calle`, `barrio`, `ciudad`, `imagen_
 (15, 30, 'Plaza Espa&ntilde;a n 4', 'Parque Gwell', 'Barcelona', NULL, 1, 'Piso con 3 habitaciones en zona cercana al Parque G&uuml;ell. Muy bien comunicado con buses y trenes.', 0, 0, 3),
 (16, 27, 'Hacienda de Pavones n 145', 'Vicalvaro', 'Madrid', NULL, 1, 'Piso en zona muy cercana al centro, muy bien conectado mediante metro y autobus.', 0, 0, 2),
 (17, 27, 'Cochabamba n 2', 'Colombia', 'Madrid', NULL, 1, 'El piso se encuentra en una lujosa zona, muy tranquila y muy bien conectado con el centro.', 0, 0, 1),
-(18, 27, 'Evergreenterrace n 365', 'Las palomas', 'Valencia', NULL, 1, 'Este piso fue reformado hace 3 a&ntilde;os, esta en primera l&iacute;nea de playa y muy bien conectado con el centro.', 0, 0, 2),
+(18, 27, 'Paseo del Mar n 365', 'Las palomas', 'Barcelona', NULL, 1, 'Este piso fue reformado hace 3 a&ntilde;os, esta en primera l&iacute;nea de playa y muy bien conectado con el centro.', 0, 0, 2),
 (19, 28, 'Fernandez Shaw n 12', 'Pacifico', 'Madrid', NULL, 1, 'Este piso cuenta con amplias zonas comunes y una amplia finca', 0, 0, 2),
 (20, 28, 'General Casado n 14', 'Moncloa', 'Madrid', NULL, 1, 'Este piso fue reformado hace 2 a&ntilde;os por lo tanto cuenta con los &uacute;ltimos dise&ntilde;os.', 0, 0, 2),
 (21, 28, 'Menendez Pelayo n 1', 'Pacifico', 'Madrid', NULL, 1, 'Este piso esta a 5 minutos de atocha de andando, cuenta con ascensor y unas buenas instalaciones.', 0, 0, 3),
