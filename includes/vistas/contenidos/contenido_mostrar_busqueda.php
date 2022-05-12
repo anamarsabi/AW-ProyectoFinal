@@ -85,6 +85,10 @@ else
         $iconos_habitaciones .= "</div>";
         */
 
+        $rango_precios = $p->getPrecio_max()!=0
+            ?"<div class='precio'>{$p->getPrecio_min()} - {$p->getPrecio_max()} €/mes</div>"
+            : "";
+
         $datos = [
             'id'=>$p->id,
             'tabla'=>'imagenes_pisos',
@@ -104,7 +108,7 @@ else
                             {$html_img}
                         </li>
                         <li>
-                            <p> Habitaciones desde {$p->getPrecio_min()} hasta {$p->getPrecio_max()} €/mes</p>
+                            $rango_precios
                             {$formulario_detalles->gestiona()}
                         </li>
                     </ul>
