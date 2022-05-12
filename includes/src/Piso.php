@@ -498,7 +498,7 @@ class Piso
                             </li>
                             <li>
                                 <h4>{$hab_detalles['precio']}€/mes</h4>
-                                <h6>{$gastos}<h6>
+                                {$gastos}
                             </li>
                         </ul>
                     </div>
